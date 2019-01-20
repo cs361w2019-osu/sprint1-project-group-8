@@ -40,6 +40,9 @@ public class Board {
 			}
 		}
 
+		if (result.getResult() != AtackStatus.HIT)
+			result.setResult(AtackStatus.MISS);
+
 		Attacks.add(result);
 		return result;
 	}
