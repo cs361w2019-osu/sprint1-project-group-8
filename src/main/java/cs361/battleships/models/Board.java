@@ -16,9 +16,22 @@ public class Board {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
-		// TODO Implement
+		List<Square> sL = null;
+		Square s = null;
+		for(int i = 0; i < ship.getSize(); i++){
 
-		return false;
+			if(isVertical){
+				s.setRow(++x);
+				s.setColumn(y);
+			}
+			else{
+				s.setRow(i);
+				s.setColumn(++y);
+			}
+			sL.add(s);
+		}
+		ship.setOccupiedSquares(sL);
+		return true;
 	}
 
 	/*

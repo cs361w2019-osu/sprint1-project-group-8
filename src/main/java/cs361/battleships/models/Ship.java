@@ -32,7 +32,13 @@ public class Ship {
 		}
 
 	}
+	public void setOccupiedSquares(List<Square> s){
+		this.occupiedSquares = s;
+	}
+	public int getSize(){
 
+		return size;
+	}
 	public List<Square> getOccupiedSquares() {
 		return occupiedSquares;
 	}
