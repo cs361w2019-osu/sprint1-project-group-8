@@ -26,6 +26,10 @@ public class Ship {
 			this.kind = kind;
 			this.size = 3;
 		}
+		else if (kind == "BATTLESHIP"){
+			this.kind = kind;
+			this.size = 4;
+		}
 
 	}
 
