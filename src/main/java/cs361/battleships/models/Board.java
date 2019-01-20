@@ -31,6 +31,11 @@ public class Board {
 		Result result = new Result();
 		result.setLocation(new Square(x, y));
 
+		if (x > 10 || x < 1 || y > 'J' || y < 'A') {
+			result.setResult(AtackStatus.INVALID);
+			return result;
+		}
+
 		for (Ship ship : this.Ships) {
 			for (Square square : ship.getOccupiedSquares()) {
 				if (square.getRow() == x && square.getColumn() == y) {
