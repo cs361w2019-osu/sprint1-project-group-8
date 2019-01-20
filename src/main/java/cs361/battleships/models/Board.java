@@ -18,6 +18,10 @@ public class Board {
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
 		List<Square> sL = null;
 		Square s = null;
+		if(x + ship.getSize() < 1 || x + ship.getSize() > 10)
+			return false;
+		if(y + ship.getSize() < 'A' || y + ship.getSize() > 'J')
+			return false;
 		//Create the squares the ship will occupy
 		for(int i = 0; i < ship.getSize(); i++){
 
