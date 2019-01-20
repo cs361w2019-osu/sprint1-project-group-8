@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Ship {
-
+	private String kind;
+	private int size;
 	@JsonProperty private List<Square> occupiedSquares;
 
 	public Ship() {
@@ -14,11 +15,21 @@ public class Ship {
 	}
 	
 	public Ship(String kind) {
-		//TODO implement
+
+		this();
+		if(kind == "MINESWEEPER"){
+			this.kind = kind;
+			this.size = 2;
+
+		}
+		else if(kind == "DESTROYER"){
+			this.kind = kind;
+			this.size = 3;
+		}
+
 	}
 
 	public List<Square> getOccupiedSquares() {
-		//TODO implement
-		return null;
+		return occupiedSquares;
 	}
 }
