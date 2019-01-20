@@ -35,12 +35,36 @@ public class Board {
 			for (Square square : ship.getOccupiedSquares()) {
 				if (square.getRow() == x && square.getColumn() == y) {
 					result.setShip(ship);
-					result.setResult(AtackStatus.HIT);
+
+					for (Square shipSquare : ship.getOccupiedSquares()) {
+						boolean shipSquareHit = false;
+
+						for (Result oldAttack : Attacks) {
+							Square oldAttackSquare = oldAttack.getLocation();
+
+							boolean prevHit = oldAttackSquare.getRow() == shipSquare.getRow() &&
+									          oldAttackSquare.getColumn() == shipSquare.getColumn();
+							boolean currHit = shipSquare.getRow() == x && shipSquare.getColumn() == y;
+
+							if (prevHit || currHit) {
+								shipSquareHit = true;
+								break;
+							}
+						}
+
+						if (!shipSquareHit) {
+							result.setResult(AtackStatus.HIT);
+							break;
+						}
+					}
+
+					if (result.getResult() != AtackStatus.HIT)
+						result.setResult(AtackStatus.SUNK);
 				}
 			}
 		}
 
-		if (result.getResult() != AtackStatus.HIT)
+		if (result.getResult() != AtackStatus.HIT && result.getResult() != AtackStatus.SUNK)
 			result.setResult(AtackStatus.MISS);
 
 		Attacks.add(result);
@@ -48,20 +72,18 @@ public class Board {
 	}
 
 	public List<Ship> getShips() {
-		//TODO implement
-		return null;
+		return this.Ships;
 	}
 
 	public void setShips(List<Ship> ships) {
-		//TODO implement
+		this.Ships = ships;
 	}
 
 	public List<Result> getAttacks() {
-		//TODO implement
-		return null;
+		return this.Attacks;
 	}
 
 	public void setAttacks(List<Result> attacks) {
-		//TODO implement
+		this.Attacks = attacks;
 	}
 }
