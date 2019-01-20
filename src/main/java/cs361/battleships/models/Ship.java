@@ -8,6 +8,7 @@ import java.util.List;
 public class Ship {
 	private String kind;
 	private int size;
+
 	@JsonProperty private List<Square> occupiedSquares;
 
 	public Ship() {
@@ -32,6 +33,7 @@ public class Ship {
 		}
 
 	}
+
 	public void setOccupiedSquares(List<Square> s){
 		this.occupiedSquares = s;
 	}

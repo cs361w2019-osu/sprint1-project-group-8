@@ -10,59 +10,78 @@ public class Board {
 	 */
 	public Board() {
 		// TODO Implement
+		ships = new ArrayList<>();
 	}
 
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
-		List<Square> sL = null;
-		Square s = null;
+		List<Square> newSquares = new ArrayList<>();
+
 		int size = ship.getSize();
+
 		//Check if the ship will be placed off of the board
-		if(x < 1 || x + size > 10 || y < 'A' || y + size > 'J')
+		if(x < 1 || x + size-1 > 10 || y < 'A' || y + size-1 > 'J')
 			return false;
 
 		//check if a ship overlaps
 		for(int i = 0; i < getShips().size(); i++){
-			for(int j = 0; j < ships.get(i).getOccupiedSquares().size(); j++){
-				for(int k =0; k < ship.getSize(); k++){
-					if((ships.get(i).getOccupiedSquares()).get(j).getRow() == (x+k) && (ships.get(i).getOccupiedSquares()).get(j).getColumn() == y+k ){
+			for(int j = 0; j < (getShips().get(i).getOccupiedSquares()).size(); j++){
+				for(int k = 0; k < size; k++){
+				if(isVertical){
+					if(((((getShips().get(i).getOccupiedSquares()).get(j)).getRow()) == (x+k)) && ((((ships.get(i).getOccupiedSquares()).get(j)).getColumn()) == y) ){
+						return false;
+					}
+				}else{
+					if(((getShips().get(i).getOccupiedSquares()).get(j).getRow() == (x )) && ((ships.get(i).getOccupiedSquares()).get(j).getColumn() == y+k )){
 						return false;
 					}
 				}
 
+				}
+
 			}
 		}
-		//Create the squares the ship will occupy
-		for(int i = 0; i < ship.getSize(); i++){
 
+
+		//Create the squares the ship will occupy
+		for(int i = 0; i < size; i++){
+			Square s = new Square(x,y);
 			if(isVertical){
-				s.setRow(++x);
+				s.setRow(x+i);
 				s.setColumn(y);
 			}
 			else{
-				s.setRow(i);
-				s.setColumn(++y);
+				s.setRow(x);
+				int nextValue = (int)y + i; // find the int value plus 1
+				char c = (char)nextValue;
+				s.setColumn(c);
 			}
-			sL.add(s);
-		}
+			newSquares.add(s);
 
-		ship.setOccupiedSquares(sL);
-		//Check to make sure the ship was not placed diagonally
-		for(int i = 0; i < ship.getSize()-1; i++){
+
+		}
+		ship.setOccupiedSquares(newSquares);
+
+	//Check to make sure the ship was not placed diagonally
+		for(int i = 0; i < size-1; i++){
 			if(isVertical){
-				if(ship.getOccupiedSquares().get(i).getRow() != ship.getOccupiedSquares().get(i+1).getRow()){
+				//checks for a straight line
+				if(ship.getOccupiedSquares().get(i).getColumn() == y+1){
 					return false;
 				}
 
 			}
 			else{
-				if(ship.getOccupiedSquares().get(i).getColumn() != ship.getOccupiedSquares().get(i+1).getColumn()){
+				if(ship.getOccupiedSquares().get(i).getRow() == x+1){
 					return false;
 				}
 			}
 		}
+
+		ships.add(ship);
+
 		return true;
 	}
 
