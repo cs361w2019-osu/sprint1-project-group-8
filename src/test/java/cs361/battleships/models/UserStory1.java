@@ -103,7 +103,20 @@ public class UserStory1 {
         ships.add(ship1);
         assertEquals(board.getShips(), ships);
         assertEquals(2, board.getShips().size());
+        assertEquals(4, board.getShips().get(0).getOccupiedSquares().size());
+        assertEquals(4, board.getShips().get(1).getOccupiedSquares().size());
         assertEquals(5,board.getShips().get(0).getOccupiedSquares().get(0).getRow());
         assertEquals(5,board.getShips().get(1).getOccupiedSquares().get(0).getRow());
+        assertEquals(6,board.getShips().get(0).getOccupiedSquares().get(1).getRow());
+        assertEquals(6,board.getShips().get(1).getOccupiedSquares().get(1).getRow());
+        assertEquals(7,board.getShips().get(0).getOccupiedSquares().get(2).getRow());
+        assertEquals(7,board.getShips().get(1).getOccupiedSquares().get(2).getRow());
+        assertEquals(8,board.getShips().get(0).getOccupiedSquares().get(3).getRow());
+        assertEquals(8,board.getShips().get(1).getOccupiedSquares().get(3).getRow());
+
+        assertEquals('D',board.getShips().get(0).getOccupiedSquares().get(0).getColumn());
+        assertEquals('C',board.getShips().get(1).getOccupiedSquares().get(0).getColumn());
+        assertEquals('D',board.getShips().get(0).getOccupiedSquares().get(1).getColumn());
+        assertEquals('C',board.getShips().get(1).getOccupiedSquares().get(1).getColumn());
     }
 }
