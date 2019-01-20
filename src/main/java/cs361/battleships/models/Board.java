@@ -18,6 +18,7 @@ public class Board {
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
 		List<Square> sL = null;
 		Square s = null;
+		//Check if the ship will be placed off of the board
 		if(x + ship.getSize() < 1 || x + ship.getSize() > 10)
 			return false;
 		if(y + ship.getSize() < 'A' || y + ship.getSize() > 'J')
