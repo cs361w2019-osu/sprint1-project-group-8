@@ -18,11 +18,11 @@ public class Board {
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
 		List<Square> sL = null;
 		Square s = null;
+		int size = ship.getSize();
 		//Check if the ship will be placed off of the board
-		if(x + ship.getSize() < 1 || x + ship.getSize() > 10)
+		if(x < 1 || x + size > 10 || y < 'A' || y + size > 'J')
 			return false;
-		if(y + ship.getSize() < 'A' || y + ship.getSize() > 'J')
-			return false;
+
 		//check if a ship overlaps
 		for(int i = 0; i < getShips().size(); i++){
 			for(int j = 0; j < ships.get(i).getOccupiedSquares().size(); j++){
