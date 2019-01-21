@@ -24,8 +24,8 @@ public class UserStory2Test {
     public void testSunkResult() {
         Board board = new Board();
         board.placeShip(new Ship("MINESWEEPER"), 5, 'E', true);
-        // Figure out where other location of ship should be
-        assertEquals(board.attack(5, 'E' ).getResult(), AtackStatus.SUNK);
+        board.attack(5, 'E' );
+        assertEquals(board.attack(6, 'E' ).getResult(), AtackStatus.SUNK);
     }
 
     @Test
