@@ -4,16 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 public class Board {
 	@JsonProperty private List<Ship> Ships;
 	@JsonProperty private List<Result> Attacks;
-
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public Board() {
-		// TODO Implement
 		Ships = new ArrayList<>();
 		Attacks = new ArrayList<>();
 	}
@@ -43,7 +41,6 @@ public class Board {
 							return false;
 						}
 					}
-
 				}
 
 			}
@@ -143,12 +140,10 @@ public class Board {
 	}
 
 	public List<Ship> getShips() {
-		//TODO implement
 		return this.Ships;
 	}
 
 	public void setShips(List<Ship> ships) {
-		//TODO implement
 		this.Ships = ships;
 	}
 
