@@ -1,16 +1,19 @@
 package cs361.battleships.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 public class Board {
-	@JsonProperty private List<Ship> ships;
+	@JsonProperty private List<Ship> Ships;
+	@JsonProperty private List<Result> Attacks;
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public Board() {
-		// TODO Implement
-		ships = new ArrayList<>();
+		Ships = new ArrayList<>();
+		Attacks = new ArrayList<>();
 	}
 
 	/*
@@ -29,16 +32,15 @@ public class Board {
 		for(int i = 0; i < getShips().size(); i++){
 			for(int j = 0; j < (getShips().get(i).getOccupiedSquares()).size(); j++){
 				for(int k = 0; k < size; k++){
-				if(isVertical){
-					if(((((getShips().get(i).getOccupiedSquares()).get(j)).getRow()) == (x+k)) && ((((ships.get(i).getOccupiedSquares()).get(j)).getColumn()) == y) ){
-						return false;
+					if(isVertical){
+						if(((((getShips().get(i).getOccupiedSquares()).get(j)).getRow()) == (x+k)) && ((((Ships.get(i).getOccupiedSquares()).get(j)).getColumn()) == y) ){
+							return false;
+						}
+					}else{
+						if(((getShips().get(i).getOccupiedSquares()).get(j).getRow() == (x )) && ((Ships.get(i).getOccupiedSquares()).get(j).getColumn() == y+k )){
+							return false;
+						}
 					}
-				}else{
-					if(((getShips().get(i).getOccupiedSquares()).get(j).getRow() == (x )) && ((ships.get(i).getOccupiedSquares()).get(j).getColumn() == y+k )){
-						return false;
-					}
-				}
-
 				}
 
 			}
@@ -64,7 +66,7 @@ public class Board {
 		}
 		ship.setOccupiedSquares(newSquares);
 
-	//Check to make sure the ship was not placed diagonally
+		//Check to make sure the ship was not placed diagonally
 		for(int i = 0; i < size-1; i++){
 			if(isVertical){
 				//checks for a straight line
@@ -80,7 +82,7 @@ public class Board {
 			}
 		}
 
-		ships.add(ship);
+		Ships.add(ship);
 
 		return true;
 	}
@@ -89,18 +91,60 @@ public class Board {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public Result attack(int x, char y) {
-		//TODO Implement
-		return null;
+		Result result = new Result();
+		result.setLocation(new Square(x, y));
+
+		if (x > 10 || x < 1 || y > 'J' || y < 'A') {
+			result.setResult(AtackStatus.INVALID);
+			return result;
+		}
+
+		for (Ship ship : this.Ships) {
+			for (Square square : ship.getOccupiedSquares()) {
+				if (square.getRow() == x && square.getColumn() == y) {
+					result.setShip(ship);
+
+					for (Square shipSquare : ship.getOccupiedSquares()) {
+						boolean shipSquareHit = false;
+
+						for (Result oldAttack : Attacks) {
+							Square oldAttackSquare = oldAttack.getLocation();
+
+							boolean prevHit = oldAttackSquare.getRow() == shipSquare.getRow() &&
+									oldAttackSquare.getColumn() == shipSquare.getColumn();
+							boolean currHit = shipSquare.getRow() == x && shipSquare.getColumn() == y;
+
+							if (prevHit || currHit) {
+								shipSquareHit = true;
+								break;
+							}
+						}
+
+						if (!shipSquareHit) {
+							result.setResult(AtackStatus.HIT);
+							break;
+						}
+					}
+
+					if (result.getResult() != AtackStatus.HIT)
+						result.setResult(AtackStatus.SUNK);
+				}
+			}
+		}
+
+		if (result.getResult() != AtackStatus.HIT && result.getResult() != AtackStatus.SUNK)
+			result.setResult(AtackStatus.MISS);
+
+		Attacks.add(result);
+		return result;
 	}
 
 	public List<Ship> getShips() {
-		//TODO implement
-		return this.ships;
+		return this.Ships;
 	}
 
 	public void setShips(List<Ship> ships) {
-		//TODO implement
-		this.ships = ships;
+		this.Ships = ships;
 	}
 
 	public List<Result> getAttacks() {

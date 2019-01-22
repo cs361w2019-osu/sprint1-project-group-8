@@ -14,7 +14,7 @@ public class Ship {
 	public Ship() {
 		occupiedSquares = new ArrayList<>();
 	}
-	
+
 	public Ship(String kind) {
 
 		this();
