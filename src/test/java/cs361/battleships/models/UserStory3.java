@@ -20,7 +20,7 @@ public class UserStory3 {
         sunkShips.add(result.getShip());
 
         board.placeShip(new Ship("DESTROYER"), 9, 'D', false);
-        //board.attack(9, 'D');
+        board.attack(9, 'D');
         board.attack(9, 'E');
         board.attack(9, 'F');
         sunkShips.add(result.getShip());
