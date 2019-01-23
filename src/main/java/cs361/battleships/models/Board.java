@@ -8,12 +8,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Board {
 	@JsonProperty private List<Ship> Ships;
 	@JsonProperty private List<Result> Attacks;
+	// New changes
+	@JsonProperty private List<Ship> sunkShips;
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public Board() {
 		Ships = new ArrayList<>();
 		Attacks = new ArrayList<>();
+		sunkShips = new ArrayList<>();
 	}
 
 	/*
@@ -91,6 +94,7 @@ public class Board {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public Result attack(int x, char y) {
+		//int sunkShips;
 		Result result = new Result();
 		result.setLocation(new Square(x, y));
 
@@ -125,15 +129,24 @@ public class Board {
 							break;
 						}
 					}
-
-					if (result.getResult() != AtackStatus.HIT)
+					// if the ship is sunk, add that to the list of sunk ships
+					if (result.getResult() != AtackStatus.HIT) {
 						result.setResult(AtackStatus.SUNK);
+						sunkShips.add(result.getShip());
+					}
+
+					// if the amount of sunk ships equals initial ships, surrender
+					if(sunkShips.size() >= 3) {
+						result.setResult(AtackStatus.SURRENDER);
+					}
 				}
 			}
 		}
 
+
 		if (result.getResult() != AtackStatus.HIT && result.getResult() != AtackStatus.SUNK)
 			result.setResult(AtackStatus.MISS);
+
 
 		Attacks.add(result);
 		return result;
@@ -149,10 +162,12 @@ public class Board {
 
 	public List<Result> getAttacks() {
 		//TODO implement
-		return null;
+		return  Attacks;
+//		return null;
 	}
 
 	public void setAttacks(List<Result> attacks) {
 		//TODO implement
+		this.Attacks = Attacks;
 	}
 }
