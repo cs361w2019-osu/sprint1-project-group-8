@@ -1,5 +1,27 @@
 /* Add additional stylesheets below
 -------------------------------------------------- */
+.spacer{
+display: inline-block;
+    position: relative;
+
+    height: 150px;
+    width: 150px;
+
+    background-color: #fff;
+    vertical-align:top;
+}
+.moveLeftOne{
+margin-left:calc(50% - 400px);
+}
+.moveLeftTwo{
+margin-left:calc(50% - 200px);
+}
+.centerContent{
+text-align:center;
+}
+.removeStyleList{
+ list-style-type: none;
+}
 
 .battleGrid {
     border: 1px solid black;
