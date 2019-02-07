@@ -14,7 +14,26 @@ display: inline-block;
 margin-left:calc(50% - 400px);
 }
 .moveLeftTwo{
-margin-left:calc(50% - 200px);
+margin-left:calc(50% - 210px);
+}
+.alert {
+  width: 150px;
+         height: 100px;
+
+             color: #D8000C;
+             background-color: #FFD2D2;
+
+         overflow: hidden;
+           border: 1px solid #D8000C;
+         margin-top:20px;
+
+}
+.vertical-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 .centerContent{
 text-align:center;
