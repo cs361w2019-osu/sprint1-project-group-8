@@ -161,11 +161,29 @@ function cellClick() {
     }
 }
 
+function clearUserMessage(){
+    document.getElementById("ErrorBox").style.display = "none";
+var div = document.getElementById("UserMessages");
+while(div.firstChild){
+    div.removeChild(div.firstChild);
+}
+
+}
 function sendXhr(method, url, data, handler) {
+
+var elementExists = document.getElementById("ErrorBox");
+
+if(elementExists){
+
+           document.getElementById("ErrorBox").style.display = "none";
+}
+
     var req = new XMLHttpRequest();
     req.addEventListener("load", function(event) {
         if (req.status != 200) {
-            alert("Cannot complete the action");
+        clearUserMessage();
+        document.getElementById("ErrorBox").style.display = "block";
+            document.getElementById("UserMessages").append("Cannot complete the action");
             return;
         }
         handler(JSON.parse(req.responseText));
