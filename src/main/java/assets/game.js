@@ -207,12 +207,15 @@ function place(size) {
 
             if (i == 0) {
                 div.classList.toggle((vertical) ? "up" : "left")
+                cell.classList.toggle((vertical) ? "sidesBorderTop" : "sidesBorderLeft")
             }
             else if (i == size - 1) {
                 div.classList.toggle((vertical) ? "down" : "right")
+                cell.classList.toggle((vertical) ? "sidesBorderBottom" : "sidesBorderRight")
             }
 
             div.classList.toggle("placed");
+            cell.classList.toggle((vertical) ? "sidesBorderVert" : "sidesBorderHoriz")
         }
     }
 }

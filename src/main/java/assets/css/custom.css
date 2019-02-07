@@ -17,8 +17,85 @@
     position: relative;
 }
 
-td:hover {
-    background-color: gray;
+/* Hover styles */
+#opponent td:hover {
+    background-color: rgba(248, 97, 16, 0.4);
+}
+
+#opponent td:hover:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border: 3px dashed rgba(248, 97, 16, 1);
+}
+
+#player td:hover {
+    background-color: rgba(100, 100, 100, 0.2);
+}
+
+#player .sidesBorderVert:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-left: 3px dashed aqua;
+    border-right: 3px dashed aqua;
+}
+
+#player .sidesBorderHoriz:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-top: 3px dashed aqua;
+    border-bottom: 3px dashed aqua;
+}
+
+#player .sidesBorderLeft:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-left: 3px dashed aqua;
+}
+
+#player .sidesBorderRight:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-right: 3px dashed aqua;
+}
+
+#player .sidesBorderTop:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-top: 3px dashed aqua;
+}
+
+#player .sidesBorderBottom:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-bottom: 3px dashed aqua;
 }
 
 /* Ship styles */
