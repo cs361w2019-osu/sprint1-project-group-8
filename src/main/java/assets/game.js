@@ -16,18 +16,63 @@ function makeGrid(table, isPlayer) {
     }
 }
 
+function checkSunk(elementId, row, col) {
+    var td1 = (col <= 0) ? null : document.getElementById(elementId).rows[row].cells[col-1];
+    var td2 = (col >= 9) ? null : document.getElementById(elementId).rows[row].cells[col+1];
+    var td3 = (row <= 0) ? null : document.getElementById(elementId).rows[row-1].cells[col];
+    var td4 = (row >= 9) ? null : document.getElementById(elementId).rows[row+1].cells[col];
+    var td = document.getElementById(elementId).rows[row].cells[col];
+
+    var middle1 = col > 0 && col < 9 && td1.classList.contains("hit") && td2.classList.contains("hit");
+    var middle2 = row > 0 && row < 9 && td3.classList.contains("hit") && td4.classList.contains("hit");
+
+    if (!middle1 && !middle2) {
+        if (col > 0 && td1.classList.contains("hit")) {
+            td.querySelector("div").classList.add("rightHit");
+        }
+        else if (col < 9 && td2.classList.contains("hit")) {
+            td.querySelector("div").classList.add("leftHit");
+        }
+        else if (row > 0 && td3.classList.contains("hit")) {
+            td.querySelector("div").classList.add("downHit");
+        }
+        else if (row < 9 && td4.classList.contains("hit")) {
+            td.querySelector("div").classList.add("upHit");
+        }
+    }
+}
+
 function markHits(board, elementId, surrenderText) {
     board.attacks.forEach((attack) => {
+        var row = attack.location.row-1;
+        var col = attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0);
+        var div = document.createElement('div');
+        var td = document.getElementById(elementId).rows[row].cells[col];
+        td.appendChild(div);
+
         let className;
-        if (attack.result === "MISS")
+        if (attack.result === "MISS") {
             className = "miss";
+            var inner = document.createElement('div');
+            inner.classList.add("innerCircle");
+            div.appendChild(inner);
+        }
         else if (attack.result === "HIT")
             className = "hit";
-        else if (attack.result === "SUNK")
-            className = "hit"
+        else if (attack.result === "SUNK") {
+            className = "hit";
+            td.classList.add(className);
+            document.querySelectorAll("td.hit").forEach((cell) => {
+                if (cell.parentNode.rowIndex == row || cell.cellIndex == col)
+                    checkSunk(elementId, cell.parentNode.rowIndex, cell.cellIndex)
+            });
+        }
         else if (attack.result === "SURRENDER")
             alert(surrenderText);
-        document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
+
+        div.classList.add(className);
+        div.classList.add("marker");
+        td.classList.add(className);
     });
 }
 

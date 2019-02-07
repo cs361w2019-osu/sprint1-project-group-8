@@ -14,6 +14,7 @@
 .battleGrid td {
     border: 1px solid black;
     width: 30px;
+    position: relative;
 }
 
 td:hover {
@@ -28,14 +29,54 @@ td:hover {
     background-color: black;
 }
 
-.hit {
-    background-color: orange;
+/* Marker styles */
+.marker {
+    position: absolute;
+    top: 10%;
+    bottom: 10%;
+    left: 10%;
+    right: 10%;
 }
 
-.sink {
+.innerCircle {
+    position: absolute;
+    top: 20%;
+    bottom: 20%;
+    left: 20%;
+    right: 20%;
+    border-radius: 50%;
+    border: 2px solid black;
+}
+
+div.miss {
+    border-radius: 50%;
+    border: 3px solid black;
+}
+
+div.hit {
+    border: 2px solid black;
+    background-color: gray;
+}
+
+div.sink {
     background-color: red;
 }
 
-.miss {
-    background-color: blue;
+.rightHit {
+    border-top-right-radius: 30%;
+    border-bottom-right-radius: 30%;
+}
+
+.leftHit {
+    border-top-left-radius: 30%;
+    border-bottom-left-radius: 30%;
+}
+
+.upHit {
+    border-top-right-radius: 30%;
+    border-top-left-radius: 30%;
+}
+.downHit {
+    border-bottom-left-radius: 30%;
+    border-bottom-right-radius: 30%;
 }

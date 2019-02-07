@@ -16,18 +16,77 @@ function makeGrid(table, isPlayer) {
     }
 }
 
+function checkSunk(elementId, row, col, first) {
+    var td1 = (col <= 0) ? null : document.getElementById(elementId).rows[row].cells[col-1];
+    var td2 = (col >= 9) ? null : document.getElementById(elementId).rows[row].cells[col+1];
+    var td3 = (row <= 0) ? null : document.getElementById(elementId).rows[row-1].cells[col];
+    var td4 = (row >= 9) ? null : document.getElementById(elementId).rows[row+1].cells[col];
+
+    if (col > 0 && col < 9 && td1.classList.contains("hit") && td2.classList.contains("hit")) {
+        checkSunk(elementId, row, col-1, false);
+        checkSunk(elementId, row, col+1, false);
+    }
+    else if (row > 0 && row < 9 && td3.classList.contains("hit") && td4.classList.contains("hit")) {
+        checkSunk(elementId, row-1, col, false);
+        checkSunk(elementId, row+1, col, false);
+    }
+    else {
+        var td = document.getElementById(elementId).rows[row].cells[col];
+
+        if (col > 0 && td1.classList.contains("hit")) {
+            td.querySelector("div").classList.add("rightHit");
+            if (first) {
+                checkSunk(elementId, row, col-1, false);
+            }
+        }
+        else if (col < 9 && td2.classList.contains("hit")) {
+            td.querySelector("div").classList.add("leftHit");
+            if (first) {
+                checkSunk(elementId, row, col+1, false);
+            }
+        }
+        else if (row > 0 && td3.classList.contains("hit")) {
+            td.querySelector("div").classList.add("upHit");
+            if (first) {
+                checkSunk(elementId, row-1, col, false);
+            }
+        }
+        else if (row < 9 && td4.classList.contains("hit")) {
+            td.querySelector("div").classList.add("downHit");
+            if (first) {
+                checkSunk(elementId, row+1, col, false);
+            }
+        }
+    }
+}
+
 function markHits(board, elementId, surrenderText) {
     board.attacks.forEach((attack) => {
+        var div = document.createElement('div');
+
         let className;
-        if (attack.result === "MISS")
+        if (attack.result === "MISS") {
             className = "miss";
+            var inner = document.createElement('div');
+            inner.classList.add("innerCircle");
+            div.appendChild(inner);
+        }
         else if (attack.result === "HIT")
             className = "hit";
-        else if (attack.result === "SUNK")
-            className = "hit"
+        else if (attack.result === "SUNK") {
+            className = "hit";
+            checkSunk(elementId, attack.location.row-1, attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0), true);
+
+        }
         else if (attack.result === "SURRENDER")
             alert(surrenderText);
-        document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
+
+        div.classList.add(className);
+        div.classList.add("marker");
+
+        var td = document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)];
+        td.appendChild(div);
+        td.classList.add(className);
     });
 }
 
