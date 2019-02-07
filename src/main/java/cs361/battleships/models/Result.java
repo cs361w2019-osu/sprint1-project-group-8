@@ -2,34 +2,38 @@ package cs361.battleships.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.List;
-
 public class Result {
-	@JsonProperty private AtackStatus Result;
-	@JsonProperty private Ship Ship;
-	@JsonProperty private Square Location;
+
+	@JsonProperty private AtackStatus result;
+	@JsonProperty private Square location;
+	@JsonProperty private Ship ship;
+
+	@SuppressWarnings("unused")
+	public Result() {
+	}
+
+	public Result(Square location) {
+		result = AtackStatus.MISS;
+		this.location = location;
+	}
 
 	public AtackStatus getResult() {
-		return this.Result;
+		return result;
 	}
 
 	public void setResult(AtackStatus result) {
-		this.Result = result;
+		this.result = result;
 	}
 
 	public Ship getShip() {
-		return this.Ship;
+		return ship;
 	}
 
 	public void setShip(Ship ship) {
-		this.Ship = ship;
+		this.ship = ship;
 	}
 
 	public Square getLocation() {
-		return this.Location;
-	}
-
-	public void setLocation(Square square) {
-		this.Location = square;
+		return location;
 	}
 }
