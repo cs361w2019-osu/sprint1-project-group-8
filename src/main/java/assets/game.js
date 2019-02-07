@@ -16,18 +16,70 @@ function makeGrid(table, isPlayer) {
     }
 }
 
+function checkSunk(elementId, ship) {
+    if (elementId == "opponent") {
+        for (var i = 0; i < ship.occupiedSquares.length; i++) {
+            var square = ship.occupiedSquares[i];
+            var cell = document.getElementById("opponent").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)];
+            var div = cell.querySelector("div");
+
+            if (i == 0) {
+                if (square.row != ship.occupiedSquares[i + 1].row) {
+                    div.classList.add("up");
+                }
+                else {
+                    div.classList.add("left");
+                }
+            }
+            else if (i == ship.occupiedSquares.length - 1) {
+                if (square.row != ship.occupiedSquares[i - 1].row) {
+                    div.classList.add("down");
+                }
+                else {
+                    div.classList.add("right");
+                }
+            }
+        }
+    }
+}
+
 function markHits(board, elementId, surrenderText) {
     board.attacks.forEach((attack) => {
+        var row = attack.location.row-1;
+        var col = attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0);
+        var div = document.createElement('div');
+        var td = document.getElementById(elementId).rows[row].cells[col];
+
+        if (elementId == "opponent" || attack.result === "MISS") {
+            td.appendChild(div);
+            div.classList.add("marker");
+        }
+        else
+            div = td.querySelector("div");
+
         let className;
-        if (attack.result === "MISS")
+        if (attack.result === "MISS") {
             className = "miss";
+            var inner = document.createElement('div');
+            inner.classList.add("innerCircle");
+            div.appendChild(inner);
+        }
         else if (attack.result === "HIT")
+            className = (elementId == "player") ? "playerHit" : "hit";
+        else if (attack.result === "SUNK") {
+            className = (elementId == "player") ? "playerHit" : "hit";
+            td.classList.add(className);
+            checkSunk(elementId, attack.ship);
+        }
+        else if (attack.result === "SURRENDER") {
             className = "hit";
-        else if (attack.result === "SUNK")
-            className = "hit"
-        else if (attack.result === "SURRENDER")
+            td.classList.add(className);
+            checkSunk(elementId, attack.ship);
             alert(surrenderText);
-        document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
+        }
+
+        div.classList.add(className);
+        td.classList.add(className);
     });
 }
 
@@ -40,9 +92,35 @@ function redrawGrid() {
         return;
     }
 
-    game.playersBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
-        document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
-    }));
+    game.playersBoard.ships.forEach((ship) => { for (var i = 0; i < ship.occupiedSquares.length; i++) {
+        var square = ship.occupiedSquares[i];
+        var cell = document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)];
+        var div = cell.querySelector("div");
+
+        if (div == null) {
+            div = document.createElement("div");
+            div.classList.add("ship");
+            cell.appendChild(div);
+        }
+        div.classList.add("occupied");
+
+        if (i == 0) {
+            if (square.row != ship.occupiedSquares[i + 1].row) {
+                div.classList.add("up");
+            }
+            else {
+                div.classList.add("left");
+            }
+        }
+        else if (i == ship.occupiedSquares.length - 1) {
+            if (square.row != ship.occupiedSquares[i - 1].row) {
+                div.classList.add("down");
+            }
+            else {
+                div.classList.add("right");
+            }
+        }
+    }});
     markHits(game.opponentsBoard, "opponent", "You won the game");
     markHits(game.playersBoard, "player", "You lost the game");
 }
@@ -119,7 +197,25 @@ function place(size) {
                 // ship is over the edge; let the back end deal with it
                 break;
             }
-            cell.classList.toggle("placed");
+            var div = cell.querySelector("div");
+
+            if (div == null) {
+                div = document.createElement("div");
+                div.classList.add("ship");
+                cell.appendChild(div);
+            }
+
+            if (i == 0) {
+                div.classList.toggle((vertical) ? "up" : "left")
+                cell.classList.toggle((vertical) ? "sidesBorderTop" : "sidesBorderLeft")
+            }
+            else if (i == size - 1) {
+                div.classList.toggle((vertical) ? "down" : "right")
+                cell.classList.toggle((vertical) ? "sidesBorderBottom" : "sidesBorderRight")
+            }
+
+            div.classList.toggle("placed");
+            cell.classList.toggle((vertical) ? "sidesBorderVert" : "sidesBorderHoriz")
         }
     }
 }
