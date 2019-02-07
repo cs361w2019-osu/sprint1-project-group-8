@@ -21,12 +21,27 @@ td:hover {
     background-color: gray;
 }
 
+/* Ship styles */
+.ship {
+    position: absolute;
+    top: 10%;
+    bottom: 10%;
+    left: 10%;
+    right: 10%;
+}
+
 .placed {
-    background-color: gray;
+    background-color: aqua !important;
+    border: 2px solid black;
 }
 
 .occupied {
-    background-color: black;
+    background-color: blue;
+    border: 2px solid black;
+}
+
+div.playerHit {
+    background-color: red;
 }
 
 /* Marker styles */
@@ -62,21 +77,21 @@ div.sink {
     background-color: red;
 }
 
-.rightHit {
+.right {
     border-top-right-radius: 30%;
     border-bottom-right-radius: 30%;
 }
 
-.leftHit {
+.left {
     border-top-left-radius: 30%;
     border-bottom-left-radius: 30%;
 }
 
-.upHit {
+.up {
     border-top-right-radius: 30%;
     border-top-left-radius: 30%;
 }
-.downHit {
+.down {
     border-bottom-left-radius: 30%;
     border-bottom-right-radius: 30%;
 }
