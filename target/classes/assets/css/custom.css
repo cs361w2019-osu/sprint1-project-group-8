@@ -1,5 +1,21 @@
 /* Add additional stylesheets below
 -------------------------------------------------- */
+.occupied {
+    background-color: blue;
+    border: 2px solid black;
+}
+
+.right {
+    border-top-right-radius: 30%;
+    border-bottom-right-radius: 30%;
+}
+
+.left {
+    border-top-left-radius: 30%;
+    border-bottom-left-radius: 30%;
+}
+
+
 .spacer{
 display: inline-block;
     position: relative;
@@ -24,7 +40,7 @@ margin-left:calc(50% - 210px);
              background-color: #FFD2D2;
 
          overflow: hidden;
-           border: 1px solid red;
+           border: 1px solid #D8000C;
          margin-top:20px;
 
 }
