@@ -16,6 +16,20 @@ margin-left:calc(50% - 400px);
 .moveLeftTwo{
 margin-left:calc(50% - 210px);
 }
+
+/* CHANGES MADE HERE */
+.log {
+    width: 320px;
+    height: 120px;
+    color: #000000;
+    background-color: #ffffff;
+    overflow: hidden;
+    border: 1px solid #000000;
+    position: absolute;
+    margin-top: 12px;
+    right: 1px;
+    }
+
 .alert {
   width: 150px;
          height: 100px;
