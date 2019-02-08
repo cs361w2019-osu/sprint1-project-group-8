@@ -1,5 +1,44 @@
 /* Add additional stylesheets below
 -------------------------------------------------- */
+.occupied1 {
+   background-color: blue;
+    border: 2px solid black;
+}
+
+.inline{
+
+display:inline-block;
+}
+
+
+
+.ship1 {
+  width:15px;
+  height:15px;
+  margin-left:5px;
+  display:inline-block;
+}
+
+.placed {
+
+    background-color: aqua !important;
+    border: 2px solid black;
+}
+
+.flexcontainer {
+  display: flex;
+  align-items: center;
+}
+@media (max-width: 320px) {
+  .flexcontainer {
+    display: block;
+  }
+}
+
+
+
+
+
 .spacer{
 display: inline-block;
     position: relative;

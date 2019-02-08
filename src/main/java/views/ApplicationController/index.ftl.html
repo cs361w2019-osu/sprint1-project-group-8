@@ -22,13 +22,31 @@
 </table>
 <div class="moveLeftTwo">
     <ul class="removeStyleList place-left">
-        <li><button id="place_minesweeper">Place Minesweeper</button></li>
-        <li><button id="place_destroyer">Place Destroyer</button></li>
-        <li><button id="place_battleship">Place Battleship</button></li>
-        <li><input type="checkbox" id="is_vertical">Vertical</input></li>
+        <div>
+
+            <li><label for="place_minesweeper" style="margin-right:10px;">Minesweeper</label><input type="radio" name="shipSelect"  id="place_minesweeper">
+                <div class="occupied1  ship1 left" style="margin-left:33px;"></div>
+                <div class="occupied1  ship1 right"></div>
+                <input  type="checkbox" name="is_vertical"id="is_vertical" class="inline" style="margin-left:23px;">Rotate ship</input></li>
+        </div>
+
+
+        <li><label for="place_destroyer" style="margin-right:33px;">Destroyer</label><input type="radio" name="shipSelect" id="place_destroyer">
+            <div class="occupied1  ship1 left" style="margin-left:33px;"></div>
+            <div class="occupied1  ship1 "></div>
+            <div class="occupied1  ship1 right"></div>
+        </li>
+        <li><label for="place_battleship" style="margin-right:31.5px;">Battleship</label><input type="radio" name="shipSelect" id="place_battleship">
+            <div class="inline">
+                <div class="occupied1  ship1 left" style="margin-left:32.5px;"></div>
+                <div class="occupied1  ship1 "></div>
+                <div class="occupied1  ship1 "></div>
+                <div class="occupied1  ship1 right"></div>
+            </div>
+
+        </li>
     </ul>
 
-</div>
 
 
 <script type="text/javascript" src="/assets/game.js"></script>
