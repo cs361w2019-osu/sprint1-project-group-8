@@ -83,7 +83,19 @@ function markHits(board, elementId, surrenderText) {
     });
 }
 
+function addLog(board, user){ /* CHANGE HERE */
+    if (isSetup){
+        return
+        }
+    var row = board.attacks[board.attacks.length - 1].location.row;
+    var col = board.attacks[board.attacks.length - 1].location.column;
+    document.getElementById("Log").style.display = "block";
+    document.getElementById("LogMessages").append("||" + user + " " + board.attacks[board.attacks.length - 1].result + " " + col + row + "||" + "\n");
+    return
+}
+
 function redrawGrid() {
+    clearLogMessage();
     Array.from(document.getElementById("opponent").childNodes).forEach((row) => row.remove());
     Array.from(document.getElementById("player").childNodes).forEach((row) => row.remove());
     makeGrid(document.getElementById("opponent"), false);
@@ -122,7 +134,9 @@ function redrawGrid() {
         }
     }});
     markHits(game.opponentsBoard, "opponent", "You won the game");
+    addLog(game.opponentsBoard, "PLAYER");
     markHits(game.playersBoard, "player", "You lost the game");
+    addLog(game.playersBoard, "OPPONENT");
 }
 
 var oldListener;
@@ -167,8 +181,16 @@ var div = document.getElementById("UserMessages");
 while(div.firstChild){
     div.removeChild(div.firstChild);
 }
-
 }
+
+function clearLogMessage() {
+    document.getElementById("Log");
+    var div = document.getElementById("LogMessages");
+    while(div.firstChild) {
+        div.removeChild(div.firstChild);
+    }
+}
+
 function sendXhr(method, url, data, handler) {
 
 var elementExists = document.getElementById("ErrorBox");
@@ -182,6 +204,7 @@ if(elementExists){
     req.addEventListener("load", function(event) {
         if (req.status != 200) {
         clearUserMessage();
+        document.getElementById("Log").style.display = "none";
         document.getElementById("ErrorBox").style.display = "block";
             document.getElementById("UserMessages").append("Cannot complete the action");
             return;
@@ -237,6 +260,7 @@ function place(size) {
         }
     }
 }
+
 
 function initGame() {
     makeGrid(document.getElementById("opponent"), false);
