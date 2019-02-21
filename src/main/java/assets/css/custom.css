@@ -1,5 +1,20 @@
 /* Add additional stylesheets below
 -------------------------------------------------- */
+#title{
+    font-family: stencil-std, sans-serif;
+    position: relative;
+}
+
+h1{
+    display: inline;
+}
+
+#startButton {
+    font-family: stencil-std, sans-serif;
+    position: relative;
+    border-radius: 5px;
+}
+
 .occupied1 {
    background-color: blue;
     border: 2px solid black;
@@ -44,7 +59,7 @@ display: inline-block;
     position: relative;
 
     height: 150px;
-    width: 150px;
+    width: 500px;
 
     background-color: #fff;
     vertical-align:top;
@@ -58,6 +73,9 @@ margin-left:calc(50% - 210px);
 
 /* CHANGES MADE HERE */
 .log {
+  top:  0px;
+  left: 90px;
+
     width: 320px;
     height: 120px;
     color: #000000;
@@ -71,8 +89,12 @@ margin-left:calc(50% - 210px);
     }
 
 .alert {
+  position: relative;
+  top:  5px;
+  left: 175px;
+
   width: 150px;
-         height: 100px;
+  height: 100px;
 
              color: #D8000C;
              background-color: #FFD2D2;
@@ -82,6 +104,7 @@ margin-left:calc(50% - 210px);
          margin-top:20px;
     position:absolute
 }
+
 .vertical-center {
   margin: 0;
   position: absolute;

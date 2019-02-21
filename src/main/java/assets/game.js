@@ -261,6 +261,12 @@ function place(size) {
     }
 }
 
+function setInput(button) {
+    title.style.visibility = "hidden";
+    button.style.visibility = "hidden";
+    document.getElementById("am_vertical").style.display = "block";
+    document.getElementById("Log").style.display = "block";
+}
 
 function initGame() {
     makeGrid(document.getElementById("opponent"), false);
