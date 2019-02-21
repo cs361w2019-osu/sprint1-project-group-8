@@ -1,19 +1,42 @@
 /* Add additional stylesheets below
 -------------------------------------------------- */
-.occupied {
-    background-color: blue;
+.occupied1 {
+   background-color: blue;
     border: 2px solid black;
 }
 
-.right {
-    border-top-right-radius: 30%;
-    border-bottom-right-radius: 30%;
+.inline{
+
+display:inline-block;
 }
 
-.left {
-    border-top-left-radius: 30%;
-    border-bottom-left-radius: 30%;
+
+
+.ship1 {
+  width:15px;
+  height:15px;
+  margin-left:5px;
+  display:inline-block;
 }
+
+.placed {
+
+    background-color: aqua !important;
+    border: 2px solid black;
+}
+
+.flexcontainer {
+  display: flex;
+  align-items: center;
+}
+@media (max-width: 320px) {
+  .flexcontainer {
+    display: block;
+  }
+}
+
+
+
 
 
 .spacer{
@@ -32,6 +55,21 @@ margin-left:calc(50% - 400px);
 .moveLeftTwo{
 margin-left:calc(50% - 210px);
 }
+
+/* CHANGES MADE HERE */
+.log {
+    width: 320px;
+    height: 120px;
+    color: #000000;
+    background-color: #ffffff;
+    overflow: hidden;
+    border: 1px solid #000000;
+    position: absolute;
+    margin-top: 12px;
+    right: -86px;
+
+    }
+
 .alert {
   width: 150px;
          height: 100px;
@@ -42,7 +80,7 @@ margin-left:calc(50% - 210px);
          overflow: hidden;
            border: 1px solid #D8000C;
          margin-top:20px;
-
+    position:absolute
 }
 .vertical-center {
   margin: 0;
@@ -74,16 +112,108 @@ text-align:center;
     position: relative;
 }
 
-td:hover {
-    background-color: gray;
+/* Hover styles */
+#opponent td:hover {
+    background-color: rgba(248, 97, 16, 0.4);
+}
+
+#opponent td:hover:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border: 3px dashed rgba(248, 97, 16, 1);
+}
+
+#player td:hover {
+    background-color: rgba(100, 100, 100, 0.2);
+}
+
+#player .sidesBorderVert:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-left: 3px dashed aqua;
+    border-right: 3px dashed aqua;
+}
+
+#player .sidesBorderHoriz:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-top: 3px dashed aqua;
+    border-bottom: 3px dashed aqua;
+}
+
+#player .sidesBorderLeft:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-left: 3px dashed aqua;
+}
+
+#player .sidesBorderRight:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-right: 3px dashed aqua;
+}
+
+#player .sidesBorderTop:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-top: 3px dashed aqua;
+}
+
+#player .sidesBorderBottom:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-bottom: 3px dashed aqua;
+}
+
+/* Ship styles */
+.ship {
+    position: absolute;
+    top: 10%;
+    bottom: 10%;
+    left: 10%;
+    right: 10%;
 }
 
 .placed {
-    background-color: gray;
+    background-color: aqua !important;
+    border: 2px solid black;
 }
 
 .occupied {
-    background-color: black;
+    background-color: blue;
+    border: 2px solid black;
+}
+
+div.playerHit {
+    background-color: red;
 }
 
 /* Marker styles */
@@ -119,21 +249,21 @@ div.sink {
     background-color: red;
 }
 
-.rightHit {
-    border-top-right-radius: 20%;
-    border-bottom-right-radius: 20%;
+.right {
+    border-top-right-radius: 30%;
+    border-bottom-right-radius: 30%;
 }
 
-.leftHit {
-    border-top-left-radius: 20%;
-    border-bottom-left-radius: 20%;
+.left {
+    border-top-left-radius: 30%;
+    border-bottom-left-radius: 30%;
 }
 
-.upHit {
-    border-top-right-radius: 20%;
-    border-top-left-radius: 20%;
+.up {
+    border-top-right-radius: 30%;
+    border-top-left-radius: 30%;
 }
-.downHit {
-    border-bottom-left-radius: 20%;
-    border-bottom-right-radius: 20%;
+.down {
+    border-bottom-left-radius: 30%;
+    border-bottom-right-radius: 30%;
 }

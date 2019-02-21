@@ -1,5 +1,5 @@
-<#import "../layout/defaultLayout.ftl.html" as layout> 
-<@layout.myLayout "Home page">    
+<#import "../layout/defaultLayout.ftl.html" as layout>
+<@layout.myLayout "Home page">
 
 
 <h1>The Battleship game</h1>
@@ -13,8 +13,11 @@
 
             </div>
         </div>
+        <div class="log" id="Log" style="display:block">
+            <div class="vertical-center" id="LogMessages">
 
-
+            </div>
+        </div>
     </div>
 </div>
 
@@ -22,18 +25,35 @@
 </table>
 <div class="moveLeftTwo">
     <ul class="removeStyleList place-left">
-        <li>Minesweeper<input type="checkbox" id="place_minesweeper">   <div class="occupied right left"></div> <input  type="checkbox" id="is_vertical">Right click to rotate</input></li>
-        <li>Destroyer<input type="checkbox" id="place_destroyer"></li>
-        <li>Battleship<input type="checkbox" id="place_battleship"></li>
+        <div>
+
+            <li><label for="place_minesweeper" style="margin-right:10px;">Minesweeper</label><input type="radio" name="shipSelect"  id="place_minesweeper">
+                <div class="occupied1  ship1 left" style="margin-left:33px;"></div>
+                <div class="occupied1  ship1 right"></div>
+                <input  type="checkbox" name="is_vertical"id="is_vertical" class="inline" style="margin-left:23px;">Rotate ship</input></li>
+        </div>
 
 
+        <li><label for="place_destroyer" style="margin-right:33px;">Destroyer</label><input type="radio" name="shipSelect" id="place_destroyer">
+            <div class="occupied1  ship1 left" style="margin-left:33px;"></div>
+            <div class="occupied1  ship1 "></div>
+            <div class="occupied1  ship1 right"></div>
+        </li>
+        <li><label for="place_battleship" style="margin-right:31.5px;">Battleship</label><input type="radio" name="shipSelect" id="place_battleship">
+            <div class="inline">
+                <div class="occupied1  ship1 left" style="margin-left:32.5px;"></div>
+                <div class="occupied1  ship1 "></div>
+                <div class="occupied1  ship1 "></div>
+                <div class="occupied1  ship1 right"></div>
+            </div>
+
+        </li>
     </ul>
 
-</div>
 
 
-<script type="text/javascript" src="/assets/game.js"></script>
-<script>
+    <script type="text/javascript" src="/assets/game.js"></script>
+    <script>
     initGame();
 </script>
 

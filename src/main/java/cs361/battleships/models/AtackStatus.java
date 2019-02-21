@@ -28,4 +28,13 @@ public enum AtackStatus {
 	 */
 	INVALID,
 
+	/**
+	 * The result if a square in a sonar pulse is empty
+	 */
+	EMPTY,
+
+	/**
+	 * The result if a square in a sonar pulse is occupied
+	 */
+	OCCUPIED,
 }

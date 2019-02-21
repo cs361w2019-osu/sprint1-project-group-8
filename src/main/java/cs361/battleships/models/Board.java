@@ -71,6 +71,32 @@ public class Board {
 		return attackResult;
 	}
 
+	public Result sonarPulse(int x, char y) {
+		Result finalResult = new Result();
+
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				var s = new Square(i, (char)(j + 'A'));
+				var result = new Result();
+				var shipsAtLocation = ships.stream().filter(ship -> ship.isAtLocation(s)).collect(Collectors.toList());
+
+				if (shipsAtLocation.size() == 0) {
+					result.setResult(AtackStatus.EMPTY);
+				}
+				else {
+					result.setResult(AtackStatus.OCCUPIED);
+				}
+				attacks.add(result);
+
+				if (x == i && y == (char)(j + 'A')) {
+					finalResult = result;
+				}
+			}
+		}
+
+		return finalResult;
+	}
+
 	List<Ship> getShips() {
 		return ships;
 	}

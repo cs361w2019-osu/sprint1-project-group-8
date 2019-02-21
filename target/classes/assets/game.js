@@ -16,45 +16,28 @@ function makeGrid(table, isPlayer) {
     }
 }
 
-function checkSunk(elementId, row, col, first) {
-    var td1 = (col <= 0) ? null : document.getElementById(elementId).rows[row].cells[col-1];
-    var td2 = (col >= 9) ? null : document.getElementById(elementId).rows[row].cells[col+1];
-    var td3 = (row <= 0) ? null : document.getElementById(elementId).rows[row-1].cells[col];
-    var td4 = (row >= 9) ? null : document.getElementById(elementId).rows[row+1].cells[col];
+function checkSunk(elementId, ship) {
+    if (elementId == "opponent") {
+        for (var i = 0; i < ship.occupiedSquares.length; i++) {
+            var square = ship.occupiedSquares[i];
+            var cell = document.getElementById("opponent").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)];
+            var div = cell.querySelector("div");
 
-    if (col > 0 && col < 9 && td1.classList.contains("hit") && td2.classList.contains("hit")) {
-        checkSunk(elementId, row, col-1, false);
-        checkSunk(elementId, row, col+1, false);
-    }
-    else if (row > 0 && row < 9 && td3.classList.contains("hit") && td4.classList.contains("hit")) {
-        checkSunk(elementId, row-1, col, false);
-        checkSunk(elementId, row+1, col, false);
-    }
-    else {
-        var td = document.getElementById(elementId).rows[row].cells[col];
-
-        if (col > 0 && td1.classList.contains("hit")) {
-            td.querySelector("div").classList.add("rightHit");
-            if (first) {
-                checkSunk(elementId, row, col-1, false);
+            if (i == 0) {
+                if (square.row != ship.occupiedSquares[i + 1].row) {
+                    div.classList.add("up");
+                }
+                else {
+                    div.classList.add("left");
+                }
             }
-        }
-        else if (col < 9 && td2.classList.contains("hit")) {
-            td.querySelector("div").classList.add("leftHit");
-            if (first) {
-                checkSunk(elementId, row, col+1, false);
-            }
-        }
-        else if (row > 0 && td3.classList.contains("hit")) {
-            td.querySelector("div").classList.add("upHit");
-            if (first) {
-                checkSunk(elementId, row-1, col, false);
-            }
-        }
-        else if (row < 9 && td4.classList.contains("hit")) {
-            td.querySelector("div").classList.add("downHit");
-            if (first) {
-                checkSunk(elementId, row+1, col, false);
+            else if (i == ship.occupiedSquares.length - 1) {
+                if (square.row != ship.occupiedSquares[i - 1].row) {
+                    div.classList.add("down");
+                }
+                else {
+                    div.classList.add("right");
+                }
             }
         }
     }
@@ -62,7 +45,17 @@ function checkSunk(elementId, row, col, first) {
 
 function markHits(board, elementId, surrenderText) {
     board.attacks.forEach((attack) => {
+        var row = attack.location.row-1;
+        var col = attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0);
         var div = document.createElement('div');
+        var td = document.getElementById(elementId).rows[row].cells[col];
+
+        if (elementId == "opponent" || attack.result === "MISS") {
+            td.appendChild(div);
+            div.classList.add("marker");
+        }
+        else
+            div = td.querySelector("div");
 
         let className;
         if (attack.result === "MISS") {
@@ -72,25 +65,37 @@ function markHits(board, elementId, surrenderText) {
             div.appendChild(inner);
         }
         else if (attack.result === "HIT")
-            className = "hit";
+            className = (elementId == "player") ? "playerHit" : "hit";
         else if (attack.result === "SUNK") {
-            className = "hit";
-            checkSunk(elementId, attack.location.row-1, attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0), true);
-
+            className = (elementId == "player") ? "playerHit" : "hit";
+            td.classList.add(className);
+            checkSunk(elementId, attack.ship);
         }
-        else if (attack.result === "SURRENDER")
+        else if (attack.result === "SURRENDER") {
+            className = "hit";
+            td.classList.add(className);
+            checkSunk(elementId, attack.ship);
             alert(surrenderText);
+        }
 
         div.classList.add(className);
-        div.classList.add("marker");
-
-        var td = document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)];
-        td.appendChild(div);
         td.classList.add(className);
     });
 }
 
+function addLog(board, user){ /* CHANGE HERE */
+    if (isSetup){
+        return
+        }
+    var row = board.attacks[board.attacks.length - 1].location.row;
+    var col = board.attacks[board.attacks.length - 1].location.column;
+    document.getElementById("Log").style.display = "block";
+    document.getElementById("LogMessages").append("||" + user + " " + board.attacks[board.attacks.length - 1].result + " " + col + row + "||" + "\n");
+    return
+}
+
 function redrawGrid() {
+    clearLogMessage();
     Array.from(document.getElementById("opponent").childNodes).forEach((row) => row.remove());
     Array.from(document.getElementById("player").childNodes).forEach((row) => row.remove());
     makeGrid(document.getElementById("opponent"), false);
@@ -99,11 +104,39 @@ function redrawGrid() {
         return;
     }
 
-    game.playersBoard.ships.forEach((ship) => ship.occupiedSquares.forEach((square) => {
-        document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied");
-    }));
+    game.playersBoard.ships.forEach((ship) => { for (var i = 0; i < ship.occupiedSquares.length; i++) {
+        var square = ship.occupiedSquares[i];
+        var cell = document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)];
+        var div = cell.querySelector("div");
+
+        if (div == null) {
+            div = document.createElement("div");
+            div.classList.add("ship");
+            cell.appendChild(div);
+        }
+        div.classList.add("occupied");
+
+        if (i == 0) {
+            if (square.row != ship.occupiedSquares[i + 1].row) {
+                div.classList.add("up");
+            }
+            else {
+                div.classList.add("left");
+            }
+        }
+        else if (i == ship.occupiedSquares.length - 1) {
+            if (square.row != ship.occupiedSquares[i - 1].row) {
+                div.classList.add("down");
+            }
+            else {
+                div.classList.add("right");
+            }
+        }
+    }});
     markHits(game.opponentsBoard, "opponent", "You won the game");
+    addLog(game.opponentsBoard, "PLAYER");
     markHits(game.playersBoard, "player", "You lost the game");
+    addLog(game.playersBoard, "OPPONENT");
 }
 
 var oldListener;
@@ -148,8 +181,16 @@ var div = document.getElementById("UserMessages");
 while(div.firstChild){
     div.removeChild(div.firstChild);
 }
-
 }
+
+function clearLogMessage() {
+    document.getElementById("Log");
+    var div = document.getElementById("LogMessages");
+    while(div.firstChild) {
+        div.removeChild(div.firstChild);
+    }
+}
+
 function sendXhr(method, url, data, handler) {
 
 var elementExists = document.getElementById("ErrorBox");
@@ -163,6 +204,7 @@ if(elementExists){
     req.addEventListener("load", function(event) {
         if (req.status != 200) {
         clearUserMessage();
+        document.getElementById("Log").style.display = "none";
         document.getElementById("ErrorBox").style.display = "block";
             document.getElementById("UserMessages").append("Cannot complete the action");
             return;
@@ -196,10 +238,29 @@ function place(size) {
                 // ship is over the edge; let the back end deal with it
                 break;
             }
-            cell.classList.toggle("placed");
+            var div = cell.querySelector("div");
+
+            if (div == null) {
+                div = document.createElement("div");
+                div.classList.add("ship");
+                cell.appendChild(div);
+            }
+
+            if (i == 0) {
+                div.classList.toggle((vertical) ? "up" : "left")
+                cell.classList.toggle((vertical) ? "sidesBorderTop" : "sidesBorderLeft")
+            }
+            else if (i == size - 1) {
+                div.classList.toggle((vertical) ? "down" : "right")
+                cell.classList.toggle((vertical) ? "sidesBorderBottom" : "sidesBorderRight")
+            }
+
+            div.classList.toggle("placed");
+            cell.classList.toggle((vertical) ? "sidesBorderVert" : "sidesBorderHoriz")
         }
     }
 }
+
 
 function initGame() {
     makeGrid(document.getElementById("opponent"), false);

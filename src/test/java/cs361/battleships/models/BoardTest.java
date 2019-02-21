@@ -83,4 +83,18 @@ public class BoardTest {
         assertFalse(board.placeShip(new Ship(""), 8, 'A', false));
 
     }
+
+    @Test
+    public void testSonarPulseOccupiedSquare() {
+        board.placeShip(new Ship("MINESWEEPER"), 1, 'A', true);
+        var result = board.sonarPulse(1, 'A');
+        assertEquals(AtackStatus.OCCUPIED, result.getResult());
+    }
+
+    @Test
+    public void testSonarPulseEmptySquare() {
+        board.placeShip(new Ship("MINESWEEPER"), 1, 'A', true);
+        var result = board.sonarPulse(8, 'E');
+        assertEquals(AtackStatus.EMPTY, result.getResult());
+    }
 }
