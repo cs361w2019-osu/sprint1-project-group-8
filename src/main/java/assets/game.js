@@ -3,6 +3,7 @@ var placedShips = 0;
 var game;
 var shipType;
 var vertical;
+var sonar = false;
 
 function makeGrid(table, isPlayer) {
     for (i=0; i<10; i++) {
@@ -77,9 +78,19 @@ function markHits(board, elementId, surrenderText) {
             checkSunk(elementId, attack.ship);
             alert(surrenderText);
         }
+        else if (attack.result == "OCCUPIED") {
+            className = "occupiedSonar";
+        }
+        else if (attack.result == "EMPTY") {
+            className = "empty";
+        }
 
-        div.classList.add(className);
-        td.classList.add(className);
+        if (!div.classList.contains(className)) {
+            div.classList.add(className);
+        }
+        if (!td.classList.contains(className)) {
+            td.classList.add(className);
+        }
     });
 }
 
@@ -168,7 +179,7 @@ function cellClick() {
             }
         });
     } else {
-        sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
+        sendXhr("POST", "/attack", {game: game, x: row, y: col, sonar: sonar}, function(data) {
             game = data;
             redrawGrid();
         })
@@ -276,6 +287,15 @@ function initGame() {
     document.getElementById("place_battleship").addEventListener("click", function(e) {
         shipType = "BATTLESHIP";
        registerCellListener(place(4));
+    });
+    document.getElementById("sonar").addEventListener("click", function(e) {
+        sonar = document.getElementById("sonar").checked;
+        if (sonar) {
+            document.getElementById("opponent").classList.add("sonar");
+        }
+        else {
+            document.getElementById("opponent").classList.remove("sonar");
+        }
     });
     sendXhr("GET", "/game", {}, function(data) {
         game = data;
