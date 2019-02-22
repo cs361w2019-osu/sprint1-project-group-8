@@ -74,9 +74,9 @@ margin-left:calc(50% - 210px);
 /* CHANGES MADE HERE */
 .log {
   top:  0px;
-  left: 90px;
+  left: 79px;
 
-    width: 320px;
+    width: 340px;
     height: 120px;
     color: #000000;
     background-color: #ffffff;
@@ -112,6 +112,13 @@ margin-left:calc(50% - 210px);
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 }
+
+.log-center {
+    text-align: center;
+    position: absolute;
+    bottom: 0px;
+}
+
 .centerContent{
 text-align:center;
 }
