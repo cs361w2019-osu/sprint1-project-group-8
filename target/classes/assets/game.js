@@ -3,7 +3,19 @@ var placedShips = 0;
 var game;
 var shipType;
 var vertical;
+var count = 0;
+window.oncontextmenu = function ()
+{
 
+    if(count == 1){
+    vertical = false;
+    count--;
+    }else{
+    vertical = true;
+    count++;
+    }
+      return false;  // cancel default menu
+}
 function makeGrid(table, isPlayer) {
     for (i=0; i<10; i++) {
         let row = document.createElement('tr');
@@ -116,10 +128,11 @@ if(elementExists){
 }
 
 function place(size) {
+
     return function() {
         let row = this.parentNode.rowIndex;
         let col = this.cellIndex;
-        vertical = document.getElementById("is_vertical").checked;
+        vertical = isVertical;
         let table = document.getElementById("player");
         for (let i=0; i<size; i++) {
             let cell;
