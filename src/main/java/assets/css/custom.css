@@ -1,5 +1,9 @@
 /* Add additional stylesheets below
 -------------------------------------------------- */
+
+.captain{
+background-color:brown !important;
+}
 #title{
     font-family: stencil-std, sans-serif;
     position: relative;

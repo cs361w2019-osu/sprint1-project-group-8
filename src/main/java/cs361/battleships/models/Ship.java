@@ -15,9 +15,10 @@ public class Ship {
 	@JsonProperty private String kind;
 	@JsonProperty private List<Square> occupiedSquares;
 	@JsonProperty private int size;
-
+	@JSONProperty private int captainHealth;
 	public Ship() {
 		occupiedSquares = new ArrayList<>();
+
 	}
 	
 	public Ship(String kind) {
@@ -26,28 +27,42 @@ public class Ship {
 		switch(kind) {
 			case "MINESWEEPER":
 				size = 2;
+				captainHealth = 1;
 				break;
 			case "DESTROYER":
 				size = 3;
+				captainHealth = 2;
 				break;
 			case "BATTLESHIP":
 				size = 4;
+				captainHealth = 2;
 				break;
 		}
+
 	}
 
-	public List<Square> getOccupiedSquares() {
-		return occupiedSquares;
-	}
+
+
 
 	public void place(char col, int row, boolean isVertical) {
+
+
 		for (int i=0; i<size; i++) {
 			if (isVertical) {
+
 				occupiedSquares.add(new Square(row+i, col));
+				if (i == size - 2) {
+					occupiedSquares.get(occupiedSquares.size() - 1).setCaptain();
+				}
+
 			} else {
 				occupiedSquares.add(new Square(row, (char) (col + i)));
+				if (i == size - 2) {
+					occupiedSquares.get(occupiedSquares.size() - 1).setCaptain();
+				}
 			}
 		}
+
 	}
 
 	public boolean overlaps(Ship other) {

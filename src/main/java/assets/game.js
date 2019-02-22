@@ -5,6 +5,7 @@ var shipType;
 var vertical;
 var sonar = false;
 
+
 function makeGrid(table, isPlayer) {
     for (i=0; i<10; i++) {
         let row = document.createElement('tr');
@@ -18,6 +19,7 @@ function makeGrid(table, isPlayer) {
 }
 
 function checkSunk(elementId, ship) {
+
     if (elementId == "opponent") {
         for (var i = 0; i < ship.occupiedSquares.length; i++) {
             var square = ship.occupiedSquares[i];
@@ -116,7 +118,9 @@ function redrawGrid() {
     }
 
     game.playersBoard.ships.forEach((ship) => { for (var i = 0; i < ship.occupiedSquares.length; i++) {
+
         var square = ship.occupiedSquares[i];
+
         var cell = document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)];
         var div = cell.querySelector("div");
 
@@ -127,6 +131,9 @@ function redrawGrid() {
         }
         div.classList.add("occupied");
 
+        if(i == ship.occupiedSquares.length - 2 ){
+                div.classList.add("captain");
+                }
         if (i == 0) {
             if (square.row != ship.occupiedSquares[i + 1].row) {
                 div.classList.add("up");
@@ -144,6 +151,7 @@ function redrawGrid() {
             }
         }
     }});
+
     markHits(game.opponentsBoard, "opponent", "You won the game");
     addLog(game.opponentsBoard, "PLAYER");
     markHits(game.playersBoard, "player", "You lost the game");
@@ -166,12 +174,15 @@ function registerCellListener(f) {
 }
 
 function cellClick() {
+
     let row = this.parentNode.rowIndex + 1;
     let col = String.fromCharCode(this.cellIndex + 65);
     if (isSetup) {
+
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
             game = data;
             redrawGrid();
+
             placedShips++;
             if (placedShips == 3) {
                 isSetup = false;
@@ -228,6 +239,7 @@ if(elementExists){
 }
 
 function place(size) {
+
     return function() {
         let row = this.parentNode.rowIndex;
         let col = this.cellIndex;
@@ -284,14 +296,17 @@ function initGame() {
     makeGrid(document.getElementById("player"), true);
     document.getElementById("place_minesweeper").addEventListener("click", function(e) {
         shipType = "MINESWEEPER";
+
        registerCellListener(place(2));
     });
     document.getElementById("place_destroyer").addEventListener("click", function(e) {
         shipType = "DESTROYER";
+
        registerCellListener(place(3));
     });
     document.getElementById("place_battleship").addEventListener("click", function(e) {
         shipType = "BATTLESHIP";
+
        registerCellListener(place(4));
     });
     document.getElementById("sonar").addEventListener("click", function(e) {
