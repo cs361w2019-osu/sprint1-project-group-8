@@ -102,7 +102,7 @@ function addLog(board, user){ /* CHANGE HERE */
     var row = board.attacks[board.attacks.length - 1].location.row;
     var col = board.attacks[board.attacks.length - 1].location.column;
     document.getElementById("Log").style.display = "block";
-    document.getElementById("LogMessages").append("||" + user + " " + board.attacks[board.attacks.length - 1].result + " " + col + row + "||" + "\n");
+    document.getElementById("LogMessages").append("||" + user + " " + board.attacks[board.attacks.length - 1].result + " " + col + row + "||" + '\n');
     return
 }
 
@@ -117,7 +117,7 @@ function sonarCheck(board) {                                /* checks if the pla
 }
 
 function redrawGrid() {
-    clearLogMessage();
+/*    clearLogMessage();*/
     Array.from(document.getElementById("opponent").childNodes).forEach((row) => row.remove());
     Array.from(document.getElementById("player").childNodes).forEach((row) => row.remove());
     makeGrid(document.getElementById("opponent"), false);
@@ -160,6 +160,9 @@ function redrawGrid() {
     sonarCheck(game.opponentsBoard)
     markHits(game.playersBoard, "player", "You lost the game");
     addLog(game.playersBoard, "OPPONENT");
+    if(!isSetup){
+    document.getElementById("LogMessages").append("=====================================" + '\n');
+    };
 }
 
 var oldListener;
