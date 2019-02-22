@@ -4,4 +4,4 @@ jdk: openjdk10
 branches:
   only:
     - master
-    - sonar_pulse_small_range
+    - sonar_after_sink
