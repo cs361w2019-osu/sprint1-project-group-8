@@ -150,6 +150,20 @@ text-align:center;
     border: 3px dashed rgba(248, 97, 16, 1);
 }
 
+#opponent.sonar td:hover {
+    background-color: rgba(178, 103, 253, 0.4);
+}
+
+#opponent.sonar td:hover:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border: 3px dashed rgba(178, 103, 253, 1);
+}
+
 #player td:hover {
     background-color: rgba(100, 100, 100, 0.2);
 }
@@ -237,6 +251,30 @@ text-align:center;
 
 div.playerHit {
     background-color: red;
+}
+
+td.occupiedSonar:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(153, 51, 51, 0.4);
+}
+
+.marker.occupiedSonar {
+    display: none;
+}
+
+td.empty:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(63, 127, 191, 0.4);
 }
 
 /* Marker styles */

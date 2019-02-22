@@ -34,10 +34,15 @@ public class Game {
     /*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
-    public boolean attack(int x, char  y) {
-        Result playerAttack = opponentsBoard.attack(x, y);
-        if (playerAttack.getResult() == INVALID) {
-            return false;
+    public boolean attack(int x, char  y, boolean sonar) {
+        if (sonar) {
+            opponentsBoard.sonarPulse(x, y);
+        }
+        else {
+            Result playerAttack = opponentsBoard.attack(x, y);
+            if (playerAttack.getResult() == INVALID) {
+                return false;
+            }
         }
 
         Result opponentAttackResult;

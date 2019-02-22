@@ -51,7 +51,7 @@ public class Board {
 	}
 
 	private Result attack(Square s) {
-		if (attacks.stream().anyMatch(r -> r.getLocation().equals(s))) {
+		if (attacks.stream().anyMatch(r -> r.getLocation().equals(s) && !r.getResult().equals(AtackStatus.OCCUPIED) && !r.getResult().equals(AtackStatus.EMPTY))) {
 			var attackResult = new Result(s);
 			attackResult.setResult(AtackStatus.INVALID);
 			return attackResult;
@@ -71,7 +71,37 @@ public class Board {
 		return attackResult;
 	}
 
+	public Result sonarPulse(int x, char y) {
+		Result finalResult = new Result(new Square(x, y));
+
+		for (int i = Math.max(1, x - 2); i <= Math.min(10, x + 2); i++) {
+			for (int j = Math.max(0, y - 'A' - 2); j <= Math.min(9, y - 'A' + 2); j++) {
+				if (Math.abs(i - x) + Math.abs(j - y + 'A') <= 2) {
+					var s = new Square(i, (char)(j + 'A'));
+					var result = new Result(s);
+					var shipsAtLocation = ships.stream().filter(ship -> ship.isAtLocation(s)).collect(Collectors.toList());
+
+					if (shipsAtLocation.size() == 0) {
+						result.setResult(AtackStatus.EMPTY);
+					}
+					else {
+						result.setResult(AtackStatus.OCCUPIED);
+					}
+					attacks.add(result);
+
+					if (x == i && y == (char)(j + 'A')) {
+						finalResult.setResult(result.getResult());
+					}
+				}
+			}
+		}
+
+		return finalResult;
+	}
+
 	List<Ship> getShips() {
 		return ships;
 	}
+
+	List<Result> getAttacks() { return attacks; }
 }
