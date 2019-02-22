@@ -5,6 +5,7 @@ var shipType;
 var vertical;
 var sonar = false;
 var firstShipSunk = false;
+var sonarCount = 0;
 
 function makeGrid(table, isPlayer) {
     for (i=0; i<10; i++) {
@@ -194,9 +195,17 @@ function cellClick() {
             }
         });
     } else {
-        sendXhr("POST", "/attack", {game: game, x: row, y: col, sonar: sonar}, function(data) {
-            game = data;
-            redrawGrid();
+            sendXhr("POST", "/attack", {game: game, x: row, y: col, sonar: sonar}, function(data) {
+               game = data;
+               redrawGrid();
+               if(sonar) {
+                    sonarCount++;
+                    if(sonarCount == 2) {
+                    document.getElementById("sonar").click();
+                    sonar = false;
+                    document.getElementById("opponent").classList.remove("sonar");
+                    }
+               }
         })
     }
 }
@@ -317,14 +326,21 @@ function initGame() {
             document.getElementById("UserMessages").append("Sink one ship to access sonar.");
             document.getElementById("sonar").click();
         }
+         if(sonarCount == 2) {
+            clearUserMessage();
+            document.getElementById("Log").style.display = "none";
+            document.getElementById("ErrorBox").style.display = "block";
+            document.getElementById("UserMessages").append("Sonar can only be used twice per game.");
+            document.getElementById("sonar").click();
+        }
         else {
-        sonar = document.getElementById("sonar").checked;
-            if (sonar) {
-                    document.getElementById("opponent").classList.add("sonar");
-                }
-            else {
-                    document.getElementById("opponent").classList.remove("sonar");
-                }
+            sonar = document.getElementById("sonar").checked;
+                 if (sonar) {
+                       document.getElementById("opponent").classList.add("sonar");
+                 }
+                 else {
+                       document.getElementById("opponent").classList.remove("sonar");
+                 }
         }
     });
     sendXhr("GET", "/game", {}, function(data) {
