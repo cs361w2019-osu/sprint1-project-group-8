@@ -47,4 +47,12 @@ public class SquareTest {
         assertFalse(square1.equals(square2));
         assertNotEquals(square1.hashCode(), square2.hashCode());
     }
+    @Test
+    public void testCaptainsQuartersInit(){
+
+        Square s = new Square(1, 'A');
+        assertFalse(s.getisCaptain());
+        s.setisCaptain();
+        assertTrue(s.getisCaptain());
+    }
 }

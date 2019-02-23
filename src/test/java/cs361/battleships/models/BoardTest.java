@@ -145,4 +145,5 @@ public class BoardTest {
         board.sonarPulse(5, 'J');
         assertEquals(board.getAttacks().size(), 36);
     }
+
 }

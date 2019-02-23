@@ -52,13 +52,13 @@ public class Ship {
 
 				occupiedSquares.add(new Square(row+i, col));
 				if (i == size - 2) {
-					occupiedSquares.get(occupiedSquares.size() - 1).setCaptain();
+					occupiedSquares.get(occupiedSquares.size() - 1).setCaptain(true);
 				}
 
 			} else {
 				occupiedSquares.add(new Square(row, (char) (col + i)));
 				if (i == size - 2) {
-					occupiedSquares.get(occupiedSquares.size() - 1).setCaptain();
+					occupiedSquares.get(occupiedSquares.size() - 1).setCaptain(true);
 				}
 			}
 		}
@@ -87,20 +87,35 @@ public class Ship {
 			return new Result(attackedLocation);
 		}
 		var attackedSquare = square.get();
-		if (attackedSquare.isHit()) {
+		if (attackedSquare.isHit() || attackedLocation.getisCaptain() && captainHealth == 0) {
 			var result = new Result(attackedLocation);
 			result.setResult(AtackStatus.INVALID);
 			return result;
+		}else if(attackedLocation.getisCaptain()){
+			captainHealth -= 1;
+			var result = new Result(attackedLocation);
+			result.setShip(this);
+
+			if (captainHealth == 0) {
+
+				for (int i = 0; i < size; i++) {
+					getOccupiedSquares().get(i).hit();
+				}
+				return result.setResult(AtackStatus.SUNK);
+			}
+
+
+		}else {
+			attackedSquare.hit();
+			var result = new Result(attackedLocation);
+			result.setShip(this);
+			if (isSunk()) {
+				result.setResult(AtackStatus.SUNK);
+			} else {
+				result.setResult(AtackStatus.HIT);
+			}
+			return result;
 		}
-		attackedSquare.hit();
-		var result = new Result(attackedLocation);
-		result.setShip(this);
-		if (isSunk()) {
-			result.setResult(AtackStatus.SUNK);
-		} else {
-			result.setResult(AtackStatus.HIT);
-		}
-		return result;
 	}
 
 	@JsonIgnore
