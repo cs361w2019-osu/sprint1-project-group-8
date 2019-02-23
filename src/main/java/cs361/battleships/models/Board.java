@@ -10,13 +10,16 @@ public class Board {
 
 	@JsonProperty private List<Ship> ships;
 	@JsonProperty private List<Result> attacks;
-
+	@JsonProperty private List<Result> blockedShips;
+	@JsonProperty private int last;
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public Board() {
 		ships = new ArrayList<>();
 		attacks = new ArrayList<>();
+		blockedShips = new ArrayList<>();
+		last = 0;
 	}
 
 	/*
@@ -46,14 +49,26 @@ public class Board {
 	 */
 	public Result attack(int x, char y) {
 		Result attackResult = attack(new Square(x, y));
-		attacks.add(attackResult);
+		if(attackResult.getResult() == AtackStatus.BLOCKED){
+
+			blockedShips.add(attackResult);
+			last = 1;
+		}
+		else{
+			attacks.add(attackResult);
+			last = 0;
+		}
+
 		return attackResult;
 	}
 
 	private Result attack(Square s) {
+
 		if (attacks.stream().anyMatch(r -> r.getLocation().equals(s) && !r.getResult().equals(AtackStatus.OCCUPIED) && !r.getResult().equals(AtackStatus.EMPTY))) {
+
 			var attackResult = new Result(s);
 			attackResult.setResult(AtackStatus.INVALID);
+
 			return attackResult;
 		}
 		var shipsAtLocation = ships.stream().filter(ship -> ship.isAtLocation(s)).collect(Collectors.toList());

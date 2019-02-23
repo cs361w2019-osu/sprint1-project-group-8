@@ -1,5 +1,8 @@
 /* Add additional stylesheets below
 -------------------------------------------------- */
+.captain{
+background-color: brown !important;
+}
 .occupied1 {
    background-color: blue;
     border: 2px solid black;
@@ -275,6 +278,10 @@ td.empty:after {
 
 div.miss {
     border-radius: 50%;
+    border: 3px solid black;
+}
+div.block{
+ border-radius: 50%;
     border: 3px solid black;
 }
 

@@ -1,5 +1,10 @@
 /* Add additional stylesheets below
 -------------------------------------------------- */
+
+.captain{
+background-color: brown !important;
+}
+
 #title{
     font-family: stencil-std, sans-serif;
     position: relative;
@@ -305,6 +310,10 @@ td.empty:after {
 
 div.miss {
     border-radius: 50%;
+    border: 3px solid black;
+}
+div.block{
+ border-radius: 50%;
     border: 3px solid black;
 }
 

@@ -47,6 +47,33 @@ function checkSunk(elementId, ship) {
 }
 
 function markHits(board, elementId, surrenderText) {
+if(board.blockedShips != null){
+
+         board.blockedShips.forEach((block) => {
+                    var row = block.location.row-1;
+                    var col = block.location.column.charCodeAt(0) - 'A'.charCodeAt(0);
+                    var div = document.createElement('div');
+                    var td = document.getElementById(elementId).rows[row].cells[col];
+                     if (elementId == "opponent" || attack.result === "MISS") {
+                                td.appendChild(div);
+                                div.classList.add("marker");
+                            }
+                            else
+                                div = td.querySelector("div");
+                    let className;
+
+                    className = "miss";
+                    var inner = document.createElement('div');
+                                inner.classList.add("innerCircle");
+                                div.appendChild(inner);
+                     if (!div.classList.contains(className)) {
+                                div.classList.add(className);
+                            }
+                            if (!td.classList.contains(className)) {
+                                td.classList.add(className);
+                            }
+            })
+            }
     board.attacks.forEach((attack) => {
         var row = attack.location.row-1;
         var col = attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0);
@@ -80,6 +107,8 @@ function markHits(board, elementId, surrenderText) {
             checkSunk(elementId, attack.ship);
             alert(surrenderText);
         }
+        else if(attack.result == "BLOCKED")
+        className = "block"
         else if (attack.result == "OCCUPIED") {
             className = "occupiedSonar";
         }
@@ -93,8 +122,9 @@ function markHits(board, elementId, surrenderText) {
         if (!td.classList.contains(className)) {
             td.classList.add(className);
         }
-    });
-}
+
+    })}
+
 
 function addLog(board, user){ /* CHANGE HERE */
     if (isSetup){
@@ -138,7 +168,9 @@ function redrawGrid() {
             cell.appendChild(div);
         }
         div.classList.add("occupied");
-
+        if(i == ship.occupiedSquares.length - 2){
+            div.classList.add("captain");
+        }
         if (i == 0) {
             if (square.row != ship.occupiedSquares[i + 1].row) {
                 div.classList.add("up");

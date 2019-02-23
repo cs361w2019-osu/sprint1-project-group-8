@@ -15,6 +15,7 @@ public class Ship {
 	@JsonProperty private String kind;
 	@JsonProperty private List<Square> occupiedSquares;
 	@JsonProperty private int size;
+	@JsonProperty private int captainHealth;
 
 	public Ship() {
 		occupiedSquares = new ArrayList<>();
@@ -26,12 +27,15 @@ public class Ship {
 		switch(kind) {
 			case "MINESWEEPER":
 				size = 2;
+				captainHealth = 1;
 				break;
 			case "DESTROYER":
 				size = 3;
+				captainHealth = 2;
 				break;
 			case "BATTLESHIP":
 				size = 4;
+				captainHealth = 2;
 				break;
 		}
 	}
@@ -44,8 +48,14 @@ public class Ship {
 		for (int i=0; i<size; i++) {
 			if (isVertical) {
 				occupiedSquares.add(new Square(row+i, col));
+				if(i == size -2){
+					occupiedSquares.get(i).setCaptain();
+				}
 			} else {
 				occupiedSquares.add(new Square(row, (char) (col + i)));
+				if(i == size -2){
+					occupiedSquares.get(i).setCaptain();
+				}
 			}
 		}
 	}
@@ -72,24 +82,46 @@ public class Ship {
 			return new Result(attackedLocation);
 		}
 		var attackedSquare = square.get();
-		if (attackedSquare.isHit()) {
+		if (attackedSquare.isHit() || attackedSquare.getIsCaptain() && captainHealth == 0) {
 			var result = new Result(attackedLocation);
 			result.setResult(AtackStatus.INVALID);
 			return result;
 		}
-		attackedSquare.hit();
-		var result = new Result(attackedLocation);
-		result.setShip(this);
-		if (isSunk()) {
-			result.setResult(AtackStatus.SUNK);
-		} else {
-			result.setResult(AtackStatus.HIT);
+		else if(attackedSquare.getIsCaptain()){
+			captainHealth = captainHealth -1;
+			var result = new Result(attackedLocation);
+			result.setShip(this);
+			if(captainHealth == 0){
+
+				for(int i = 0; i < size; i++){
+
+					getOccupiedSquares().get(i).hit();
+				}
+				 result.setResult(AtackStatus.SUNK);
+				return result;
+			}else{
+				result.setResult(AtackStatus.BLOCKED);
+				return result;
+			}
+		}else{
+
+			attackedSquare.hit();
+			var result = new Result(attackedLocation);
+			result.setShip(this);
+			if (isSunk()) {
+				result.setResult(AtackStatus.SUNK);
+			} else {
+				result.setResult(AtackStatus.HIT);
+			}
+			return result;
+
 		}
-		return result;
+
 	}
 
 	@JsonIgnore
 	public boolean isSunk() {
+
 		return getOccupiedSquares().stream().allMatch(s -> s.isHit());
 	}
 
