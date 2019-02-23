@@ -43,6 +43,9 @@ public class Ship {
 
 
 
+	public List<Square> getOccupiedSquares() {
+		return occupiedSquares;
+	}
 
 	public void place(char col, int row, boolean isVertical) {
 
