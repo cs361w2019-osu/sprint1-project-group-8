@@ -105,6 +105,9 @@ public class Ship {
 					getOccupiedSquares().get(i).hit();
 				}
 				return result.setResult(AtackStatus.SUNK);
+			}else {
+				result.setResult(AtackStatus.MISS);
+				return result;
 			}
 
 

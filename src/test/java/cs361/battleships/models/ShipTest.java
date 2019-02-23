@@ -123,18 +123,7 @@ public class ShipTest {
         assertEquals(new Square(1, 'A'), result.getLocation());
     }
 
-    @Test
-    public void testSink() {
-        Ship minesweeper = new Ship("MINESWEEPER");
-        minesweeper.place('A', 1, true);
 
-        minesweeper.attack(1, 'A');
-        Result result = minesweeper.attack(2, 'A');
-
-        assertEquals(AtackStatus.SUNK, result.getResult());
-        assertEquals(minesweeper, result.getShip());
-        assertEquals(new Square(2, 'A'), result.getLocation());
-    }
     @Test
     public void testSinkWithCaptainsQuarters() {
         Ship minesweeper = new Ship("MINESWEEPER");

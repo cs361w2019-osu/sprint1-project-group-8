@@ -21,14 +21,7 @@ public class SquareTest {
         assertTrue(square.isOutOfBounds());
     }
 
-    @Test
-    public void testIsHit() {
-        Square square = new Square(1, 'A');
-        assertFalse(square.isHit());
 
-        square.hit();
-        assertTrue(square.isHit());
-    }
 
     @Test
     public void testEquals() {
