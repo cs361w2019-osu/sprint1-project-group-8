@@ -9,6 +9,7 @@ public class Square {
 	@JsonProperty private int row;
 	@JsonProperty private char column;
 	@JsonProperty private boolean hit = false;
+	@JsonProperty private boolean isCaptain = false;
 
 	public Square() {
 	}
@@ -26,7 +27,12 @@ public class Square {
 		return row;
 	}
 
-
+	public boolean getIsCaptain(){
+		return isCaptain;
+	}
+	public void setCaptain(){
+		this.isCaptain = true;
+	}
 	@Override
 	public boolean equals(Object other) {
 		if (other instanceof Square) {
