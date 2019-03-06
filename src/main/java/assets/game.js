@@ -6,6 +6,7 @@ var vertical;
 var sonar = false;
 var firstShipSunk = false;
 var sonarCount = 0;
+var underWater;
 
 function makeGrid(table, isPlayer) {
     for (i=0; i<10; i++) {
@@ -200,6 +201,7 @@ function redrawGrid() {
 
 var oldListener;
 function registerCellListener(f) {
+
     let el = document.getElementById("player");
     for (i=0; i<10; i++) {
         for (j=0; j<10; j++) {
@@ -285,12 +287,53 @@ if(elementExists){
 
 function place(size) {
     return function() {
+        let submarine = false;
+        if(size == 5){
+        size = 4;
+        submarine = true;
+        }
+
         let row = this.parentNode.rowIndex;
         let col = this.cellIndex;
+
         vertical = document.getElementById("is_vertical").checked;
         let table = document.getElementById("player");
         for (let i=0; i<size; i++) {
             let cell;
+            if(submarine && i ==2){
+                                   if(vertical) {
+
+                                      let tableRow = table.rows[row+2];
+                                      if (tableRow === undefined) {
+                                                                // ship is over the edge; let the back end deal with it
+                                                                break;
+                                                            }
+                                                            tableRow = table.rows[row+1];
+                                                            cell = tableRow.cells[col-1];
+                                                             if (cell === undefined) {
+                                                             // ship is over the edge; let the back end deal with it
+                                                              break;
+                                                             }
+                                                        } else {
+                                                            cell = table.rows[row-1].cells[col+2];
+                                                        }
+                                                        if (cell === undefined) {
+                                                            // ship is over the edge; let the back end deal with it
+                                                            break;
+                                                        }
+
+                                             var div = cell.querySelector("div");
+
+                                                         if (div == null) {
+                                                             div = document.createElement("div");
+                                                             div.classList.add("ship");
+                                                             cell.appendChild(div);
+                                                         }
+                                                         div.classList.toggle((vertical) ? "left" : "up")
+                                                          cell.classList.toggle((vertical) ? "sidesBorderLeft" : "sidesBorderTop")
+                                                div.classList.toggle("placed");
+                                                cell.classList.toggle((vertical) ? "sidesBorderVert" : "sidesBorderHoriz")
+                                            }
             if(vertical) {
                 let tableRow = table.rows[row+i];
                 if (tableRow === undefined) {
@@ -299,7 +342,9 @@ function place(size) {
                 }
                 cell = tableRow.cells[col];
             } else {
+
                 cell = table.rows[row].cells[col+i];
+
             }
             if (cell === undefined) {
                 // ship is over the edge; let the back end deal with it
@@ -325,7 +370,13 @@ function place(size) {
             div.classList.toggle("placed");
             cell.classList.toggle((vertical) ? "sidesBorderVert" : "sidesBorderHoriz")
         }
+
+
+
+if(submarine){
+    size = 5;}
     }
+
 }
 
 function setInput(button) {
@@ -350,6 +401,10 @@ function initGame() {
         shipType = "BATTLESHIP";
        registerCellListener(place(4));
     });
+    document.getElementById("place_submarine").addEventListener("click", function(e) {
+            shipType = "SUBMARINE";
+           registerCellListener(place(5));
+        });
     document.getElementById("sonar").addEventListener("click", function(e) {
         if(!firstShipSunk){                                                         /*changes here, Chase! */
             clearUserMessage();
