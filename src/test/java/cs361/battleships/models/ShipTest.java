@@ -209,4 +209,55 @@ public class ShipTest {
         assertEquals(s.getOccupiedSquares().get(1).getRow(), 6);
         assertEquals(s.getOccupiedSquares().get(1).getColumn(), 'E');
     }
+
+    @Test
+    public void testDoNotMoveOverEdge() {
+        Ship s = new Ship("MINESWEEPER");
+        s.place('A', 1, true);
+        assertEquals(s.getOccupiedSquares().get(0).getRow(), 1);
+        assertEquals(s.getOccupiedSquares().get(0).getColumn(), 'A');
+        assertEquals(s.getOccupiedSquares().get(1).getRow(), 2);
+        assertEquals(s.getOccupiedSquares().get(1).getColumn(), 'A');
+        s.move('U');
+        assertEquals(s.getOccupiedSquares().get(0).getRow(), 1);
+        assertEquals(s.getOccupiedSquares().get(0).getColumn(), 'A');
+        assertEquals(s.getOccupiedSquares().get(1).getRow(), 2);
+        assertEquals(s.getOccupiedSquares().get(1).getColumn(), 'A');
+
+        s = new Ship("MINESWEEPER");
+        s.place('A', 9, true);
+        assertEquals(s.getOccupiedSquares().get(0).getRow(), 9);
+        assertEquals(s.getOccupiedSquares().get(0).getColumn(), 'A');
+        assertEquals(s.getOccupiedSquares().get(1).getRow(), 10);
+        assertEquals(s.getOccupiedSquares().get(1).getColumn(), 'A');
+        s.move('D');
+        assertEquals(s.getOccupiedSquares().get(0).getRow(), 9);
+        assertEquals(s.getOccupiedSquares().get(0).getColumn(), 'A');
+        assertEquals(s.getOccupiedSquares().get(1).getRow(), 10);
+        assertEquals(s.getOccupiedSquares().get(1).getColumn(), 'A');
+
+        s = new Ship("MINESWEEPER");
+        s.place('A', 1, true);
+        assertEquals(s.getOccupiedSquares().get(0).getRow(), 1);
+        assertEquals(s.getOccupiedSquares().get(0).getColumn(), 'A');
+        assertEquals(s.getOccupiedSquares().get(1).getRow(), 2);
+        assertEquals(s.getOccupiedSquares().get(1).getColumn(), 'A');
+        s.move('L');
+        assertEquals(s.getOccupiedSquares().get(0).getRow(), 1);
+        assertEquals(s.getOccupiedSquares().get(0).getColumn(), 'A');
+        assertEquals(s.getOccupiedSquares().get(1).getRow(), 2);
+        assertEquals(s.getOccupiedSquares().get(1).getColumn(), 'A');
+
+        s = new Ship("MINESWEEPER");
+        s.place('J', 1, true);
+        assertEquals(s.getOccupiedSquares().get(0).getRow(), 1);
+        assertEquals(s.getOccupiedSquares().get(0).getColumn(), 'J');
+        assertEquals(s.getOccupiedSquares().get(1).getRow(), 2);
+        assertEquals(s.getOccupiedSquares().get(1).getColumn(), 'J');
+        s.move('R');
+        assertEquals(s.getOccupiedSquares().get(0).getRow(), 1);
+        assertEquals(s.getOccupiedSquares().get(0).getColumn(), 'J');
+        assertEquals(s.getOccupiedSquares().get(1).getRow(), 2);
+        assertEquals(s.getOccupiedSquares().get(1).getColumn(), 'J');
+    }
 }

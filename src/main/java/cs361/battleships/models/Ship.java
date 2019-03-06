@@ -5,10 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.Sets;
 import com.mchange.v1.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 public class Ship {
 
@@ -117,10 +114,21 @@ public class Ship {
 
 		}
 	}
+
+	public boolean validateMove(char moveDir) {
+		int tRow = occupiedSquares.stream().max(Comparator.comparing(s -> s.getRow())).get().getRow();
+		int bRow = occupiedSquares.stream().min(Comparator.comparing(s -> s.getRow())).get().getRow();
+		char rCol = occupiedSquares.stream().max(Comparator.comparing(s -> s.getColumn())).get().getColumn();
+		char lCol = occupiedSquares.stream().min(Comparator.comparing(s -> s.getColumn())).get().getColumn();
+
+		return (bRow > 1 && moveDir == 'U') || (tRow < 10 && moveDir == 'D') || (rCol < 'J' && moveDir == 'R') || (lCol > 'A' && moveDir == 'L');
+	}
 	
 	public void move(char moveDir) {
-		for (var s : occupiedSquares) {
-			s.move(moveDir);
+		if (validateMove(moveDir)) {
+			for (var s : occupiedSquares) {
+				s.move(moveDir);
+			}
 		}
 	}
 
