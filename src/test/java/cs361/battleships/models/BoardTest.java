@@ -147,7 +147,7 @@ public class BoardTest {
     }
 
     @Test
-    public void testMoveCorrectDirection() {
+    public void testMoveOneSquareCorrectDirection() {
         board.placeShip(new Ship("MINESWEEPER"), 6, 'D', true);
         board.placeShip(new Ship("DESTROYER"), 6, 'E', true);
         board.placeShip(new Ship("BATTLESHIP"), 6, 'F', true);

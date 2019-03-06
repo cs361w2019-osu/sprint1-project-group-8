@@ -181,7 +181,7 @@ public class ShipTest {
     }
 
     @Test
-    public void testMoveCorrectDirection() {
+    public void testMoveOneSquareCorrectDirection() {
         Ship s = new Ship("MINESWEEPER");
         s.place('E', 5, true);
 

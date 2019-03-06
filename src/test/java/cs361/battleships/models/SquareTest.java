@@ -56,7 +56,7 @@ public class SquareTest {
     }
 
     @Test
-    public void testMoveCorrectDirection(){
+    public void testMoveOneSquareCorrectDirection(){
         Square s = new Square(5, 'E');
         s.move('U');
         assertTrue(s.getRow() == 4);
