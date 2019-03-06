@@ -19,6 +19,19 @@ public class Square {
 		this.column = column;
 	}
 
+	public void move(char moveDir) {
+		switch(moveDir) {
+			case 'U': this.row--;
+					  break;
+			case 'D': this.row++;
+					  break;
+			case 'L': this.column--;
+					  break;
+			case 'R': this.column++;
+					  break;
+		}
+	}
+
 	public char getColumn() {
 		return column;
 	}
@@ -30,9 +43,11 @@ public class Square {
 	public boolean getIsCaptain(){
 		return isCaptain;
 	}
+
 	public void setCaptain(){
 		this.isCaptain = true;
 	}
+
 	@Override
 	public boolean equals(Object other) {
 		if (other instanceof Square) {

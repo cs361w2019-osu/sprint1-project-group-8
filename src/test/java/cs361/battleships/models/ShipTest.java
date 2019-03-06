@@ -179,4 +179,34 @@ public class ShipTest {
         assertTrue(minesweeper1.equals(minesweeper2));
         assertEquals(minesweeper1.hashCode(), minesweeper2.hashCode());
     }
+
+    @Test
+    public void testMoveCorrectDirection() {
+        Ship s = new Ship("MINESWEEPER");
+        s.place('E', 5, true);
+
+        s.move('U');
+        assertEquals(s.getOccupiedSquares().get(0).getRow(), 4);
+        assertEquals(s.getOccupiedSquares().get(0).getColumn(), 'E');
+        assertEquals(s.getOccupiedSquares().get(1).getRow(), 5);
+        assertEquals(s.getOccupiedSquares().get(1).getColumn(), 'E');
+
+        s.move('D');
+        assertEquals(s.getOccupiedSquares().get(0).getRow(), 5);
+        assertEquals(s.getOccupiedSquares().get(0).getColumn(), 'E');
+        assertEquals(s.getOccupiedSquares().get(1).getRow(), 6);
+        assertEquals(s.getOccupiedSquares().get(1).getColumn(), 'E');
+
+        s.move('L');
+        assertEquals(s.getOccupiedSquares().get(0).getRow(), 5);
+        assertEquals(s.getOccupiedSquares().get(0).getColumn(), 'D');
+        assertEquals(s.getOccupiedSquares().get(1).getRow(), 6);
+        assertEquals(s.getOccupiedSquares().get(1).getColumn(), 'D');
+
+        s.move('R');
+        assertEquals(s.getOccupiedSquares().get(0).getRow(), 5);
+        assertEquals(s.getOccupiedSquares().get(0).getColumn(), 'E');
+        assertEquals(s.getOccupiedSquares().get(1).getRow(), 6);
+        assertEquals(s.getOccupiedSquares().get(1).getColumn(), 'E');
+    }
 }

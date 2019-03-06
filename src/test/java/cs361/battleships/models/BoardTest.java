@@ -145,4 +145,43 @@ public class BoardTest {
         board.sonarPulse(5, 'J');
         assertEquals(board.getAttacks().size(), 36);
     }
+
+    @Test
+    public void testMoveCorrectDirection() {
+        board.placeShip(new Ship("MINESWEEPER"), 6, 'D', true);
+        board.placeShip(new Ship("DESTROYER"), 6, 'E', true);
+        board.placeShip(new Ship("BATTLESHIP"), 6, 'F', true);
+
+        board.moveShips('U');
+        assertEquals(board.getShips().get(0).getOccupiedSquares().get(0).getRow(), 5);
+        assertEquals(board.getShips().get(0).getOccupiedSquares().get(0).getColumn(), 'D');
+        assertEquals(board.getShips().get(1).getOccupiedSquares().get(0).getRow(), 5);
+        assertEquals(board.getShips().get(1).getOccupiedSquares().get(0).getColumn(), 'E');
+        assertEquals(board.getShips().get(2).getOccupiedSquares().get(0).getRow(), 5);
+        assertEquals(board.getShips().get(2).getOccupiedSquares().get(0).getColumn(), 'F');
+
+        board.moveShips('D');
+        assertEquals(board.getShips().get(0).getOccupiedSquares().get(0).getRow(), 6);
+        assertEquals(board.getShips().get(0).getOccupiedSquares().get(0).getColumn(), 'D');
+        assertEquals(board.getShips().get(1).getOccupiedSquares().get(0).getRow(), 6);
+        assertEquals(board.getShips().get(1).getOccupiedSquares().get(0).getColumn(), 'E');
+        assertEquals(board.getShips().get(2).getOccupiedSquares().get(0).getRow(), 6);
+        assertEquals(board.getShips().get(2).getOccupiedSquares().get(0).getColumn(), 'F');
+
+        board.moveShips('L');
+        assertEquals(board.getShips().get(0).getOccupiedSquares().get(0).getRow(), 6);
+        assertEquals(board.getShips().get(0).getOccupiedSquares().get(0).getColumn(), 'C');
+        assertEquals(board.getShips().get(1).getOccupiedSquares().get(0).getRow(), 6);
+        assertEquals(board.getShips().get(1).getOccupiedSquares().get(0).getColumn(), 'D');
+        assertEquals(board.getShips().get(2).getOccupiedSquares().get(0).getRow(), 6);
+        assertEquals(board.getShips().get(2).getOccupiedSquares().get(0).getColumn(), 'E');
+
+        board.moveShips('R');
+        assertEquals(board.getShips().get(0).getOccupiedSquares().get(0).getRow(), 6);
+        assertEquals(board.getShips().get(0).getOccupiedSquares().get(0).getColumn(), 'D');
+        assertEquals(board.getShips().get(1).getOccupiedSquares().get(0).getRow(), 6);
+        assertEquals(board.getShips().get(1).getOccupiedSquares().get(0).getColumn(), 'E');
+        assertEquals(board.getShips().get(2).getOccupiedSquares().get(0).getRow(), 6);
+        assertEquals(board.getShips().get(2).getOccupiedSquares().get(0).getColumn(), 'F');
+    }
 }

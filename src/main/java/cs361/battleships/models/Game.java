@@ -55,6 +55,11 @@ public class Game {
         return true;
     }
 
+    public boolean moveShips(char moveDir) {
+        playersBoard.moveShips(moveDir);
+        return true;
+    }
+
     private char randCol() {
         int random = new Random().nextInt(10);
         return (char) ('A' + random);

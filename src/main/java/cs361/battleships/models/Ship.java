@@ -116,7 +116,12 @@ public class Ship {
 			return result;
 
 		}
-
+	}
+	
+	public void move(char moveDir) {
+		for (var s : occupiedSquares) {
+			s.move(moveDir);
+		}
 	}
 
 	@JsonIgnore

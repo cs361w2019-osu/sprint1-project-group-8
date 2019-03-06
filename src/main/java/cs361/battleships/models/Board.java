@@ -114,6 +114,15 @@ public class Board {
 		return finalResult;
 	}
 
+	public Result moveShips(char moveDir) {
+		for (Ship s : ships) {
+			s.move(moveDir);
+		}
+		Result r = new Result();
+		r.setResult(AtackStatus.FLEETMOVE);
+		return r;
+	}
+
 	List<Ship> getShips() {
 		return ships;
 	}
