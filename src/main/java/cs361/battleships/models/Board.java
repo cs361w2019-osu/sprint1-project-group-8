@@ -12,6 +12,7 @@ public class Board {
 	@JsonProperty private List<Result> attacks;
 	@JsonProperty private List<Result> blockedShips;
 	@JsonProperty private int last;
+	@JsonProperty private boolean hasLaser;
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
@@ -20,6 +21,7 @@ public class Board {
 		attacks = new ArrayList<>();
 		blockedShips = new ArrayList<>();
 		last = 0;
+		hasLaser = false;
 	}
 
 	/*
@@ -137,6 +139,10 @@ public class Board {
 		Result r = new Result();
 		r.setResult(AtackStatus.FLEETMOVE);
 		return r;
+	}
+
+	public void unlockLaser() {
+		hasLaser = true;
 	}
 
 	List<Ship> getShips() {

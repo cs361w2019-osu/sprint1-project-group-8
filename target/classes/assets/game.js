@@ -336,7 +336,7 @@ function setInput(button) {
 }
 
 function moveShips(moveDir) {
-    sendXhr("POST", "/attack", {moveShip: true, moveDir: moveDir}, function(data) {
+    sendXhr("POST", "/attack", {game: game, moveShip: true, moveDir: moveDir}, function(data) {
          game = data;
          redrawGrid();
      })
@@ -358,16 +358,16 @@ function initGame() {
        registerCellListener(place(4));
     });
     document.getElementById("moveNorth").addEventListener("click", function(e) {
-        moveShips('U');
+        moveShips(85);
     });
     document.getElementById("moveSouth").addEventListener("click", function(e) {
-        moveShips('D');
+        moveShips(68);
     });
     document.getElementById("moveEast").addEventListener("click", function(e) {
-        moveShips('R');
+        moveShips(82);
     });
     document.getElementById("moveWest").addEventListener("click", function(e) {
-        moveShips('L');
+        moveShips(76);
     });
     document.getElementById("sonar").addEventListener("click", function(e) {
         if(!firstShipSunk){                                                         /*changes here, Chase! */

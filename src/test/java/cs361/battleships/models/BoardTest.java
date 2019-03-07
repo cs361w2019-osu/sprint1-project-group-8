@@ -227,4 +227,15 @@ public class BoardTest {
         assertEquals(board.getShips().stream().filter(s -> s.getKind() == "DESTROYER").findFirst().get().getOccupiedSquares().get(0).getRow(), 8);
         assertEquals(board.getShips().stream().filter(s -> s.getKind() == "DESTROYER").findFirst().get().getOccupiedSquares().get(0).getColumn(), 'H');
     }
+
+    @Test
+    public void testAttackWithSpaceLaser() {
+        board.unlockLaser();
+        Ship minesweeper = new Ship("MINESWEEPER");
+        board.placeShip(minesweeper, 1, 'A', true);
+        minesweeper = board.getShips().get(0);
+        Result result = board.attack(1, 'A');
+        assertEquals(AtackStatus.SURRENDER, result.getResult());
+        assertEquals(minesweeper, result.getShip());
+    }
 }
