@@ -260,4 +260,27 @@ public class ShipTest {
         assertEquals(s.getOccupiedSquares().get(1).getRow(), 2);
         assertEquals(s.getOccupiedSquares().get(1).getColumn(), 'J');
     }
+
+    @Test
+    public void testNoMoveOverlap() {
+        Ship s1 = new Ship("MINESWEEPER");
+        Ship s2 = new Ship("MINESWEEPER");
+
+        s1.place('A', 1, true);
+        s2.place('B', 1, true);
+        assertTrue(s2.checkMoveOverlap(s1, 'L'));
+        assertFalse(s2.checkMoveOverlap(s1, 'R'));
+        assertFalse(s2.checkMoveOverlap(s1, 'U'));
+        assertFalse(s2.checkMoveOverlap(s1, 'D'));
+
+        s1 = new Ship("MINESWEEPER");
+        s2 = new Ship("MINESWEEPER");
+
+        s1.place('A', 10, false);
+        s2.place('A', 9, false);
+        assertFalse(s2.checkMoveOverlap(s1, 'L'));
+        assertFalse(s2.checkMoveOverlap(s1, 'R'));
+        assertFalse(s2.checkMoveOverlap(s1, 'U'));
+        assertTrue(s2.checkMoveOverlap(s1, 'D'));
+    }
 }

@@ -3,6 +3,7 @@ package cs361.battleships.models;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Comparator;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
@@ -152,36 +153,78 @@ public class BoardTest {
         board.placeShip(new Ship("DESTROYER"), 6, 'E', true);
         board.placeShip(new Ship("BATTLESHIP"), 6, 'F', true);
 
-        board.moveShips('U');
-        assertEquals(board.getShips().get(0).getOccupiedSquares().get(0).getRow(), 5);
-        assertEquals(board.getShips().get(0).getOccupiedSquares().get(0).getColumn(), 'D');
-        assertEquals(board.getShips().get(1).getOccupiedSquares().get(0).getRow(), 5);
-        assertEquals(board.getShips().get(1).getOccupiedSquares().get(0).getColumn(), 'E');
-        assertEquals(board.getShips().get(2).getOccupiedSquares().get(0).getRow(), 5);
-        assertEquals(board.getShips().get(2).getOccupiedSquares().get(0).getColumn(), 'F');
-
-        board.moveShips('D');
-        assertEquals(board.getShips().get(0).getOccupiedSquares().get(0).getRow(), 6);
-        assertEquals(board.getShips().get(0).getOccupiedSquares().get(0).getColumn(), 'D');
-        assertEquals(board.getShips().get(1).getOccupiedSquares().get(0).getRow(), 6);
-        assertEquals(board.getShips().get(1).getOccupiedSquares().get(0).getColumn(), 'E');
-        assertEquals(board.getShips().get(2).getOccupiedSquares().get(0).getRow(), 6);
-        assertEquals(board.getShips().get(2).getOccupiedSquares().get(0).getColumn(), 'F');
-
         board.moveShips('L');
-        assertEquals(board.getShips().get(0).getOccupiedSquares().get(0).getRow(), 6);
-        assertEquals(board.getShips().get(0).getOccupiedSquares().get(0).getColumn(), 'C');
-        assertEquals(board.getShips().get(1).getOccupiedSquares().get(0).getRow(), 6);
-        assertEquals(board.getShips().get(1).getOccupiedSquares().get(0).getColumn(), 'D');
-        assertEquals(board.getShips().get(2).getOccupiedSquares().get(0).getRow(), 6);
-        assertEquals(board.getShips().get(2).getOccupiedSquares().get(0).getColumn(), 'E');
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "MINESWEEPER").findFirst().get().getOccupiedSquares().get(0).getRow(), 6);
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "MINESWEEPER").findFirst().get().getOccupiedSquares().get(0).getColumn(), 'C');
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "DESTROYER").findFirst().get().getOccupiedSquares().get(0).getRow(), 6);
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "DESTROYER").findFirst().get().getOccupiedSquares().get(0).getColumn(), 'D');
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "BATTLESHIP").findFirst().get().getOccupiedSquares().get(0).getRow(), 6);
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "BATTLESHIP").findFirst().get().getOccupiedSquares().get(0).getColumn(), 'E');
 
         board.moveShips('R');
-        assertEquals(board.getShips().get(0).getOccupiedSquares().get(0).getRow(), 6);
-        assertEquals(board.getShips().get(0).getOccupiedSquares().get(0).getColumn(), 'D');
-        assertEquals(board.getShips().get(1).getOccupiedSquares().get(0).getRow(), 6);
-        assertEquals(board.getShips().get(1).getOccupiedSquares().get(0).getColumn(), 'E');
-        assertEquals(board.getShips().get(2).getOccupiedSquares().get(0).getRow(), 6);
-        assertEquals(board.getShips().get(2).getOccupiedSquares().get(0).getColumn(), 'F');
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "MINESWEEPER").findFirst().get().getOccupiedSquares().get(0).getRow(), 6);
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "MINESWEEPER").findFirst().get().getOccupiedSquares().get(0).getColumn(), 'D');
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "DESTROYER").findFirst().get().getOccupiedSquares().get(0).getRow(), 6);
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "DESTROYER").findFirst().get().getOccupiedSquares().get(0).getColumn(), 'E');
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "BATTLESHIP").findFirst().get().getOccupiedSquares().get(0).getRow(), 6);
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "BATTLESHIP").findFirst().get().getOccupiedSquares().get(0).getColumn(), 'F');
+
+        board.moveShips('U');
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "MINESWEEPER").findFirst().get().getOccupiedSquares().get(0).getRow(), 5);
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "MINESWEEPER").findFirst().get().getOccupiedSquares().get(0).getColumn(), 'D');
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "DESTROYER").findFirst().get().getOccupiedSquares().get(0).getRow(), 5);
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "DESTROYER").findFirst().get().getOccupiedSquares().get(0).getColumn(), 'E');
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "BATTLESHIP").findFirst().get().getOccupiedSquares().get(0).getRow(), 5);
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "BATTLESHIP").findFirst().get().getOccupiedSquares().get(0).getColumn(), 'F');
+
+        board.moveShips('D');
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "MINESWEEPER").findFirst().get().getOccupiedSquares().get(0).getRow(), 6);
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "MINESWEEPER").findFirst().get().getOccupiedSquares().get(0).getColumn(), 'D');
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "DESTROYER").findFirst().get().getOccupiedSquares().get(0).getRow(), 6);
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "DESTROYER").findFirst().get().getOccupiedSquares().get(0).getColumn(), 'E');
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "BATTLESHIP").findFirst().get().getOccupiedSquares().get(0).getRow(), 6);
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "BATTLESHIP").findFirst().get().getOccupiedSquares().get(0).getColumn(), 'F');
+    }
+
+    @Test
+    public void testNoMoveOverlap() {
+        board.placeShip(new Ship("MINESWEEPER"), 2, 'A', true);
+        board.placeShip(new Ship("DESTROYER"), 2, 'B', true);
+        board.placeShip(new Ship("BATTLESHIP"), 1, 'B', false);
+
+        board.moveShips('L');
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "MINESWEEPER").findFirst().get().getOccupiedSquares().get(0).getRow(), 2);
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "MINESWEEPER").findFirst().get().getOccupiedSquares().get(0).getColumn(), 'A');
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "DESTROYER").findFirst().get().getOccupiedSquares().get(0).getRow(), 2);
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "DESTROYER").findFirst().get().getOccupiedSquares().get(0).getColumn(), 'B');
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "BATTLESHIP").findFirst().get().getOccupiedSquares().get(0).getRow(), 1);
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "BATTLESHIP").findFirst().get().getOccupiedSquares().get(0).getColumn(), 'A');
+
+        board.moveShips('U');
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "MINESWEEPER").findFirst().get().getOccupiedSquares().get(0).getRow(), 2);
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "MINESWEEPER").findFirst().get().getOccupiedSquares().get(0).getColumn(), 'A');
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "DESTROYER").findFirst().get().getOccupiedSquares().get(0).getRow(), 2);
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "DESTROYER").findFirst().get().getOccupiedSquares().get(0).getColumn(), 'B');
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "BATTLESHIP").findFirst().get().getOccupiedSquares().get(0).getRow(), 1);
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "BATTLESHIP").findFirst().get().getOccupiedSquares().get(0).getColumn(), 'A');
+
+        board = new Board();
+        board.placeShip(new Ship("MINESWEEPER"), 10, 'I', false);
+        board.placeShip(new Ship("DESTROYER"), 8, 'H', true);
+        board.placeShip(new Ship("BATTLESHIP"), 7, 'G', false);
+
+        board.moveShips('D');
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "MINESWEEPER").findFirst().get().getOccupiedSquares().get(0).getRow(), 10);
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "MINESWEEPER").findFirst().get().getOccupiedSquares().get(0).getColumn(), 'I');
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "DESTROYER").findFirst().get().getOccupiedSquares().get(0).getRow(), 8);
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "DESTROYER").findFirst().get().getOccupiedSquares().get(0).getColumn(), 'H');
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "BATTLESHIP").findFirst().get().getOccupiedSquares().get(0).getRow(), 7);
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "BATTLESHIP").findFirst().get().getOccupiedSquares().get(0).getColumn(), 'G');
+
+        board.moveShips('R');
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "MINESWEEPER").findFirst().get().getOccupiedSquares().get(0).getRow(), 10);
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "MINESWEEPER").findFirst().get().getOccupiedSquares().get(0).getColumn(), 'I');
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "DESTROYER").findFirst().get().getOccupiedSquares().get(0).getRow(), 8);
+        assertEquals(board.getShips().stream().filter(s -> s.getKind() == "DESTROYER").findFirst().get().getOccupiedSquares().get(0).getColumn(), 'H');
     }
 }

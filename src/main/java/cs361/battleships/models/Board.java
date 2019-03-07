@@ -2,8 +2,8 @@ package cs361.battleships.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.Array;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Board {
@@ -115,9 +115,25 @@ public class Board {
 	}
 
 	public Result moveShips(char moveDir) {
-		for (Ship s : ships) {
-			s.move(moveDir);
+		switch (moveDir) {
+			case 'U': ships.sort(Comparator.comparing(s -> s.getMinRow()));
+					  break;
+			case 'D': ships.sort(Comparator.comparing(s -> s.getMaxRow()));
+					  Collections.reverse(ships);
+				 	  break;
+			case 'L': ships.sort(Comparator.comparing(s -> s.getMinCol()));
+					  break;
+			case 'R': ships.sort(Comparator.comparing(s -> s.getMaxCol()));
+					  Collections.reverse(ships);
+					  break;
 		}
+
+		for (int i = 0; i < ships.size(); i++) {
+			if (i == 0 || !ships.get(i).checkMoveOverlap(ships.subList(0, i), moveDir)) {
+				ships.get(i).move(moveDir);
+			}
+		}
+
 		Result r = new Result();
 		r.setResult(AtackStatus.FLEETMOVE);
 		return r;

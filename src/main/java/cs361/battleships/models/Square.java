@@ -19,6 +19,13 @@ public class Square {
 		this.column = column;
 	}
 
+	public Square(Square other) {
+		this.row = other.getRow();
+		this.column = other.getColumn();
+		this.hit = other.getHit();
+		this.isCaptain = other.getIsCaptain();
+	}
+
 	public void move(char moveDir) {
 		switch(moveDir) {
 			case 'U': this.row--;
@@ -39,6 +46,8 @@ public class Square {
 	public int getRow() {
 		return row;
 	}
+
+	public boolean getHit() { return hit; }
 
 	public boolean getIsCaptain(){
 		return isCaptain;
