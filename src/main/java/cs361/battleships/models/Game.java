@@ -38,6 +38,10 @@ public class Game {
             // let it try until it gets it right
             opponentAttackResult = playersBoard.attack(randRow(), randCol());
         } while(opponentAttackResult.getResult() == INVALID);
+
+        if (!playersBoard.isLaserUnlocked() && opponentAttackResult.getResult() == SUNK) {
+            playersBoard.unlockLaser();
+        }
     }
 
     /*
@@ -51,6 +55,9 @@ public class Game {
             Result playerAttack = opponentsBoard.attack(x, y);
             if (playerAttack.getResult() == INVALID) {
                 return false;
+            }
+            else if (!opponentsBoard.isLaserUnlocked() && playerAttack.getResult() == SUNK) {
+                opponentsBoard.unlockLaser();
             }
         }
 

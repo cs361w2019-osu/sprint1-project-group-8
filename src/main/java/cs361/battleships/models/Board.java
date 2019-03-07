@@ -145,6 +145,10 @@ public class Board {
 		hasLaser = true;
 	}
 
+	public boolean isLaserUnlocked() {
+		return hasLaser;
+	}
+
 	List<Ship> getShips() {
 		return ships;
 	}

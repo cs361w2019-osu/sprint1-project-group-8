@@ -148,6 +148,9 @@ function sonarCheck(board) {                                /* checks if the pla
 }
 
 function redrawGrid() {
+    if (game.opponentsBoard.hasLaser) {
+        document.getElementById("opponent").classList.add("laser");
+    }
 /*    clearLogMessage();*/
     Array.from(document.getElementById("opponent").childNodes).forEach((row) => row.remove());
     Array.from(document.getElementById("player").childNodes).forEach((row) => row.remove());
