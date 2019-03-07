@@ -46,6 +46,10 @@ public class Board {
 		return true;
 	}
 
+	public boolean playerHasLaser() {
+		return hasLaser;
+	}
+
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
@@ -143,10 +147,6 @@ public class Board {
 
 	public void unlockLaser() {
 		hasLaser = true;
-	}
-
-	public boolean isLaserUnlocked() {
-		return hasLaser;
 	}
 
 	List<Ship> getShips() {
