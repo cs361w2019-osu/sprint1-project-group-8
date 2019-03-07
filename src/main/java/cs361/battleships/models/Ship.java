@@ -17,7 +17,7 @@ public class Ship {
 	public Ship() {
 		occupiedSquares = new ArrayList<>();
 	}
-	
+
 	public Ship(String kind) {
 		this();
 		this.kind = kind;
@@ -130,14 +130,14 @@ public class Ship {
 	}
 
 	private boolean validateMove(char moveDir) {
-		int tRow = getMaxRow();
-		int bRow = getMinRow();
-		char rCol = getMaxCol();
-		char lCol = getMinCol();
+		int tRow = maxRow();
+		int bRow = minRow();
+		char rCol = maxCol();
+		char lCol = minCol();
 
 		return (bRow > 1 && moveDir == 'U') || (tRow < 10 && moveDir == 'D') || (rCol < 'J' && moveDir == 'R') || (lCol > 'A' && moveDir == 'L');
 	}
-	
+
 	public void move(char moveDir) {
 		if (validateMove(moveDir)) {
 			for (var s : occupiedSquares) {
@@ -146,19 +146,19 @@ public class Ship {
 		}
 	}
 
-	public int getMaxRow() {
+	public int maxRow() {
 		return occupiedSquares.stream().max(Comparator.comparing(s -> s.getRow())).get().getRow();
 	}
 
-	public int getMinRow() {
+	public int minRow() {
 		return occupiedSquares.stream().min(Comparator.comparing(s -> s.getRow())).get().getRow();
 	}
 
-	public char getMaxCol() {
+	public char maxCol() {
 		return occupiedSquares.stream().max(Comparator.comparing(s -> s.getColumn())).get().getColumn();
 	}
 
-	public char getMinCol() {
+	public char minCol() {
 		return occupiedSquares.stream().min(Comparator.comparing(s -> s.getColumn())).get().getColumn();
 	}
 

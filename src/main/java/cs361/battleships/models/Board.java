@@ -116,14 +116,14 @@ public class Board {
 
 	public Result moveShips(char moveDir) {
 		switch (moveDir) {
-			case 'U': ships.sort(Comparator.comparing(s -> s.getMinRow()));
+			case 'U': ships.sort(Comparator.comparing(s -> s.minRow()));
 					  break;
-			case 'D': ships.sort(Comparator.comparing(s -> s.getMaxRow()));
+			case 'D': ships.sort(Comparator.comparing(s -> s.maxRow()));
 					  Collections.reverse(ships);
 				 	  break;
-			case 'L': ships.sort(Comparator.comparing(s -> s.getMinCol()));
+			case 'L': ships.sort(Comparator.comparing(s -> s.minCol()));
 					  break;
-			case 'R': ships.sort(Comparator.comparing(s -> s.getMaxCol()));
+			case 'R': ships.sort(Comparator.comparing(s -> s.maxCol()));
 					  Collections.reverse(ships);
 					  break;
 		}

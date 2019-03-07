@@ -335,6 +335,13 @@ function setInput(button) {
     document.getElementById("Log").style.display = "block";
 }
 
+function moveShips(moveDir) {
+    sendXhr("POST", "/attack", {moveShip: true, moveDir: moveDir}, function(data) {
+         game = data;
+         redrawGrid();
+     })
+}
+
 function initGame() {
     makeGrid(document.getElementById("opponent"), false);
     makeGrid(document.getElementById("player"), true);
@@ -349,6 +356,18 @@ function initGame() {
     document.getElementById("place_battleship").addEventListener("click", function(e) {
         shipType = "BATTLESHIP";
        registerCellListener(place(4));
+    });
+    document.getElementById("moveNorth").addEventListener("click", function(e) {
+        moveShips('U');
+    });
+    document.getElementById("moveSouth").addEventListener("click", function(e) {
+        moveShips('D');
+    });
+    document.getElementById("moveEast").addEventListener("click", function(e) {
+        moveShips('R');
+    });
+    document.getElementById("moveWest").addEventListener("click", function(e) {
+        moveShips('L');
     });
     document.getElementById("sonar").addEventListener("click", function(e) {
         if(!firstShipSunk){                                                         /*changes here, Chase! */

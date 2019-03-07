@@ -31,6 +31,15 @@ public class Game {
         return true;
     }
 
+    public void opponentAttack() {
+        Result opponentAttackResult;
+        do {
+            // AI does random attacks, so it might attack the same spot twice
+            // let it try until it gets it right
+            opponentAttackResult = playersBoard.attack(randRow(), randCol());
+        } while(opponentAttackResult.getResult() == INVALID);
+    }
+
     /*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
@@ -45,18 +54,16 @@ public class Game {
             }
         }
 
-        Result opponentAttackResult;
-        do {
-            // AI does random attacks, so it might attack the same spot twice
-            // let it try until it gets it right
-            opponentAttackResult = playersBoard.attack(randRow(), randCol());
-        } while(opponentAttackResult.getResult() == INVALID);
-
+        opponentAttack();
         return true;
     }
 
     public boolean moveShips(char moveDir) {
+        if (moveDir != 'U' && moveDir != 'D' && moveDir != 'L' && moveDir != 'R')
+            return false;
+
         playersBoard.moveShips(moveDir);
+        opponentAttack();
         return true;
     }
 
