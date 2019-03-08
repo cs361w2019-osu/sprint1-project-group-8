@@ -9,6 +9,8 @@ public class AttackGameAction {
     @JsonProperty private int x;
     @JsonProperty private char y;
     @JsonProperty private boolean sonar;
+    @JsonProperty private boolean moveShip;
+    @JsonProperty private char moveDir;
 
     public Game getGame() {
         return game;
@@ -23,4 +25,8 @@ public class AttackGameAction {
     }
 
     public boolean getActionSonar() { return sonar; }
+
+    public boolean getActionMoveShip() { return moveShip; }
+
+    public char getActionMoveDir() { return moveDir; }
 }

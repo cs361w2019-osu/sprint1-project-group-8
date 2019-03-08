@@ -2,8 +2,8 @@ package cs361.battleships.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.Array;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Board {
@@ -12,6 +12,7 @@ public class Board {
 	@JsonProperty private List<Result> attacks;
 	@JsonProperty private List<Result> blockedShips;
 	@JsonProperty private int last;
+	@JsonProperty private boolean hasLaser;
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
@@ -20,6 +21,7 @@ public class Board {
 		attacks = new ArrayList<>();
 		blockedShips = new ArrayList<>();
 		last = 0;
+		hasLaser = false;
 	}
 
 	/*
@@ -44,6 +46,10 @@ public class Board {
 		return true;
 	}
 
+	public boolean playerHasLaser() {
+		return hasLaser;
+	}
+
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
@@ -64,7 +70,7 @@ public class Board {
 
 	private Result attack(Square s) {
 
-		if (attacks.stream().anyMatch(r -> r.getLocation().equals(s) && !r.getResult().equals(AtackStatus.OCCUPIED) && !r.getResult().equals(AtackStatus.EMPTY))) {
+		if (attacks.stream().anyMatch(r -> r.getLocation().equals(s) && !r.getResult().equals(AtackStatus.OCCUPIED) && !r.getResult().equals(AtackStatus.EMPTY) && !r.getResult().equals(AtackStatus.FLEETMOVE))) {
 
 			var attackResult = new Result(s);
 			attackResult.setResult(AtackStatus.INVALID);
@@ -112,6 +118,39 @@ public class Board {
 		}
 
 		return finalResult;
+	}
+
+	public Result moveShips(char moveDir) {
+		switch (moveDir) {
+			case 'U': ships.sort(Comparator.comparing(s -> s.minRow()));
+					  break;
+			case 'D': ships.sort(Comparator.comparing(s -> s.maxRow()));
+					  Collections.reverse(ships);
+				 	  break;
+			case 'L': ships.sort(Comparator.comparing(s -> s.minCol()));
+					  break;
+			case 'R': ships.sort(Comparator.comparing(s -> s.maxCol()));
+					  Collections.reverse(ships);
+					  break;
+		}
+
+		for (int i = 0; i < ships.size(); i++) {
+			if (i == 0 || !ships.get(i).checkMoveOverlap(ships.subList(0, i), moveDir)) {
+				ships.get(i).move(moveDir);
+			}
+		}
+
+		Result result = new Result(new Square(0, 'Z'));
+		result.setResult(AtackStatus.FLEETMOVE);
+		return result;
+	}
+
+	public void unlockLaser() {
+		hasLaser = true;
+	}
+
+	public void trackOpponentMove(Result result) {
+		attacks.add(result);
 	}
 
 	List<Ship> getShips() {

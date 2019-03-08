@@ -4,6 +4,8 @@ var game;
 var shipType;
 var vertical;
 var sonar = false;
+var firstShipSunk = false;
+var sonarCount = 0;
 
 function makeGrid(table, isPlayer) {
     for (i=0; i<10; i++) {
@@ -24,7 +26,12 @@ function checkSunk(elementId, ship) {
             var cell = document.getElementById("opponent").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)];
             var div = cell.querySelector("div");
 
-            if (i == 0) {
+            if (i == 0 && div != null) {
+                div = document.createElement('div');
+                cell.appendChild(div);
+                div.classList.add("marker");
+                div.classList.add("hit");
+
                 if (square.row != ship.occupiedSquares[i + 1].row) {
                     div.classList.add("up");
                 }
@@ -32,7 +39,33 @@ function checkSunk(elementId, ship) {
                     div.classList.add("left");
                 }
             }
-            else if (i == ship.occupiedSquares.length - 1) {
+            else if (i == 0 && div == null) {
+                div = document.createElement('div');
+                cell.appendChild(div);
+                div.classList.add("marker");
+                div.classList.add("hit");
+
+                if (square.row != ship.occupiedSquares[i + 1].row) {
+                    div.classList.add("up");
+                }
+                else {
+                    div.classList.add("left");
+                }
+            }
+            else if (i == ship.occupiedSquares.length - 1 && div != null) {
+                if (square.row != ship.occupiedSquares[i - 1].row) {
+                    div.classList.add("down");
+                }
+                else {
+                    div.classList.add("right");
+                }
+            }
+            else if (i == ship.occupiedSquares.length - 1 && div == null) {
+                div = document.createElement('div');
+                cell.appendChild(div);
+                div.classList.add("marker");
+                div.classList.add("hit");
+
                 if (square.row != ship.occupiedSquares[i - 1].row) {
                     div.classList.add("down");
                 }
@@ -52,7 +85,7 @@ if(board.blockedShips != null){
                     var col = block.location.column.charCodeAt(0) - 'A'.charCodeAt(0);
                     var div = document.createElement('div');
                     var td = document.getElementById(elementId).rows[row].cells[col];
-                     if (elementId == "opponent" || attack.result === "MISS") {
+                     if (elementId == "opponent" || block.result === "MISS") {
                                 td.appendChild(div);
                                 div.classList.add("marker");
                             }
@@ -60,11 +93,13 @@ if(board.blockedShips != null){
                                 div = td.querySelector("div");
                     let className;
 
-                    className = "miss";
-                    var inner = document.createElement('div');
-                                inner.classList.add("innerCircle");
-                                div.appendChild(inner);
-                     if (!div.classList.contains(className)) {
+                     if (div != null) {
+                        className = "miss";
+                                            var inner = document.createElement('div');
+                                                        inner.classList.add("innerCircle");
+                                                        div.appendChild(inner);
+                     }
+                     if (div != null && !div.classList.contains(className)) {
                                 div.classList.add(className);
                             }
                             if (!td.classList.contains(className)) {
@@ -73,54 +108,55 @@ if(board.blockedShips != null){
             })
             }
     board.attacks.forEach((attack) => {
-        var row = attack.location.row-1;
-        var col = attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0);
-        var div = document.createElement('div');
-        var td = document.getElementById(elementId).rows[row].cells[col];
+        if (attack.result != "FLEETMOVE" && attack.result != "INVALID") {
+            var row = attack.location.row-1;
+            var col = attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0);
+            var div = document.createElement('div');
+            var td = document.getElementById(elementId).rows[row].cells[col];
 
-        if (elementId == "opponent" || attack.result === "MISS") {
-            td.appendChild(div);
-            div.classList.add("marker");
-        }
-        else
-            div = td.querySelector("div");
+            if (elementId == "opponent" || attack.result === "MISS") {
+                td.appendChild(div);
+                div.classList.add("marker");
+            }
+            else
+                div = td.querySelector("div");
 
-        let className;
-        if (attack.result === "MISS") {
-            className = "miss";
-            var inner = document.createElement('div');
-            inner.classList.add("innerCircle");
-            div.appendChild(inner);
-        }
-        else if (attack.result === "HIT")
-            className = (elementId == "player") ? "playerHit" : "hit";
-        else if (attack.result === "SUNK") {
-            className = (elementId == "player") ? "playerHit" : "hit";
-            td.classList.add(className);
-            checkSunk(elementId, attack.ship);
-        }
-        else if (attack.result === "SURRENDER") {
-            className = "hit";
-            td.classList.add(className);
-            checkSunk(elementId, attack.ship);
-            alert(surrenderText);
-        }
-        else if(attack.result == "BLOCKED")
-        className = "block"
-        else if (attack.result == "OCCUPIED") {
-            className = "occupiedSonar";
-        }
-        else if (attack.result == "EMPTY") {
-            className = "empty";
-        }
+            let className;
+            if (attack.result === "MISS") {
+                className = "miss";
+                var inner = document.createElement('div');
+                inner.classList.add("innerCircle");
+                div.appendChild(inner);
+            }
+            else if (attack.result === "HIT")
+                className = (elementId == "player") ? "playerHit" : "hit";
+            else if (attack.result === "SUNK") {
+                className = (elementId == "player") ? "playerHit" : "hit";
+                td.classList.add(className);
+                checkSunk(elementId, attack.ship);
+            }
+            else if (attack.result === "SURRENDER") {
+                className = "hit";
+                td.classList.add(className);
+                checkSunk(elementId, attack.ship);
+                alert(surrenderText);
+            }
+            else if(attack.result == "BLOCKED")
+            className = "block"
+            else if (attack.result == "OCCUPIED") {
+                className = "occupiedSonar";
+            }
+            else if (attack.result == "EMPTY") {
+                className = "empty";
+            }
 
-        if (!div.classList.contains(className)) {
-            div.classList.add(className);
+            if (div != null && !div.classList.contains(className)) {
+                div.classList.add(className);
+            }
+            if (div != null && !td.classList.contains(className)) {
+                td.classList.add(className);
+            }
         }
-        if (!td.classList.contains(className)) {
-            td.classList.add(className);
-        }
-
     })}
 
 
@@ -128,15 +164,34 @@ function addLog(board, user){ /* CHANGE HERE */
     if (isSetup){
         return
         }
-    var row = board.attacks[board.attacks.length - 1].location.row;
-    var col = board.attacks[board.attacks.length - 1].location.column;
+
     document.getElementById("Log").style.display = "block";
-    document.getElementById("LogMessages").append("||" + user + " " + board.attacks[board.attacks.length - 1].result + " " + col + row + "||" + "\n");
+    if (board.attacks[board.attacks.length - 1].result == "FLEETMOVE") {
+        document.getElementById("LogMessages").append("||" + user + " MOVED FLEET||" + '\n');
+    }
+    else {
+        var row = board.attacks[board.attacks.length - 1].location.row;
+            var col = board.attacks[board.attacks.length - 1].location.column;
+        document.getElementById("LogMessages").append("||" + user + " " + board.attacks[board.attacks.length - 1].result + " " + col + row + "||" + '\n');
+    }
     return
 }
 
+function sonarCheck(board) {                                /* checks if the player has sunk a ship */
+    if (isSetup) {
+       return
+    }
+    var isSunk = board.attacks[board.attacks.length - 1].result;
+    if(isSunk == "SUNK") {
+        if (!firstShipSunk) {
+                document.getElementById("LogMessages").append("||PLAYER UNLOCKED SPACE LASER||" + '\n');
+            }
+        firstShipSunk = true;
+    }
+}
+
 function redrawGrid() {
-    clearLogMessage();
+/*    clearLogMessage();*/
     Array.from(document.getElementById("opponent").childNodes).forEach((row) => row.remove());
     Array.from(document.getElementById("player").childNodes).forEach((row) => row.remove());
     makeGrid(document.getElementById("opponent"), false);
@@ -144,7 +199,6 @@ function redrawGrid() {
     if (game === undefined) {
         return;
     }
-
     game.playersBoard.ships.forEach((ship) => { for (var i = 0; i < ship.occupiedSquares.length; i++) {
         var square = ship.occupiedSquares[i];
         var cell = document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)];
@@ -178,8 +232,12 @@ function redrawGrid() {
     }});
     markHits(game.opponentsBoard, "opponent", "You won the game");
     addLog(game.opponentsBoard, "PLAYER");
+    sonarCheck(game.opponentsBoard);
     markHits(game.playersBoard, "player", "You lost the game");
     addLog(game.playersBoard, "OPPONENT");
+    if(!isSetup){
+    document.getElementById("LogMessages").append("=====================================" + '\n');
+    };
 }
 
 var oldListener;
@@ -211,9 +269,20 @@ function cellClick() {
             }
         });
     } else {
-        sendXhr("POST", "/attack", {game: game, x: row, y: col, sonar: sonar}, function(data) {
-            game = data;
-            redrawGrid();
+            sendXhr("POST", "/attack", {game: game, x: row, y: col, sonar: sonar}, function(data) {
+               game = data;
+               redrawGrid();
+               if(sonar) {
+                    sonarCount++;
+                    if(sonarCount == 2) {
+                    document.getElementById("sonar").click();
+                    sonar = false;
+                    document.getElementById("opponent").classList.remove("sonar");
+                    }
+               }
+               if (game.opponentsBoard.hasLaser && (!sonar || sonarCount >= 2)) {
+                           document.getElementById("opponent").classList.add("laser");
+                       }
         })
     }
 }
@@ -304,6 +373,19 @@ function place(size) {
     }
 }
 
+function setInput(button) {
+    title.style.visibility = "hidden";
+    button.style.visibility = "hidden";
+    document.getElementById("am_vertical").style.display = "block";
+    document.getElementById("Log").style.display = "block";
+}
+
+function moveShips(moveDir) {
+    sendXhr("POST", "/attack", {game: game, moveShip: true, moveDir: moveDir}, function(data) {
+         game = data;
+         redrawGrid();
+     })
+}
 
 function initGame() {
     makeGrid(document.getElementById("opponent"), false);
@@ -320,13 +402,48 @@ function initGame() {
         shipType = "BATTLESHIP";
        registerCellListener(place(4));
     });
+    document.getElementById("moveNorth").addEventListener("click", function(e) {
+        moveShips(85);
+    });
+    document.getElementById("moveSouth").addEventListener("click", function(e) {
+        moveShips(68);
+    });
+    document.getElementById("moveEast").addEventListener("click", function(e) {
+        moveShips(82);
+    });
+    document.getElementById("moveWest").addEventListener("click", function(e) {
+        moveShips(76);
+    });
     document.getElementById("sonar").addEventListener("click", function(e) {
-        sonar = document.getElementById("sonar").checked;
-        if (sonar) {
-            document.getElementById("opponent").classList.add("sonar");
+        if(!firstShipSunk){                                                         /*changes here, Chase! */
+            clearUserMessage();
+            document.getElementById("Log").style.display = "none";
+            document.getElementById("ErrorBox").style.display = "block";
+            document.getElementById("UserMessages").append("Sink one ship to access sonar.");
+            document.getElementById("sonar").click();
+        }
+         if(sonarCount == 2) {
+            clearUserMessage();
+            document.getElementById("Log").style.display = "none";
+            document.getElementById("ErrorBox").style.display = "block";
+            document.getElementById("UserMessages").append("Sonar can only be used twice per game.");
+            document.getElementById("sonar").click();
         }
         else {
-            document.getElementById("opponent").classList.remove("sonar");
+            sonar = document.getElementById("sonar").checked;
+                 if (sonar) {
+                     document.getElementById("opponent").classList.add("sonar");
+                     if (game.opponentsBoard.hasLaser) {
+                        document.getElementById("opponent").classList.remove("laser");
+                     }
+                 }
+                 else {
+                     document.getElementById("opponent").classList.remove("sonar");
+                     if (game.opponentsBoard.hasLaser) {
+                        document.getElementById("opponent").classList.add("laser");
+                     }
+                 }
+
         }
     });
     sendXhr("GET", "/game", {}, function(data) {

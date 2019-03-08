@@ -1,20 +1,19 @@
 <#import "../layout/defaultLayout.ftl.html" as layout>
 <@layout.myLayout "Home page">
 
-
-<h1>The Battleship game</h1>
-
 <table id="opponent" class="battleGrid" align="center">
 </table>
 <div class="centerContent">
     <div class="spacer ">
+        <br/><h1 id="title">Welcome to Battleship!</h1><br/><br/>
+        <button type="button"  id="startButton" onclick='setInput(this);'>START!</button>
         <div class="alert" id="ErrorBox" style="display:none">
             <div class="moveLeftOne vertical-center" id="UserMessages">
 
             </div>
         </div>
-        <div class="log" id="Log" style="display:block">
-            <div class="vertical-center" id="LogMessages">
+        <div class="log" id="Log" style="display:none">
+            <div class="log-center" id="LogMessages">
 
             </div>
         </div>
@@ -24,13 +23,13 @@
 <table id="player" class="battleGrid" align="center">
 </table>
 <div class="moveLeftTwo">
-    <ul class="removeStyleList place-left">
+    <label id="am_vertical" style="display: none"><ul class="removeStyleList place-left">
         <div>
 
             <li><label for="place_minesweeper" style="margin-right:10px;">Minesweeper</label><input type="radio" name="shipSelect"  id="place_minesweeper">
                 <div class="occupied1  ship1 left" style="margin-left:33px;"></div>
                 <div class="occupied1  ship1 right"></div>
-                <input  type="checkbox" name="is_vertical"id="is_vertical" class="inline" style="margin-left:23px;">Rotate ship</input></li>
+                <input  type="checkbox" name="is_vertical"id="is_vertical" class="inline" style="margin-left:50px;">Rotate ship</input></li>
         </div>
 
 
@@ -50,6 +49,15 @@
 
         </li>
     </ul>
+
+    <div>
+        <button id="moveNorth">Move North</button>
+        <button id="moveSouth">Move South</button>
+        <button id="moveEast">Move East</button>
+        <button id="moveWest">Move West</button>
+    </div>
+
+    </label>
 
 
 

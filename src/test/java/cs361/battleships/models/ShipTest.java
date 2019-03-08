@@ -179,4 +179,108 @@ public class ShipTest {
         assertTrue(minesweeper1.equals(minesweeper2));
         assertEquals(minesweeper1.hashCode(), minesweeper2.hashCode());
     }
+
+    @Test
+    public void testMoveOneSquareCorrectDirection() {
+        Ship s = new Ship("MINESWEEPER");
+        s.place('E', 5, true);
+
+        s.move('U');
+        assertEquals(s.getOccupiedSquares().get(0).getRow(), 4);
+        assertEquals(s.getOccupiedSquares().get(0).getColumn(), 'E');
+        assertEquals(s.getOccupiedSquares().get(1).getRow(), 5);
+        assertEquals(s.getOccupiedSquares().get(1).getColumn(), 'E');
+
+        s.move('D');
+        assertEquals(s.getOccupiedSquares().get(0).getRow(), 5);
+        assertEquals(s.getOccupiedSquares().get(0).getColumn(), 'E');
+        assertEquals(s.getOccupiedSquares().get(1).getRow(), 6);
+        assertEquals(s.getOccupiedSquares().get(1).getColumn(), 'E');
+
+        s.move('L');
+        assertEquals(s.getOccupiedSquares().get(0).getRow(), 5);
+        assertEquals(s.getOccupiedSquares().get(0).getColumn(), 'D');
+        assertEquals(s.getOccupiedSquares().get(1).getRow(), 6);
+        assertEquals(s.getOccupiedSquares().get(1).getColumn(), 'D');
+
+        s.move('R');
+        assertEquals(s.getOccupiedSquares().get(0).getRow(), 5);
+        assertEquals(s.getOccupiedSquares().get(0).getColumn(), 'E');
+        assertEquals(s.getOccupiedSquares().get(1).getRow(), 6);
+        assertEquals(s.getOccupiedSquares().get(1).getColumn(), 'E');
+    }
+
+    @Test
+    public void testDoNotMoveOverEdge() {
+        Ship s = new Ship("MINESWEEPER");
+        s.place('A', 1, true);
+        assertEquals(s.getOccupiedSquares().get(0).getRow(), 1);
+        assertEquals(s.getOccupiedSquares().get(0).getColumn(), 'A');
+        assertEquals(s.getOccupiedSquares().get(1).getRow(), 2);
+        assertEquals(s.getOccupiedSquares().get(1).getColumn(), 'A');
+        s.move('U');
+        assertEquals(s.getOccupiedSquares().get(0).getRow(), 1);
+        assertEquals(s.getOccupiedSquares().get(0).getColumn(), 'A');
+        assertEquals(s.getOccupiedSquares().get(1).getRow(), 2);
+        assertEquals(s.getOccupiedSquares().get(1).getColumn(), 'A');
+
+        s = new Ship("MINESWEEPER");
+        s.place('A', 9, true);
+        assertEquals(s.getOccupiedSquares().get(0).getRow(), 9);
+        assertEquals(s.getOccupiedSquares().get(0).getColumn(), 'A');
+        assertEquals(s.getOccupiedSquares().get(1).getRow(), 10);
+        assertEquals(s.getOccupiedSquares().get(1).getColumn(), 'A');
+        s.move('D');
+        assertEquals(s.getOccupiedSquares().get(0).getRow(), 9);
+        assertEquals(s.getOccupiedSquares().get(0).getColumn(), 'A');
+        assertEquals(s.getOccupiedSquares().get(1).getRow(), 10);
+        assertEquals(s.getOccupiedSquares().get(1).getColumn(), 'A');
+
+        s = new Ship("MINESWEEPER");
+        s.place('A', 1, true);
+        assertEquals(s.getOccupiedSquares().get(0).getRow(), 1);
+        assertEquals(s.getOccupiedSquares().get(0).getColumn(), 'A');
+        assertEquals(s.getOccupiedSquares().get(1).getRow(), 2);
+        assertEquals(s.getOccupiedSquares().get(1).getColumn(), 'A');
+        s.move('L');
+        assertEquals(s.getOccupiedSquares().get(0).getRow(), 1);
+        assertEquals(s.getOccupiedSquares().get(0).getColumn(), 'A');
+        assertEquals(s.getOccupiedSquares().get(1).getRow(), 2);
+        assertEquals(s.getOccupiedSquares().get(1).getColumn(), 'A');
+
+        s = new Ship("MINESWEEPER");
+        s.place('J', 1, true);
+        assertEquals(s.getOccupiedSquares().get(0).getRow(), 1);
+        assertEquals(s.getOccupiedSquares().get(0).getColumn(), 'J');
+        assertEquals(s.getOccupiedSquares().get(1).getRow(), 2);
+        assertEquals(s.getOccupiedSquares().get(1).getColumn(), 'J');
+        s.move('R');
+        assertEquals(s.getOccupiedSquares().get(0).getRow(), 1);
+        assertEquals(s.getOccupiedSquares().get(0).getColumn(), 'J');
+        assertEquals(s.getOccupiedSquares().get(1).getRow(), 2);
+        assertEquals(s.getOccupiedSquares().get(1).getColumn(), 'J');
+    }
+
+    @Test
+    public void testNoMoveOverlap() {
+        Ship s1 = new Ship("MINESWEEPER");
+        Ship s2 = new Ship("MINESWEEPER");
+
+        s1.place('A', 1, true);
+        s2.place('B', 1, true);
+        assertTrue(s2.checkMoveOverlap(s1, 'L'));
+        assertFalse(s2.checkMoveOverlap(s1, 'R'));
+        assertFalse(s2.checkMoveOverlap(s1, 'U'));
+        assertFalse(s2.checkMoveOverlap(s1, 'D'));
+
+        s1 = new Ship("MINESWEEPER");
+        s2 = new Ship("MINESWEEPER");
+
+        s1.place('A', 10, false);
+        s2.place('A', 9, false);
+        assertFalse(s2.checkMoveOverlap(s1, 'L'));
+        assertFalse(s2.checkMoveOverlap(s1, 'R'));
+        assertFalse(s2.checkMoveOverlap(s1, 'U'));
+        assertTrue(s2.checkMoveOverlap(s1, 'D'));
+    }
 }

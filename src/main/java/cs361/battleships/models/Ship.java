@@ -5,10 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.Sets;
 import com.mchange.v1.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 public class Ship {
 
@@ -20,7 +17,7 @@ public class Ship {
 	public Ship() {
 		occupiedSquares = new ArrayList<>();
 	}
-	
+
 	public Ship(String kind) {
 		this();
 		this.kind = kind;
@@ -40,9 +37,23 @@ public class Ship {
 		}
 	}
 
+	public Ship(Ship other) {
+		this.kind = other.getKind();
+		this.size = other.getSize();
+		this.captainHealth = other.getCaptainHealth();
+		this.occupiedSquares = new ArrayList<>();
+		for (Square s : other.getOccupiedSquares()) {
+			this.occupiedSquares.add(new Square(s));
+		}
+	}
+
 	public List<Square> getOccupiedSquares() {
 		return occupiedSquares;
 	}
+
+	public int getSize() { return size; }
+
+	public int getCaptainHealth() { return captainHealth; }
 
 	public void place(char col, int row, boolean isVertical) {
 		for (int i=0; i<size; i++) {
@@ -116,7 +127,54 @@ public class Ship {
 			return result;
 
 		}
+	}
 
+	private boolean validateMove(char moveDir) {
+		int tRow = maxRow();
+		int bRow = minRow();
+		char rCol = maxCol();
+		char lCol = minCol();
+
+		return (bRow > 1 && moveDir == 'U') || (tRow < 10 && moveDir == 'D') || (rCol < 'J' && moveDir == 'R') || (lCol > 'A' && moveDir == 'L');
+	}
+
+	public void move(char moveDir) {
+		if (validateMove(moveDir)) {
+			for (var s : occupiedSquares) {
+				s.move(moveDir);
+			}
+		}
+	}
+
+	public int maxRow() {
+		return occupiedSquares.stream().max(Comparator.comparing(s -> s.getRow())).get().getRow();
+	}
+
+	public int minRow() {
+		return occupiedSquares.stream().min(Comparator.comparing(s -> s.getRow())).get().getRow();
+	}
+
+	public char maxCol() {
+		return occupiedSquares.stream().max(Comparator.comparing(s -> s.getColumn())).get().getColumn();
+	}
+
+	public char minCol() {
+		return occupiedSquares.stream().min(Comparator.comparing(s -> s.getColumn())).get().getColumn();
+	}
+
+	public boolean checkMoveOverlap(Ship other, char moveDir) {
+		Ship moved = new Ship(this);
+		moved.move(moveDir);
+		return other.overlaps(moved);
+	}
+
+	public boolean checkMoveOverlap(List<Ship> others, char moveDir) {
+		for (Ship s : others) {
+			if (checkMoveOverlap(s, moveDir)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@JsonIgnore
