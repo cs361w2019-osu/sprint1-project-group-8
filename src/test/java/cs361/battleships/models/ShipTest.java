@@ -290,7 +290,7 @@ public class ShipTest {
     @Test
     public void testMoveOneSquareCorrectDirection() {
         Ship s = new Ship("MINESWEEPER");
-        s.place('E', 5, true);
+        s.place('E', 5, true, false);
 
         s.move('U');
         assertEquals(s.getOccupiedSquares().get(0).getRow(), 4);
@@ -320,7 +320,7 @@ public class ShipTest {
     @Test
     public void testDoNotMoveOverEdge() {
         Ship s = new Ship("MINESWEEPER");
-        s.place('A', 1, true);
+        s.place('A', 1, true, false);
         assertEquals(s.getOccupiedSquares().get(0).getRow(), 1);
         assertEquals(s.getOccupiedSquares().get(0).getColumn(), 'A');
         assertEquals(s.getOccupiedSquares().get(1).getRow(), 2);
@@ -332,7 +332,7 @@ public class ShipTest {
         assertEquals(s.getOccupiedSquares().get(1).getColumn(), 'A');
 
         s = new Ship("MINESWEEPER");
-        s.place('A', 9, true);
+        s.place('A', 9, true, false);
         assertEquals(s.getOccupiedSquares().get(0).getRow(), 9);
         assertEquals(s.getOccupiedSquares().get(0).getColumn(), 'A');
         assertEquals(s.getOccupiedSquares().get(1).getRow(), 10);
@@ -344,7 +344,7 @@ public class ShipTest {
         assertEquals(s.getOccupiedSquares().get(1).getColumn(), 'A');
 
         s = new Ship("MINESWEEPER");
-        s.place('A', 1, true);
+        s.place('A', 1, true, false);
         assertEquals(s.getOccupiedSquares().get(0).getRow(), 1);
         assertEquals(s.getOccupiedSquares().get(0).getColumn(), 'A');
         assertEquals(s.getOccupiedSquares().get(1).getRow(), 2);
@@ -356,7 +356,7 @@ public class ShipTest {
         assertEquals(s.getOccupiedSquares().get(1).getColumn(), 'A');
 
         s = new Ship("MINESWEEPER");
-        s.place('J', 1, true);
+        s.place('J', 1, true, false);
         assertEquals(s.getOccupiedSquares().get(0).getRow(), 1);
         assertEquals(s.getOccupiedSquares().get(0).getColumn(), 'J');
         assertEquals(s.getOccupiedSquares().get(1).getRow(), 2);
@@ -373,8 +373,8 @@ public class ShipTest {
         Ship s1 = new Ship("MINESWEEPER");
         Ship s2 = new Ship("MINESWEEPER");
 
-        s1.place('A', 1, true);
-        s2.place('B', 1, true);
+        s1.place('A', 1, true, false);
+        s2.place('B', 1, true, false);
         assertTrue(s2.checkMoveOverlap(s1, 'L'));
         assertFalse(s2.checkMoveOverlap(s1, 'R'));
         assertFalse(s2.checkMoveOverlap(s1, 'U'));
@@ -383,8 +383,8 @@ public class ShipTest {
         s1 = new Ship("MINESWEEPER");
         s2 = new Ship("MINESWEEPER");
 
-        s1.place('A', 10, false);
-        s2.place('A', 9, false);
+        s1.place('A', 10, false, false);
+        s2.place('A', 9, false, false);
         assertFalse(s2.checkMoveOverlap(s1, 'L'));
         assertFalse(s2.checkMoveOverlap(s1, 'R'));
         assertFalse(s2.checkMoveOverlap(s1, 'U'));
