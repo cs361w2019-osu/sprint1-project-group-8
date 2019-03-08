@@ -10,6 +10,7 @@ public class Square {
 	@JsonProperty private char column;
 	@JsonProperty private boolean hit = false;
 	@JsonProperty private boolean isCaptain = false;
+	@JsonProperty private boolean isSubmerged = false;
 
 	public Square() {
 	}
@@ -56,11 +57,23 @@ public class Square {
 	public void setCaptain(){
 		this.isCaptain = true;
 	}
-
+	public boolean getIsSubmerged(){
+		return isSubmerged;
+	}
+	public void setIsSubmerged(){
+		this.isSubmerged = true;
+	}
 	@Override
 	public boolean equals(Object other) {
 		if (other instanceof Square) {
 			return ((Square) other).row == this.row && ((Square) other).column == this.column;
+		}
+		return false;
+	}
+
+	public boolean equals(Object other, boolean checkSubmerge) {
+		if (other instanceof Square) {
+			return ((Square) other).row == this.row && ((Square) other).column == this.column && ((Square)other).isSubmerged == this.isSubmerged;
 		}
 		return false;
 	}

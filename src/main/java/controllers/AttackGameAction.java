@@ -26,6 +26,7 @@ public class AttackGameAction {
 
     public boolean getActionSonar() { return sonar; }
 
+
     public boolean getActionMoveShip() { return moveShip; }
 
     public char getActionMoveDir() { return moveDir; }

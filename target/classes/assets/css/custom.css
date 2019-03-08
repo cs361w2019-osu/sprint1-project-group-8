@@ -1,5 +1,12 @@
 /* Add additional stylesheets below
 -------------------------------------------------- */
+.overlapShip{
+
+ background-color: grey;
+
+
+
+}
 
 .captain{
 background-color: brown !important;
@@ -22,6 +29,10 @@ h1{
 
 .occupied1 {
    background-color: blue;
+    border: 2px solid black;
+}
+.occupiedSubmerged {
+   background-color: green;
     border: 2px solid black;
 }
 
