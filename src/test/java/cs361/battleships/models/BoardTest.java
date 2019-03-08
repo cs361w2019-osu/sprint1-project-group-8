@@ -200,9 +200,9 @@ public class BoardTest {
 
     @Test
     public void testMoveOneSquareCorrectDirection() {
-        board.placeShip(new Ship("MINESWEEPER"), 6, 'D', true);
-        board.placeShip(new Ship("DESTROYER"), 6, 'E', true);
-        board.placeShip(new Ship("BATTLESHIP"), 6, 'F', true);
+        board.placeShip(new Ship("MINESWEEPER"), 6, 'D', true, false);
+        board.placeShip(new Ship("DESTROYER"), 6, 'E', true, false);
+        board.placeShip(new Ship("BATTLESHIP"), 6, 'F', true, false);
 
         board.moveShips('L');
         assertEquals(board.getShips().stream().filter(s -> s.getKind() == "MINESWEEPER").findFirst().get().getOccupiedSquares().get(0).getRow(), 6);
@@ -239,9 +239,9 @@ public class BoardTest {
 
     @Test
     public void testNoMoveOverlap() {
-        board.placeShip(new Ship("MINESWEEPER"), 2, 'A', true);
-        board.placeShip(new Ship("DESTROYER"), 2, 'B', true);
-        board.placeShip(new Ship("BATTLESHIP"), 1, 'B', false);
+        board.placeShip(new Ship("MINESWEEPER"), 2, 'A', true, false);
+        board.placeShip(new Ship("DESTROYER"), 2, 'B', true, false);
+        board.placeShip(new Ship("BATTLESHIP"), 1, 'B', false, false);
 
         board.moveShips('L');
         assertEquals(board.getShips().stream().filter(s -> s.getKind() == "MINESWEEPER").findFirst().get().getOccupiedSquares().get(0).getRow(), 2);
@@ -260,9 +260,9 @@ public class BoardTest {
         assertEquals(board.getShips().stream().filter(s -> s.getKind() == "BATTLESHIP").findFirst().get().getOccupiedSquares().get(0).getColumn(), 'A');
 
         board = new Board();
-        board.placeShip(new Ship("MINESWEEPER"), 10, 'I', false);
-        board.placeShip(new Ship("DESTROYER"), 8, 'H', true);
-        board.placeShip(new Ship("BATTLESHIP"), 7, 'G', false);
+        board.placeShip(new Ship("MINESWEEPER"), 10, 'I', false, false);
+        board.placeShip(new Ship("DESTROYER"), 8, 'H', true, false);
+        board.placeShip(new Ship("BATTLESHIP"), 7, 'G', false, false);
 
         board.moveShips('D');
         assertEquals(board.getShips().stream().filter(s -> s.getKind() == "MINESWEEPER").findFirst().get().getOccupiedSquares().get(0).getRow(), 10);
@@ -283,7 +283,7 @@ public class BoardTest {
     public void testAttackWithSpaceLaser() {
         board.unlockLaser();
         Ship minesweeper = new Ship("MINESWEEPER");
-        board.placeShip(minesweeper, 1, 'A', true);
+        board.placeShip(minesweeper, 1, 'A', true, false);
         minesweeper = board.getShips().get(0);
         Result result = board.attack(1, 'A');
         assertEquals(AtackStatus.SURRENDER, result.getResult());
