@@ -11,6 +11,7 @@ public class Board {
 	@JsonProperty private List<Ship> ships;
 	@JsonProperty private List<Result> attacks;
 	@JsonProperty private List<Result> blockedShips;
+	@JsonProperty private List <Ship> submergedSquares;
 	@JsonProperty private int last;
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
@@ -19,28 +20,33 @@ public class Board {
 		ships = new ArrayList<>();
 		attacks = new ArrayList<>();
 		blockedShips = new ArrayList<>();
+		submergedSquares = new ArrayList<>();
 		last = 0;
 	}
 
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
-	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
-		if (ships.size() >= 3) {
+	public boolean placeShip(Ship ship, int x, char y, boolean isVertical, boolean isSubmerged) {
+		if (ships.size() >= 4) {
 			return false;
 		}
 		if (ships.stream().anyMatch(s -> s.getKind().equals(ship.getKind()))) {
 			return false;
 		}
 		final var placedShip = new Ship(ship.getKind());
-		placedShip.place(y, x, isVertical);
+
+		placedShip.place(y, x, isVertical, isSubmerged);
 		if (ships.stream().anyMatch(s -> s.overlaps(placedShip))) {
 			return false;
 		}
 		if (placedShip.getOccupiedSquares().stream().anyMatch(s -> s.isOutOfBounds())) {
 			return false;
 		}
-		ships.add(placedShip);
+
+			ships.add(placedShip);
+
+
 		return true;
 	}
 
