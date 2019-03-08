@@ -70,7 +70,7 @@ public class Board {
 
 	private Result attack(Square s) {
 
-		if (attacks.stream().anyMatch(r -> r.getLocation().equals(s) && !r.getResult().equals(AtackStatus.OCCUPIED) && !r.getResult().equals(AtackStatus.EMPTY))) {
+		if (attacks.stream().anyMatch(r -> r.getLocation().equals(s) && !r.getResult().equals(AtackStatus.OCCUPIED) && !r.getResult().equals(AtackStatus.EMPTY) && !r.getResult().equals(AtackStatus.FLEETMOVE))) {
 
 			var attackResult = new Result(s);
 			attackResult.setResult(AtackStatus.INVALID);
@@ -140,13 +140,17 @@ public class Board {
 			}
 		}
 
-		Result r = new Result();
-		r.setResult(AtackStatus.FLEETMOVE);
-		return r;
+		Result result = new Result(new Square(0, 'Z'));
+		result.setResult(AtackStatus.FLEETMOVE);
+		return result;
 	}
 
 	public void unlockLaser() {
 		hasLaser = true;
+	}
+
+	public void trackOpponentMove(Result result) {
+		attacks.add(result);
 	}
 
 	List<Ship> getShips() {

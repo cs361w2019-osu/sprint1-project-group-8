@@ -69,7 +69,7 @@ public class Game {
         if (moveDir != 'U' && moveDir != 'D' && moveDir != 'L' && moveDir != 'R')
             return false;
 
-        playersBoard.moveShips(moveDir);
+        opponentsBoard.trackOpponentMove(playersBoard.moveShips(moveDir));
         opponentAttack();
         return true;
     }

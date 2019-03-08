@@ -162,11 +162,11 @@ text-align:center;
     border: 3px dashed rgba(248, 97, 16, 1);
 }
 
-#opponent.sonar td:hover, #opponent.sonar.laser td:hover {
+#opponent.sonar td:hover {
     background-color: rgba(178, 103, 253, 0.4);
 }
 
-#opponent.sonar td:hover:after, #opponent.sonar.laser td:hover {
+#opponent.sonar td:hover:after {
     content: '';
     position: absolute;
     left: 0;
