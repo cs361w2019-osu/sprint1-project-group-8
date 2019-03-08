@@ -28,7 +28,12 @@ function checkSunk(elementId, ship) {
             var cell = document.getElementById("opponent").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)];
             var div = cell.querySelector("div");
 
-            if (i == 0) {
+            if (i == 0 && div != null) {
+                div = document.createElement('div');
+                cell.appendChild(div);
+                div.classList.add("marker");
+                div.classList.add("hit");
+
                 if (square.row != ship.occupiedSquares[i + 1].row) {
                     div.classList.add("up");
                 }
@@ -36,7 +41,33 @@ function checkSunk(elementId, ship) {
                     div.classList.add("left");
                 }
             }
-            else if (i == ship.occupiedSquares.length - 1) {
+            else if (i == 0 && div == null) {
+                div = document.createElement('div');
+                cell.appendChild(div);
+                div.classList.add("marker");
+                div.classList.add("hit");
+
+                if (square.row != ship.occupiedSquares[i + 1].row) {
+                    div.classList.add("up");
+                }
+                else {
+                    div.classList.add("left");
+                }
+            }
+            else if (i == ship.occupiedSquares.length - 1 && div != null) {
+                if (square.row != ship.occupiedSquares[i - 1].row) {
+                    div.classList.add("down");
+                }
+                else {
+                    div.classList.add("right");
+                }
+            }
+            else if (i == ship.occupiedSquares.length - 1 && div == null) {
+                div = document.createElement('div');
+                cell.appendChild(div);
+                div.classList.add("marker");
+                div.classList.add("hit");
+
                 if (square.row != ship.occupiedSquares[i - 1].row) {
                     div.classList.add("down");
                 }
@@ -56,7 +87,7 @@ if(board.blockedShips != null){
                     var col = block.location.column.charCodeAt(0) - 'A'.charCodeAt(0);
                     var div = document.createElement('div');
                     var td = document.getElementById(elementId).rows[row].cells[col];
-                     if (elementId == "opponent" || attack.result === "MISS") {
+                     if (elementId == "opponent" || block.result === "MISS") {
                                 td.appendChild(div);
                                 div.classList.add("marker");
                             }
@@ -64,11 +95,13 @@ if(board.blockedShips != null){
                                 div = td.querySelector("div");
                     let className;
 
-                    className = "miss";
-                    var inner = document.createElement('div');
-                                inner.classList.add("innerCircle");
-                                div.appendChild(inner);
-                     if (!div.classList.contains(className)) {
+                     if (div != null) {
+                        className = "miss";
+                                            var inner = document.createElement('div');
+                                                        inner.classList.add("innerCircle");
+                                                        div.appendChild(inner);
+                     }
+                     if (div != null && !div.classList.contains(className)) {
                                 div.classList.add(className);
                             }
                             if (!td.classList.contains(className)) {
@@ -77,54 +110,55 @@ if(board.blockedShips != null){
             })
             }
     board.attacks.forEach((attack) => {
-        var row = attack.location.row-1;
-        var col = attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0);
-        var div = document.createElement('div');
-        var td = document.getElementById(elementId).rows[row].cells[col];
+        if (attack.result != "FLEETMOVE" && attack.result != "INVALID") {
+            var row = attack.location.row-1;
+            var col = attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0);
+            var div = document.createElement('div');
+            var td = document.getElementById(elementId).rows[row].cells[col];
 
-        if (elementId == "opponent" || attack.result === "MISS") {
-            td.appendChild(div);
-            div.classList.add("marker");
-        }
-        else
-            div = td.querySelector("div");
+            if (elementId == "opponent" || attack.result === "MISS") {
+                td.appendChild(div);
+                div.classList.add("marker");
+            }
+            else
+                div = td.querySelector("div");
 
-        let className;
-        if (attack.result === "MISS") {
-            className = "miss";
-            var inner = document.createElement('div');
-            inner.classList.add("innerCircle");
-            div.appendChild(inner);
-        }
-        else if (attack.result === "HIT")
-            className = (elementId == "player") ? "playerHit" : "hit";
-        else if (attack.result === "SUNK") {
-            className = (elementId == "player") ? "playerHit" : "hit";
-            td.classList.add(className);
-            checkSunk(elementId, attack.ship);
-        }
-        else if (attack.result === "SURRENDER") {
-            className = "hit";
-            td.classList.add(className);
-            checkSunk(elementId, attack.ship);
-            alert(surrenderText);
-        }
-        else if(attack.result == "BLOCKED")
-        className = "block"
-        else if (attack.result == "OCCUPIED") {
-            className = "occupiedSonar";
-        }
-        else if (attack.result == "EMPTY") {
-            className = "empty";
-        }
+            let className;
+            if (attack.result === "MISS") {
+                className = "miss";
+                var inner = document.createElement('div');
+                inner.classList.add("innerCircle");
+                div.appendChild(inner);
+            }
+            else if (attack.result === "HIT")
+                className = (elementId == "player") ? "playerHit" : "hit";
+            else if (attack.result === "SUNK") {
+                className = (elementId == "player") ? "playerHit" : "hit";
+                td.classList.add(className);
+                checkSunk(elementId, attack.ship);
+            }
+            else if (attack.result === "SURRENDER") {
+                className = "hit";
+                td.classList.add(className);
+                checkSunk(elementId, attack.ship);
+                alert(surrenderText);
+            }
+            else if(attack.result == "BLOCKED")
+            className = "block"
+            else if (attack.result == "OCCUPIED") {
+                className = "occupiedSonar";
+            }
+            else if (attack.result == "EMPTY") {
+                className = "empty";
+            }
 
-        if (!div.classList.contains(className)) {
-            div.classList.add(className);
+            if (div != null && !div.classList.contains(className)) {
+                div.classList.add(className);
+            }
+            if (div != null && !td.classList.contains(className)) {
+                td.classList.add(className);
+            }
         }
-        if (!td.classList.contains(className)) {
-            td.classList.add(className);
-        }
-
     })}
 
 
@@ -132,10 +166,17 @@ function addLog(board, user){ /* CHANGE HERE */
     if (isSetup){
         return
         }
-    var row = board.attacks[board.attacks.length - 1].location.row;
-    var col = board.attacks[board.attacks.length - 1].location.column;
+
     document.getElementById("Log").style.display = "block";
-    document.getElementById("LogMessages").append("||" + user + " " + board.attacks[board.attacks.length - 1].result + " " + col + row + "||" + '\n');
+
+    if (board.attacks[board.attacks.length - 1].result == "FLEETMOVE") {
+        document.getElementById("LogMessages").append("||" + user + " MOVED FLEET||" + '\n');
+    }
+    else {
+        var row = board.attacks[board.attacks.length - 1].location.row;
+            var col = board.attacks[board.attacks.length - 1].location.column;
+        document.getElementById("LogMessages").append("||" + user + " " + board.attacks[board.attacks.length - 1].result + " " + col + row + "||" + '\n');
+    }
     return
 }
 
@@ -145,6 +186,9 @@ function sonarCheck(board) {                                /* checks if the pla
     }
     var isSunk = board.attacks[board.attacks.length - 1].result;
     if(isSunk == "SUNK") {
+        if (!firstShipSunk) {
+                document.getElementById("LogMessages").append("||PLAYER UNLOCKED SPACE LASER||" + '\n');
+            }
         firstShipSunk = true;
     }
 }
@@ -158,7 +202,6 @@ function redrawGrid() {
     if (game === undefined) {
         return;
     }
-
 
     game.playersBoard.ships.forEach((ship) => {
 
@@ -268,7 +311,8 @@ var cell = document.getElementById("player").rows[ship.occupiedSquares[ship.occu
 
     markHits(game.opponentsBoard, "opponent", "You won the game");
     addLog(game.opponentsBoard, "PLAYER");
-    sonarCheck(game.opponentsBoard)
+
+    sonarCheck(game.opponentsBoard);
     markHits(game.playersBoard, "player", "You lost the game");
     addLog(game.playersBoard, "OPPONENT");
     if(!isSetup){
@@ -327,6 +371,9 @@ function cellClick() {
                     document.getElementById("opponent").classList.remove("sonar");
                     }
                }
+               if (game.opponentsBoard.hasLaser && (!sonar || sonarCount >= 2)) {
+                           document.getElementById("opponent").classList.add("laser");
+                       }
         })
     }
 }
@@ -489,6 +536,13 @@ function setInput(button) {
     document.getElementById("Log").style.display = "block";
 }
 
+function moveShips(moveDir) {
+    sendXhr("POST", "/attack", {game: game, moveShip: true, moveDir: moveDir}, function(data) {
+         game = data;
+         redrawGrid();
+     })
+}
+
 function initGame() {
     makeGrid(document.getElementById("opponent"), false);
     makeGrid(document.getElementById("player"), true);
@@ -508,6 +562,18 @@ function initGame() {
             shipType = "SUBMARINE";
            registerCellListener(place(5));
         });
+    document.getElementById("moveNorth").addEventListener("click", function(e) {
+        moveShips(85);
+    });
+    document.getElementById("moveSouth").addEventListener("click", function(e) {
+        moveShips(68);
+    });
+    document.getElementById("moveEast").addEventListener("click", function(e) {
+        moveShips(82);
+    });
+    document.getElementById("moveWest").addEventListener("click", function(e) {
+        moveShips(76);
+    });
     document.getElementById("sonar").addEventListener("click", function(e) {
         if(!firstShipSunk){                                                         /*changes here, Chase! */
             clearUserMessage();
@@ -526,11 +592,19 @@ function initGame() {
         else {
             sonar = document.getElementById("sonar").checked;
                  if (sonar) {
-                       document.getElementById("opponent").classList.add("sonar");
+
+                     document.getElementById("opponent").classList.add("sonar");
+                     if (game.opponentsBoard.hasLaser) {
+                        document.getElementById("opponent").classList.remove("laser");
+                     }
                  }
                  else {
-                       document.getElementById("opponent").classList.remove("sonar");
+                     document.getElementById("opponent").classList.remove("sonar");
+                     if (game.opponentsBoard.hasLaser) {
+                        document.getElementById("opponent").classList.add("laser");
+                     }
                  }
+
         }
     });
     sendXhr("GET", "/game", {}, function(data) {

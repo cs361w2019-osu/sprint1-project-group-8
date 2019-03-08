@@ -54,4 +54,17 @@ public class SquareTest {
         square1.setCaptain();
         assertTrue(square1.getIsCaptain());
     }
+
+    @Test
+    public void testMoveOneSquareCorrectDirection(){
+        Square s = new Square(5, 'E');
+        s.move('U');
+        assertTrue(s.getRow() == 4);
+        s.move('D');
+        assertTrue(s.getRow() == 5);
+        s.move('L');
+        assertTrue(s.getColumn() == 'D');
+        s.move('R');
+        assertTrue(s.getColumn() == 'E');
+    }
 }

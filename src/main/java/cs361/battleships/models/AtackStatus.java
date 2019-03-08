@@ -37,5 +37,8 @@ public enum AtackStatus {
 	 * The result if a square in a sonar pulse is occupied
 	 */
 	OCCUPIED,
+
 	BLOCKED,
+
+	FLEETMOVE,
 }

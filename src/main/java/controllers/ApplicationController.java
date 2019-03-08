@@ -32,7 +32,15 @@ public class ApplicationController {
 
     public Result attack(Context context, AttackGameAction g) {
         Game game = g.getGame();
-        boolean result = game.attack(g.getActionRow(), g.getActionColumn(), g.getActionSonar());
+        boolean result;
+
+        if (g.getActionMoveShip()) {
+            result = game.moveShips(g.getActionMoveDir());
+        }
+        else {
+            result = game.attack(g.getActionRow(), g.getActionColumn(), g.getActionSonar());
+        }
+
         if (result) {
             return Results.json().render(game);
         } else {

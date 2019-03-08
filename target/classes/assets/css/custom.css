@@ -7,6 +7,7 @@
 
 
 }
+
 .captain{
 background-color: brown !important;
 }
@@ -184,6 +185,20 @@ text-align:center;
     top: 0;
     bottom: 0;
     border: 3px dashed rgba(178, 103, 253, 1);
+}
+
+#opponent.laser td:hover {
+    background-color: rgba(73, 250, 15, 0.4);
+}
+
+#opponent.laser td:hover:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border: 3px dashed rgba(73, 250, 15, 1);
 }
 
 #player td:hover {
