@@ -73,7 +73,7 @@ public class Square {
 
 	public boolean equals(Object other, boolean checkSubmerge) {
 		if (other instanceof Square) {
-			return ((Square) other).row == this.row && ((Square) other).column == this.column && ((Square)other).isSubmerged == this.isSubmerged;
+			return ((Square) other).row == this.row && ((Square) other).column == this.column && checkSubmerge == this.isSubmerged;
 		}
 		return false;
 	}

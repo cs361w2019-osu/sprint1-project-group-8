@@ -26,6 +26,9 @@ public class Board {
 		hasLaser = false;
 	}
 
+	public void changeLaserForTest(boolean setLaser){
+		hasLaser = setLaser;
+	}
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
@@ -88,12 +91,35 @@ public class Board {
 			var attackResult = new Result(s);
 			return attackResult;
 		}
+
+		var canHitSub = false;
 		var hitShip = shipsAtLocation.get(0);
-		var attackResult = hitShip.attack(s.getRow(), s.getColumn());
+
+		if(hitShip.getOccupiedSquares().get(0).getIsSubmerged() && hasLaser){
+			canHitSub = true;
+		}
+		var attackResult = hitShip.attack(s.getRow(), s.getColumn(), canHitSub);
+
 		if (attackResult.getResult() == AtackStatus.SUNK) {
 			if (ships.stream().allMatch(ship -> ship.isSunk())) {
 				attackResult.setResult(AtackStatus.SURRENDER);
 			}
+		}
+		if(shipsAtLocation.size() > 1 ){
+			canHitSub = false;
+			 hitShip = shipsAtLocation.get(1);
+
+			if(hitShip.getOccupiedSquares().get(1).getIsSubmerged() && hasLaser){
+				canHitSub = true;
+			}
+			 attackResult = hitShip.attack(s.getRow(), s.getColumn(), canHitSub);
+
+			if (attackResult.getResult() == AtackStatus.SUNK) {
+				if (ships.stream().allMatch(ship -> ship.isSunk())) {
+					attackResult.setResult(AtackStatus.SURRENDER);
+				}
+			}
+
 		}
 		return attackResult;
 	}
