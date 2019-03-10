@@ -18,6 +18,14 @@ public class BoardTest {
     public void setUp() {
         board = new Board();
     }
+    @Test
+    public void testValidPlacement() {
+
+
+        assertTrue(board.placeShip(new Ship("SUBMARINE"), 10, 'G', false, false));
+
+
+    }
 
     @Test
     public void testInvalidPlacement() {
@@ -52,6 +60,28 @@ public class BoardTest {
         assertTrue(board.placeShip(new Ship("BATTLESHIP"), 7, 'B', true, false));
 
         assertEquals(board.getShips().get(0).getOccupiedSquares().size(), 5);
+
+    }
+    @Test
+    public void testPlace3WithSub3() {
+        assertTrue(board.placeShip(new Ship("SUBMARINE"), 3, 'D', false, false));
+        assertFalse(board.placeShip(new Ship("DESTROYER"), 3, 'D', false, false));
+        assertFalse(board.placeShip(new Ship("BATTLESHIP"), 2, 'F', false, false));
+    }
+    @Test
+    public void testPlaceSubEdge() {
+        board.placeShip(new Ship("SUBMARINE"), 10, 'G', false, false);
+        assertEquals(board.getShips().get(0).getSize(), 5);
+        assertEquals(board.getShips().get(0).getOccupiedSquares().get(0).getRow(), 10);
+        assertEquals(board.getShips().get(0).getOccupiedSquares().get(1).getRow(), 10);
+        assertEquals(board.getShips().get(0).getOccupiedSquares().get(2).getRow(), 10);
+        assertEquals(board.getShips().get(0).getOccupiedSquares().get(3).getRow(), 10);
+        assertEquals(board.getShips().get(0).getOccupiedSquares().get(4).getRow(), 9);
+        assertEquals(board.getShips().get(0).getOccupiedSquares().get(0).getColumn(), 'G');
+        assertEquals(board.getShips().get(0).getOccupiedSquares().get(1).getColumn(), 'H');
+        assertEquals(board.getShips().get(0).getOccupiedSquares().get(2).getColumn(), 'I');
+        assertEquals(board.getShips().get(0).getOccupiedSquares().get(3).getColumn(), 'J');
+        assertEquals(board.getShips().get(0).getOccupiedSquares().get(4).getColumn(), 'I');
 
     }
     @Test
