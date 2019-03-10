@@ -14,6 +14,7 @@ public class Routes implements ApplicationRoutes {
         router.GET().route("/").with(ApplicationController::index);
         router.GET().route("/game").with(ApplicationController::newGame);
         router.POST().route("/place").with(ApplicationController::placeShip);
+        router.POST().route("/place1").with(ApplicationController::placeShip1);
         router.POST().route("/attack").with(ApplicationController::attack);
 
         ///////////////////////////////////////////////////////////////////////

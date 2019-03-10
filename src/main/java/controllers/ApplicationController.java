@@ -29,7 +29,16 @@ public class ApplicationController {
             return Results.badRequest();
         }
     }
-
+    public Result placeShip1(Context context, PlacementGameAction g) {
+        Game game = g.getGame();
+        Ship ship = new Ship(g.getShipType());
+        boolean result = game.placeShip(ship, g.getActionRow(), g.getActionColumn(), g.isVertical(), g.isSubmerged());
+        if (result) {
+            return Results.json().render(game);
+        } else {
+            return Results.badRequest();
+        }
+    }
     public Result attack(Context context, AttackGameAction g) {
         Game game = g.getGame();
         boolean result;

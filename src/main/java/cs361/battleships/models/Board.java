@@ -29,11 +29,8 @@ public class Board {
 	public void changeLaserForTest(boolean setLaser){
 		hasLaser = setLaser;
 	}
-	/*
-	DO NOT change the signature of this method. It is used by the grading scripts.
-	 */
-	public boolean placeShip(Ship ship, int x, char y, boolean isVertical, boolean isSubmerged) {
-		if (ships.size() >= 4) {
+	public boolean placeShip1(Ship ship, int x, char y, boolean isVertical, boolean isSubmerged) {
+		if (ships.size() >= 5) {
 			return false;
 		}
 		if (ships.stream().anyMatch(s -> s.getKind().equals(ship.getKind()))) {
@@ -42,6 +39,33 @@ public class Board {
 		final var placedShip = new Ship(ship.getKind());
 
 		placedShip.place(y, x, isVertical, isSubmerged);
+		if (ships.stream().anyMatch(s -> s.overlaps(placedShip))) {
+			return false;
+		}
+		if (placedShip.getOccupiedSquares().stream().anyMatch(s -> s.isOutOfBounds())) {
+			return false;
+		}
+
+		ships.add(placedShip);
+
+
+		return true;
+	}
+	/*
+	DO NOT change the signature of this method. It is used by the grading scripts.
+	 */
+	public boolean placeShip(Ship ship, int x, char y, boolean isVertical, boolean isSubmerged) {
+		if (ships.size() >= 5) {
+			return false;
+		}
+		if (ships.stream().anyMatch(s -> s.getKind().equals(ship.getKind()))) {
+			return false;
+		}
+		final var placedShip = new Ship(ship.getKind());
+
+		placedShip.place(y, x, isVertical, isSubmerged);
+
+
 		if (ships.stream().anyMatch(s -> s.overlaps(placedShip))) {
 			return false;
 		}
