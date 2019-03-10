@@ -176,145 +176,6 @@ public class ShipTest {
 
     }
     @Test
-    public void testAttackSubmergedSubAndSurfaceShipWithLaser() {
-        Ship sub = new Ship("SUBMARINE");
-        sub.place('B', 3, true, true);
-        List<Square> occupiedSquares = sub.getOccupiedSquares();
-        ArrayList<Object> expected = new ArrayList<>();
-        expected.add(new Square(3, 'B'));
-        expected.add(new Square(4, 'B'));
-        expected.add(new Square(5, 'B'));
-        expected.add(new Square(6, 'B'));
-        expected.add(new Square(4, 'A'));
-        assertEquals(expected, occupiedSquares);
-        for(int i = 0; i < occupiedSquares.size(); i++){
-            assertTrue(occupiedSquares.get(i).getIsSubmerged());
-
-        }
-
-        List<Square> check1 = sub.getCheck(3, 'B', true);
-        assertEquals(check1.size(), 1);
-        check1 = sub.getCheck(3, 'B', true);
-        assertEquals(check1.size(), 1);
-
-        Ship battleship = new Ship("BATTLESHIP");
-        battleship.place('B', 3, false, false);
-
-        List<Square> check = battleship.getCheck(3, 'B', false);
-        assertEquals(check.size(), 1);
-        check = sub.getCheck(3, 'B', true);
-        assertEquals(check.size(), 1);
-
-        var result = battleship.attack(3, 'B', false);
-        assertEquals(AtackStatus.HIT, result.getResult());
-        var result2 = sub.attack(3, 'B', true);
-        assertEquals(AtackStatus.HIT, result2.getResult());
-
-
-       var result3 = sub.attack(4, 'B', true);
-        assertEquals(AtackStatus.HIT, result3.getResult());
-        assertEquals(result3.getShip(), sub);
-         var result4 = sub.attack(5, 'B', true);
-        assertEquals(AtackStatus.HIT, result4.getResult());
-        var result5 =  sub.attack(6, 'B', true);
-        assertEquals(AtackStatus.BLOCKED, result5.getResult());
-       var result6 = sub.attack(4, 'A', true);
-        assertEquals(AtackStatus.HIT, result6.getResult());
-        var result7 = sub.attack(6, 'B', true);
-        assertEquals(AtackStatus.SUNK, result7.getResult());
-
-
-
-
-    }
-
-    @Test
-    public void testAttackSubmergedSubAndSurfaceShipWithLaserAndCaptains() {
-        Ship sub = new Ship("SUBMARINE");
-        sub.place('B', 3, true, true);
-        List<Square> occupiedSquares = sub.getOccupiedSquares();
-        ArrayList<Object> expected = new ArrayList<>();
-        expected.add(new Square(3, 'B'));
-        expected.add(new Square(4, 'B'));
-        expected.add(new Square(5, 'B'));
-        expected.add(new Square(6, 'B'));
-        expected.add(new Square(4, 'A'));
-        assertEquals(expected, occupiedSquares);
-        for(int i = 0; i < occupiedSquares.size(); i++){
-            assertTrue(occupiedSquares.get(i).getIsSubmerged());
-
-        }
-
-        List<Square> check1 = sub.getCheck(3, 'B', true);
-        assertEquals(check1.size(), 1);
-        check1 = sub.getCheck(3, 'B', true);
-        assertEquals(check1.size(), 1);
-
-        Ship battleship = new Ship("BATTLESHIP");
-        battleship.place('B', 3, false, false);
-
-        List<Square> check = battleship.getCheck(3, 'B', false);
-        assertEquals(check.size(), 1);
-        check = sub.getCheck(3, 'B', true);
-        assertEquals(check.size(), 1);
-
-        var result = battleship.attack(3, 'B', false);
-        assertEquals(AtackStatus.HIT, result.getResult());
-        var result2 = sub.attack(3, 'B', true);
-        assertEquals(AtackStatus.HIT, result2.getResult());
-        var result5 =  sub.attack(6, 'B', true);
-        assertEquals(AtackStatus.BLOCKED, result5.getResult());
-
-        var result7 = sub.attack(6, 'B', true);
-        assertEquals(AtackStatus.SUNK, result7.getResult());
-
-    }
-
-    @Test
-    public void testAttackSubmergedSubAndSurfaceShipWithNoLaser() {
-        Ship sub = new Ship("SUBMARINE");
-        sub.place('B', 3, true, true);
-        List<Square> occupiedSquares = sub.getOccupiedSquares();
-        ArrayList<Object> expected = new ArrayList<>();
-        expected.add(new Square(3, 'B'));
-        expected.add(new Square(4, 'B'));
-        expected.add(new Square(5, 'B'));
-        expected.add(new Square(6, 'B'));
-        expected.add(new Square(4, 'A'));
-        assertEquals(expected, occupiedSquares);
-        for(int i = 0; i < occupiedSquares.size(); i++){
-            assertTrue(occupiedSquares.get(i).getIsSubmerged());
-
-        }
-
-        List<Square> check1 = sub.getCheck(3, 'B', true);
-        assertEquals(check1.size(), 1);
-        check1 = sub.getCheck(3, 'B', true);
-        assertEquals(check1.size(), 1);
-
-        Ship battleship = new Ship("BATTLESHIP");
-        battleship.place('B', 3, false, false);
-
-        List<Square> check = battleship.getCheck(3, 'B', false);
-        assertEquals(check.size(), 1);
-        check = sub.getCheck(3, 'B', true);
-        assertEquals(check.size(), 1);
-
-        var result = battleship.attack(3, 'B', false);
-        assertEquals(AtackStatus.HIT, result.getResult());
-
-        var result2 = sub.attack(3, 'B', false);
-
-        assertEquals(AtackStatus.MISS, result2.getResult());
-        var result5 =  sub.attack(6, 'B', false);
-        assertEquals(AtackStatus.MISS, result5.getResult());
-
-        var result7 = sub.attack(6, 'B', false);
-        assertEquals(AtackStatus.MISS, result7.getResult());
-
-    }
-
-    @Test
     public void testPlaceSubmarineVertical() {
         Ship sub = new Ship("SUBMARINE");
         sub.place('B', 3, true, false);
@@ -336,48 +197,6 @@ public class ShipTest {
         minesweeper2.place('A', 1, true, false);
 
         assertTrue(minesweeper1.overlaps(minesweeper2));
-    }
-    @Test
-    public void testShipOverlapsSubSurface() {
-        Ship minesweeper1 = new Ship("MINESWEEPER");
-        minesweeper1.place('A', 1, true, false);
-
-        Ship minesweeper2 = new Ship("SUBMARINE");
-        minesweeper2.place('A', 1, true, false);
-
-        assertTrue(minesweeper1.overlaps(minesweeper2));
-    }
-    @Test
-    public void testShipOverlapsSubSurface2() {
-
-
-        Ship minesweeper2 = new Ship("SUBMARINE");
-        minesweeper2.place('C', 4, true, false);
-        Ship minesweeper1 = new Ship("MINESWEEPER");
-        minesweeper1.place('C', 4, false, false);
-
-        assertTrue(minesweeper1.overlaps(minesweeper2));
-    }
-    @Test
-    public void testShipOverlapsSubSurface3() {
-
-
-        Ship minesweeper2 = new Ship("SUBMARINE");
-        minesweeper2.place('C', 4, true, false);
-        Ship minesweeper1 = new Ship("MINESWEEPER");
-        minesweeper1.place('B', 4, true, false);
-
-        assertTrue(minesweeper1.overlaps(minesweeper2));
-    }
-    @Test
-    public void testShipOverlapsSub() {
-        Ship minesweeper1 = new Ship("MINESWEEPER");
-        minesweeper1.place('A', 1, true, false);
-
-        Ship minesweeper2 = new Ship("SUBMARINE");
-        minesweeper2.place('A', 1, true, true);
-
-        assertFalse(minesweeper1.overlaps(minesweeper2));
     }
 
     @Test
@@ -405,19 +224,18 @@ public class ShipTest {
         Ship minesweeper = new Ship("BATTLESHIP");
         minesweeper.place('A', 1, true, false);
 
-        Result result = minesweeper.attack(1, 'A', false);
+        Result result = minesweeper.attack(1, 'A');
         assertEquals(AtackStatus.HIT, result.getResult());
         assertEquals(minesweeper, result.getShip());
         assertEquals(new Square(1, 'A'), result.getLocation());
     }
-
 
     @Test
     public void testSink() {
         Ship minesweeper = new Ship("MINESWEEPER");
         minesweeper.place('A', 1, true, false);
 
-        var result = minesweeper.attack(1, 'A', false);
+        var result = minesweeper.attack(1, 'A');
 
         assertEquals(AtackStatus.SUNK, result.getResult());
 
@@ -436,7 +254,7 @@ public class ShipTest {
 
         Ship destroyer = new Ship("DESTROYER");
         destroyer.place('A', 1, true, false);
-        var result = destroyer.attack(2, 'A', false);
+        var result = destroyer.attack(2, 'A');
         assertEquals(AtackStatus.BLOCKED, result.getResult());
     }
     @Test
@@ -444,18 +262,18 @@ public class ShipTest {
 
         Ship destroyer = new Ship("DESTROYER");
         destroyer.place('A', 1, true, false);
-        var result = destroyer.attack(2, 'A', false);
+        var result = destroyer.attack(2, 'A');
         assertEquals(AtackStatus.BLOCKED, result.getResult());
-        result = destroyer.attack(2, 'A', false);
+        result = destroyer.attack(2, 'A');
         assertEquals(AtackStatus.SUNK, result.getResult());
     }
     @Test
     public void testAttackSameSquareTwice() {
         Ship minesweeper = new Ship("MINESWEEPER");
         minesweeper.place('A', 1, true, false);
-        var result = minesweeper.attack(1, 'A', false);
+        var result = minesweeper.attack(1, 'A');
         assertEquals(AtackStatus.SUNK, result.getResult());
-        result = minesweeper.attack(1, 'A', false);
+        result = minesweeper.attack(1, 'A');
         assertEquals(AtackStatus.INVALID, result.getResult());
     }
 

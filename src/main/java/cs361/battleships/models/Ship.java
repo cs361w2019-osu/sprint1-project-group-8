@@ -149,21 +149,16 @@ public int getSize() { return size; }
 	public boolean isAtLocation(Square location) {
 		return getOccupiedSquares().stream().anyMatch(s -> s.equals(location));
 	}
-	public List<Square> getCheck(int x, char y, boolean hitSub) {
-		var attackedLocation = new Square(x, y);
-
-		return getOccupiedSquares().stream().filter(s -> s.equals(attackedLocation, hitSub)).collect(Collectors.toList());
-	}
 
 	public String getKind() {
 		return kind;
 	}
 
-
-	public Result attack(int x, char y, boolean hitSub) {
+	public Result attack(int x, char y) {
 		var attackedLocation = new Square(x, y);
 
-		var square = getOccupiedSquares().stream().filter(s -> s.equals(attackedLocation, hitSub)).findFirst();
+		var square = getOccupiedSquares().stream().filter(s -> s.equals(attackedLocation, false)).findFirst();
+
 
 		if (!square.isPresent()) {
 			return new Result(attackedLocation);

@@ -70,42 +70,6 @@ public class BoardTest {
         assertEquals(AtackStatus.SURRENDER, result.getResult());
         assertEquals(minesweeper, result.getShip());
     }
-    @Test
-    public void testAttackSubmergedShipWithLaser() {
-        Ship sub = new Ship("SUBMARINE");
-        board.placeShip(sub, 3, 'B', true, true);
-        sub = board.getShips().get(0);
-        assertTrue(sub.getOccupiedSquares().get(0).getIsSubmerged());
-        board.changeLaserForTest(true);
-        Result result = board.attack(3, 'B');
-
-        assertEquals(AtackStatus.HIT, result.getResult());
-        assertEquals(sub, result.getShip());
-    }
-    @Test
-    public void testAttackSubmergedShipNoLaser() {
-        Ship sub = new Ship("SUBMARINE");
-        board.placeShip(sub, 3, 'B', true, true);
-        sub = board.getShips().get(0);
-        assertTrue(sub.getOccupiedSquares().get(0).getIsSubmerged());
-        board.changeLaserForTest(false);
-        Result result = board.attack(3, 'B');
-        assertEquals(AtackStatus.MISS, result.getResult());
-        assertEquals(null, result.getShip());
-    }
-    @Test
-    public void testAttackSubmergedShipAndSurfaceShipWithLaser() {
-        Ship sub = new Ship("SUBMARINE");
-        board.placeShip(sub, 3, 'B', true, true);
-        sub = board.getShips().get(0);
-        assertTrue(sub.getOccupiedSquares().get(0).getIsSubmerged());
-        Ship battle = new Ship("BATTLESHIP");
-        board.placeShip(battle, 3, 'B', false, false);
-        board.changeLaserForTest(true);
-        Result result = board.attack(3, 'B');
-        assertEquals(AtackStatus.HIT, result.getResult());
-
-    }
 
     @Test
     public void testAttackSameSquareMultipleTimes() {

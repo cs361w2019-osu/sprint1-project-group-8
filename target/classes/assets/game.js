@@ -23,15 +23,12 @@ function makeGrid(table, isPlayer) {
 function checkSunk(elementId, ship) {
 
     if (elementId == "opponent") {
-
-
         for (var i = 0; i < ship.occupiedSquares.length; i++) {
-
             var square = ship.occupiedSquares[i];
             var cell = document.getElementById("opponent").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)];
             var div = cell.querySelector("div");
 
-            if (i == 0 && (div != null || div == null)) {
+            if (i == 0 && div != null) {
                 div = document.createElement('div');
                 cell.appendChild(div);
                 div.classList.add("marker");
@@ -44,7 +41,19 @@ function checkSunk(elementId, ship) {
                     div.classList.add("left");
                 }
             }
+            else if (i == 0 && div == null) {
+                div = document.createElement('div');
+                cell.appendChild(div);
+                div.classList.add("marker");
+                div.classList.add("hit");
 
+                if (square.row != ship.occupiedSquares[i + 1].row) {
+                    div.classList.add("up");
+                }
+                else {
+                    div.classList.add("left");
+                }
+            }
             else if (i == ship.occupiedSquares.length - 1 && div != null) {
                 if (square.row != ship.occupiedSquares[i - 1].row) {
                     div.classList.add("down");
@@ -53,7 +62,6 @@ function checkSunk(elementId, ship) {
                     div.classList.add("right");
                 }
             }
-
             else if (i == ship.occupiedSquares.length - 1 && div == null) {
                 div = document.createElement('div');
                 cell.appendChild(div);
@@ -85,7 +93,6 @@ if(board.blockedShips != null){
                             }
                             else
                                 div = td.querySelector("div");
-
                     let className;
 
                      if (div != null) {
@@ -161,6 +168,7 @@ function addLog(board, user){ /* CHANGE HERE */
         }
 
     document.getElementById("Log").style.display = "block";
+
     if (board.attacks[board.attacks.length - 1].result == "FLEETMOVE") {
         document.getElementById("LogMessages").append("||" + user + " MOVED FLEET||" + '\n');
     }
@@ -186,7 +194,6 @@ function sonarCheck(board) {                                /* checks if the pla
 }
 
 function redrawGrid() {
-
 /*    clearLogMessage();*/
     Array.from(document.getElementById("opponent").childNodes).forEach((row) => row.remove());
     Array.from(document.getElementById("player").childNodes).forEach((row) => row.remove());
@@ -205,8 +212,13 @@ var sub = ship.occupiedSquares.length;
            isSub = true;
            sub -=1;
     }
+
     for (var i = 0; i < sub; i++) {
+
+
     var square = ship.occupiedSquares[i];
+
+
      var cell = document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)];
      var div = cell.querySelector("div");
         if (div == null) {
@@ -224,7 +236,7 @@ var sub = ship.occupiedSquares.length;
             div.classList.add("captain");
         }
         else if(i == ship.occupiedSquares.length - 2 && isSub){
-            div.classList.add("captain");
+div.classList.add("captain");
         }
         if (i == 0) {
             if (square.row != ship.occupiedSquares[i + 1].row) {
@@ -256,35 +268,36 @@ var sub = ship.occupiedSquares.length;
     if (isSub) {
                 if(vertical){
     			 var cell = document.getElementById("player").rows[ship.occupiedSquares[ship.occupiedSquares.length-4].row-1].cells[square.column.charCodeAt(0) - 'B'.charCodeAt(0)];
-                 var div = cell.querySelector("div");
-                 if (div == null) {
-                     div = document.createElement("div");
-                     div.classList.add("ship");
-                      cell.appendChild(div);
-                        }
-                        if(underWater){
-                         div.classList.add("occupiedSubmerged");
-                         }else{
-                         div.classList.add("occupied");
-                         }
+                                      var div = cell.querySelector("div");
+                                         if (div == null) {
+                                             div = document.createElement("div");
+                                             div.classList.add("ship");
+                                             cell.appendChild(div);
+                                         }
+                                         if(underWater){
+                                          div.classList.add("occupiedSubmerged");
+                                         }else{
+                                         div.classList.add("occupied");
+                                         }
 
-                        div.classList.add("left");
-    } else{
-        var cell = document.getElementById("player").rows[ship.occupiedSquares[ship.occupiedSquares.length-1].row-2].cells[square.column.charCodeAt(0) - 'B'.charCodeAt(0)];
-        var div = cell.querySelector("div");
-           if (div == null) {
-                div = document.createElement("div");
-                div.classList.add("ship");
-                cell.appendChild(div);
-               }
-               if(underWater){
-               div.classList.add("occupiedSubmerged");
-               }else{
-               div.classList.add("occupied");
-                div.classList.add("up");
+                                          div.classList.add("left");
+    		} else{
+var cell = document.getElementById("player").rows[ship.occupiedSquares[ship.occupiedSquares.length-1].row-2].cells[square.column.charCodeAt(0) - 'B'.charCodeAt(0)];
+                     var div = cell.querySelector("div");
+                        if (div == null) {
+                            div = document.createElement("div");
+                            div.classList.add("ship");
+                            cell.appendChild(div);
+                        }
+                          if(underWater){
+                                                                div.classList.add("occupiedSubmerged");
+                                                               }else{
+                                                               div.classList.add("occupied");
+                                                               }
+
+ div.classList.add("up");
     		}
-    }
-    }
+    		}
 
     });
     /*var overlapped = document.getElementsByClassName('occupied occupiedSubmerged');
@@ -298,6 +311,7 @@ var sub = ship.occupiedSquares.length;
 
     markHits(game.opponentsBoard, "opponent", "You won the game");
     addLog(game.opponentsBoard, "PLAYER");
+
     sonarCheck(game.opponentsBoard);
     markHits(game.playersBoard, "player", "You lost the game");
     addLog(game.playersBoard, "OPPONENT");
@@ -347,7 +361,6 @@ function cellClick() {
         });
     } else {
             sendXhr("POST", "/attack", {game: game, x: row, y: col, sonar: sonar}, function(data) {
-
                game = data;
                redrawGrid();
                if(sonar) {
@@ -469,7 +482,6 @@ function place(size) {
                                                 div.classList.toggle("placed");
                                                 cell.classList.toggle((vertical) ? "sidesBorderVert" : "sidesBorderHoriz")
                                             }
-
             if(vertical) {
                 let tableRow = table.rows[row+i];
                 if (tableRow === undefined) {
@@ -478,7 +490,9 @@ function place(size) {
                 }
                 cell = tableRow.cells[col];
             } else {
+
                 cell = table.rows[row].cells[col+i];
+
             }
             if (cell === undefined) {
                 // ship is over the edge; let the back end deal with it
@@ -497,7 +511,6 @@ function place(size) {
                 cell.classList.toggle((vertical) ? "sidesBorderTop" : "sidesBorderLeft")
             }
             else if (i == size - 1) {
-
                 div.classList.toggle((vertical) ? "down" : "right")
                 cell.classList.toggle((vertical) ? "sidesBorderBottom" : "sidesBorderRight")
             }
@@ -579,6 +592,7 @@ function initGame() {
         else {
             sonar = document.getElementById("sonar").checked;
                  if (sonar) {
+
                      document.getElementById("opponent").classList.add("sonar");
                      if (game.opponentsBoard.hasLaser) {
                         document.getElementById("opponent").classList.remove("laser");
