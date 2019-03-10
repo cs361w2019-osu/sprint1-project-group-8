@@ -22,7 +22,7 @@ function makeGrid(table, isPlayer) {
 
 function checkSunk(elementId, ship) {
 
-    if (elementId == "opponent") {
+    if (elementId == "opponent" && ship.occupiedSquares.length < 5) {
 
 
         for (var i = 0; i < ship.occupiedSquares.length; i++) {
@@ -333,10 +333,10 @@ function cellClick() {
     underWater = document.getElementById("is_submerged").checked;
     water = underWater;
     }
+
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical, isSubmerged: water}, function(data) {
             game = data;
-            game.playersBoard.ships.forEach((ship) => {
-            });
+
 
             redrawGrid();
             placedShips++;

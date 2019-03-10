@@ -370,6 +370,17 @@ public class ShipTest {
         assertTrue(minesweeper1.overlaps(minesweeper2));
     }
     @Test
+    public void testShipOverlapsSubSurface4() {
+
+
+        Ship minesweeper2 = new Ship("SUBMARINE");
+        minesweeper2.place('C', 4, false, false);
+        Ship minesweeper1 = new Ship("MINESWEEPER");
+        minesweeper1.place('E', 3, false, false);
+
+        assertTrue(minesweeper1.overlaps(minesweeper2));
+    }
+    @Test
     public void testShipOverlapsSub() {
         Ship minesweeper1 = new Ship("MINESWEEPER");
         minesweeper1.place('A', 1, true, false);
