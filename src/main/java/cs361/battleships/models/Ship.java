@@ -75,9 +75,8 @@ public int getSize() { return size; }
 
 
 	public void place(char col, int row, boolean isVertical, boolean isSub) {
-
 		var sub = size;
-		if(kind == "SUBMARINE"){
+		if(size == 5){
 			sub -=1;
 
 		}
@@ -108,19 +107,19 @@ public int getSize() { return size; }
 			}
 
 		}
-		if (kind == "SUBMARINE" && isVertical) {
+		if (size == 5 && isVertical) {
 
 			occupiedSquares.add(new Square(row + 1, (char) (col - 1)));
 			if(isSub){
 
-				occupiedSquares.get(sub).setIsSubmerged();
+				occupiedSquares.get(4).setIsSubmerged();
 			}
-		} else if(kind == "SUBMARINE" && !isVertical){
+		} else if(size == 5 ){
 
 			occupiedSquares.add(new Square(row - 1, (char) (col + 2)));
 			if(isSub){
 
-				occupiedSquares.get(sub).setIsSubmerged();
+				occupiedSquares.get(4).setIsSubmerged();
 			}
 		}
 

@@ -95,6 +95,21 @@ public class ShipTest {
         assertEquals(expected, occupiedSquares);
     }
     @Test
+    public void testPlaceSubmarineHorizontal2() {
+        Ship sub = new Ship("SUBMARINE");
+        sub.place('G', 10, false, false);
+        List<Square> occupiedSquares = sub.getOccupiedSquares();
+        ArrayList<Object> expected = new ArrayList<>();
+        expected.add(new Square(10, 'G'));
+        expected.add(new Square(10, 'H'));
+        expected.add(new Square(10, 'I'));
+        expected.add(new Square(10, 'J'));
+        expected.add(new Square(9, 'I'));
+        assertEquals(expected, occupiedSquares);
+        assertEquals(expected.size(), occupiedSquares.size());
+        assertEquals(9, sub.getOccupiedSquares().get(4).getRow());
+    }
+    @Test
     public void testPlaceSubmarineHorizontalCount() {
         Ship sub = new Ship("SUBMARINE");
         sub.place('A', 3, false, false);
