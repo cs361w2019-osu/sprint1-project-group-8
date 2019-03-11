@@ -15,6 +15,7 @@ public class Board {
 	@JsonProperty private List <Ship> submergedSquares;
 	@JsonProperty private int last;
 	@JsonProperty private boolean hasLaser;
+	@JsonProperty private boolean moveYes;
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
@@ -25,6 +26,7 @@ public class Board {
 		submergedSquares = new ArrayList<>();
 		last = 0;
 		hasLaser = false;
+		moveYes = false;
 	}
 
 	public void changeLaserForTest(boolean setLaser){
@@ -88,6 +90,7 @@ public class Board {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public Result attack(int x, char y) {
+		Square square  = new Square(x, y);
 		Result attackResult = attack(new Square(x, y));
 		if(attackResult.getResult() == AtackStatus.BLOCKED){
 
@@ -97,6 +100,22 @@ public class Board {
 		else{
 			attacks.add(attackResult);
 			last = 0;
+		}
+		//If ship is present on coordinates
+		//repeat attacks only during laser phase or once the fleet is moved
+		if(attackResult.getResult() == AtackStatus.MISS && ships.stream().allMatch(ship -> ship.isSunk())){
+			if (!hasLaser && duplicateCheck(square) && shipPresent(x, y)) {
+				for (Ship ships : this.getShips()) {
+					if (!moveYes && duplicateCheck(square)) {
+						attackResult.setResult(AtackStatus.INVALID);
+						return attackResult;
+					}
+				}
+			} else if (duplicateCheck(square) && !hasLaser) {
+				attackResult.setResult(AtackStatus.INVALID);
+				return attackResult;
+			}
+			this.attacks.add(attackResult);
 		}
 
 		return attackResult;
@@ -177,6 +196,36 @@ public class Board {
 		return finalResult;
 	}
 
+	public boolean duplicateCheck(Square attackLocation) {
+		//loops through every attack on the board and checks if one already exists at the current location
+		//returns true if another attack at the location exists, false if not
+		for(Result attack : this.getAttacks()) {
+			if((attack.getLocation().getRow() == attackLocation.getRow()) &&
+					(attack.getLocation().getColumn() == attackLocation.getColumn())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static boolean isSquareConflict(Square sq1, Square sq2) {
+		return (sq1.getRow()==sq2.getRow() && sq1.getColumn()==sq2.getColumn());
+	}
+
+
+	// Checks whether a ship existed at
+	private boolean shipPresent(int x, char y){
+		Square sq = new Square(x, y);
+		for(Ship ships : this.getShips()){
+			for(Square squares : ships.getOccupiedSquares()) {
+				if (isSquareConflict(sq, squares)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	public Result moveShips(char moveDir) {
 		switch (moveDir) {
 			case 'U': ships.sort(Comparator.comparing(s -> s.minRow()));
@@ -217,6 +266,7 @@ public class Board {
 
 		Result result = new Result(new Square(0, 'Z'));
 		result.setResult(AtackStatus.FLEETMOVE);
+		moveYes = true;
 		return result;
 	}
 
