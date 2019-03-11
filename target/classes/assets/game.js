@@ -5,8 +5,10 @@ var shipType;
 var vertical;
 var sonar = false;
 var firstShipSunk = false;
+var secondShipSunk = false;
 var sonarCount = 0;
 var underWater = false;
+var fleetMoveCount = 0;
 
 function makeGrid(table, isPlayer) {
     for (i=0; i<10; i++) {
@@ -47,11 +49,16 @@ function checkSunk(elementId, ship) {
 
             else if (i == ship.occupiedSquares.length - 1 && div != null) {
                 if (square.row != ship.occupiedSquares[i - 1].row) {
-                if(ship.occupiedSquares.length == 5 && (square.row-1 == ship.occupiedSquares[i - 1].row)){
-                 div.classList.add("left");
+                if(ship.occupiedSquares.length == 5){
+
+                if(square.row - ship.occupiedSquares[i].row == 0){
+ div.classList.add("up");
+                }else{
+                div.classList.add("left");
                 }
-                else{
-                 div.classList.add("down");
+
+                }else{
+                div.classList.add("down");
                 }
 
                 }
@@ -67,7 +74,17 @@ function checkSunk(elementId, ship) {
                 div.classList.add("hit");
 
                 if (square.row != ship.occupiedSquares[i - 1].row) {
-                    div.classList.add("down");
+                    if(ship.occupiedSquares.length == 5){
+
+                                    if(square.row - ship.occupiedSquares[i].row == 0){
+                     div.classList.add("up");
+                                    }else{
+                                    div.classList.add("left");
+                                    }
+
+                                    }else{
+                                    div.classList.add("down");
+                                    }
                 }
                 else {
                     div.classList.add("right");
@@ -187,6 +204,9 @@ function sonarCheck(board) {                                /* checks if the pla
         if (!firstShipSunk) {
                 document.getElementById("LogMessages").append("||PLAYER UNLOCKED SPACE LASER||" + '\n');
             }
+        else {
+            secondShipSunk = true;
+        }
         firstShipSunk = true;
     }
 }
@@ -524,10 +544,25 @@ function setInput(button) {
 }
 
 function moveShips(moveDir) {
+    if(!secondShipSunk){
+        clearUserMessage();
+        document.getElementById("Log").style.display = "none";
+        document.getElementById("ErrorBox").style.display = "block";
+        document.getElementById("UserMessages").append("Sink two ships to access fleet movement.");
+    }
+    else if(fleetMoveCount == 2) {
+        clearUserMessage();
+        document.getElementById("Log").style.display = "none";
+        document.getElementById("ErrorBox").style.display = "block";
+        document.getElementById("UserMessages").append("Fleet movement can only be used twice per game.");
+    }
+    else {
     sendXhr("POST", "/attack", {game: game, moveShip: true, moveDir: moveDir}, function(data) {
-         game = data;
-         redrawGrid();
+        fleetMoveCount++;
+        game = data;
+        redrawGrid();
      })
+     }
 }
 
 function initGame() {

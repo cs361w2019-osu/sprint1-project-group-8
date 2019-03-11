@@ -145,15 +145,16 @@ public class BoardTest {
         Result result = board.attack(1, 'A');
         assertEquals(AtackStatus.INVALID, result.getResult());
     }
-/*
+
     @Test
     public void testAttackSameEmptySquareMultipleTimes() {
+        board.placeShip(new Ship("MINESWEEPER"), 5, 'E', true, false);
         Result initialResult = board.attack(1, 'A');
         assertEquals(AtackStatus.MISS, initialResult.getResult());
         Result result = board.attack(1, 'A');
         assertEquals(AtackStatus.INVALID, result.getResult());
     }
-*/
+
     @Test
     public void testSurrender() {
         board.placeShip(new Ship("MINESWEEPER"), 1, 'A', true, false);

@@ -5,6 +5,7 @@ var shipType;
 var vertical;
 var sonar = false;
 var firstShipSunk = false;
+var secondShipSunk = false;
 var sonarCount = 0;
 var underWater = false;
 var fleetMoveCount = 0;
@@ -203,6 +204,9 @@ function sonarCheck(board) {                                /* checks if the pla
         if (!firstShipSunk) {
                 document.getElementById("LogMessages").append("||PLAYER UNLOCKED SPACE LASER||" + '\n');
             }
+        else {
+            secondShipSunk = true;
+        }
         firstShipSunk = true;
     }
 }
@@ -540,11 +544,11 @@ function setInput(button) {
 }
 
 function moveShips(moveDir) {
-    if(!firstShipSunk){
+    if(!secondShipSunk){
         clearUserMessage();
         document.getElementById("Log").style.display = "none";
         document.getElementById("ErrorBox").style.display = "block";
-        document.getElementById("UserMessages").append("Sink one ship to access fleet movement.");
+        document.getElementById("UserMessages").append("Sink two ships to access fleet movement.");
     }
     else if(fleetMoveCount == 2) {
         clearUserMessage();
