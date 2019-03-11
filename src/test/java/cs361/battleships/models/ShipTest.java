@@ -232,7 +232,7 @@ public class ShipTest {
          var result4 = sub.attack(5, 'B', true);
         assertEquals(AtackStatus.HIT, result4.getResult());
         var result5 =  sub.attack(6, 'B', true);
-        assertEquals(AtackStatus. , result5.getResult());
+        assertEquals(AtackStatus.HIT , result5.getResult());
        var result6 = sub.attack(4, 'A', true);
         assertEquals(AtackStatus.HIT, result6.getResult());
         var result7 = sub.attack(6, 'B', true);
