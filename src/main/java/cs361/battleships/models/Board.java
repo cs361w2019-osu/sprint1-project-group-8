@@ -101,8 +101,8 @@ public class Board {
 			attacks.add(attackResult);
 			last = 0;
 		}
-		//If ship is present on coordinates
-		//repeat attacks only during laser phase or once the fleet is moved
+		// If that spot has a MISS and at least a ship has been sunk,
+		// repeat attacks only during laser phase or once the fleet is moved
 		if(attackResult.getResult() == AtackStatus.MISS && ships.stream().allMatch(ship -> ship.isSunk())){
 			if (!hasLaser && duplicateCheck(square) && shipPresent(x, y)) {
 				for (Ship ships : this.getShips()) {
@@ -197,8 +197,8 @@ public class Board {
 	}
 
 	public boolean duplicateCheck(Square attackLocation) {
-		//loops through every attack on the board and checks if one already exists at the current location
-		//returns true if another attack at the location exists, false if not
+		// loops through to check all attacks made on teh board, and...
+		// returns true if another attack at that spot is possible, false if not
 		for(Result attack : this.getAttacks()) {
 			if((attack.getLocation().getRow() == attackLocation.getRow()) &&
 					(attack.getLocation().getColumn() == attackLocation.getColumn())) {
@@ -207,18 +207,19 @@ public class Board {
 		}
 		return false;
 	}
-
-	public static boolean isSquareConflict(Square sq1, Square sq2) {
+	
+	// Check if there are any conflicts in that spot/square
+	public static boolean conflictSpot(Square sq1, Square sq2) {
 		return (sq1.getRow()==sq2.getRow() && sq1.getColumn()==sq2.getColumn());
 	}
 
 
-	// Checks whether a ship existed at
+	// Checks whether a ship exist at that spot
 	private boolean shipPresent(int x, char y){
 		Square sq = new Square(x, y);
 		for(Ship ships : this.getShips()){
 			for(Square squares : ships.getOccupiedSquares()) {
-				if (isSquareConflict(sq, squares)) {
+				if (conflictSpot(sq, squares)) {
 					return true;
 				}
 			}
