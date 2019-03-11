@@ -96,6 +96,8 @@ public class Square {
 		hit = true;
 	}
 
+	public void changeHit() { hit = false;}
+
 	@Override
 	public String toString() {
 		return "(" + row + ", " + column + ')';

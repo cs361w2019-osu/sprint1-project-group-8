@@ -4,4 +4,4 @@ jdk: openjdk10
 branches:
   only:
     - master
-    - sonar_use_twice
+    - duplicateShots

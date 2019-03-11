@@ -2,6 +2,7 @@ package cs361.battleships.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.swing.*;
 import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -14,6 +15,7 @@ public class Board {
 	@JsonProperty private List <Ship> submergedSquares;
 	@JsonProperty private int last;
 	@JsonProperty private boolean hasLaser;
+	@JsonProperty private boolean moveYes;
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
@@ -24,6 +26,7 @@ public class Board {
 		submergedSquares = new ArrayList<>();
 		last = 0;
 		hasLaser = false;
+		moveYes = false;
 	}
 
 	public void changeLaserForTest(boolean setLaser){
@@ -87,6 +90,7 @@ public class Board {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public Result attack(int x, char y) {
+		Square square  = new Square(x, y);
 		Result attackResult = attack(new Square(x, y));
 		if(attackResult.getResult() == AtackStatus.BLOCKED){
 
@@ -96,6 +100,22 @@ public class Board {
 		else{
 			attacks.add(attackResult);
 			last = 0;
+		}
+		// If that spot has a MISS and at least a ship has been sunk,
+		// repeat attacks only during laser phase or once the fleet is moved
+		if(attackResult.getResult() == AtackStatus.MISS && ships.stream().allMatch(ship -> ship.isSunk())){
+			if (!hasLaser && duplicateCheck(square) && shipPresent(x, y)) {
+				for (Ship ships : this.getShips()) {
+					if (!moveYes && duplicateCheck(square)) {
+						attackResult.setResult(AtackStatus.INVALID);
+						return attackResult;
+					}
+				}
+			} else if (duplicateCheck(square) && !hasLaser) {
+				attackResult.setResult(AtackStatus.INVALID);
+				return attackResult;
+			}
+			this.attacks.add(attackResult);
 		}
 
 		return attackResult;
@@ -176,6 +196,37 @@ public class Board {
 		return finalResult;
 	}
 
+	public boolean duplicateCheck(Square attackLocation) {
+		// loops through to check all attacks made on teh board, and...
+		// returns true if another attack at that spot is possible, false if not
+		for(Result attack : this.getAttacks()) {
+			if((attack.getLocation().getRow() == attackLocation.getRow()) &&
+					(attack.getLocation().getColumn() == attackLocation.getColumn())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	// Check if there are any conflicts in that spot/square
+	public static boolean conflictSpot(Square sq1, Square sq2) {
+		return (sq1.getRow()==sq2.getRow() && sq1.getColumn()==sq2.getColumn());
+	}
+
+
+	// Checks whether a ship exist at that spot
+	private boolean shipPresent(int x, char y){
+		Square sq = new Square(x, y);
+		for(Ship ships : this.getShips()){
+			for(Square squares : ships.getOccupiedSquares()) {
+				if (conflictSpot(sq, squares)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	public Result moveShips(char moveDir) {
 		switch (moveDir) {
 			case 'U': ships.sort(Comparator.comparing(s -> s.minRow()));
@@ -191,13 +242,32 @@ public class Board {
 		}
 
 		for (int i = 0; i < ships.size(); i++) {
+			List jList = new ArrayList();
 			if (i == 0 || !ships.get(i).checkMoveOverlap(ships.subList(0, i), moveDir)) {
+				var changeOpponentHit = false;
+				for(int j = 0; j < ships.get(i).getOccupiedSquares().size(); j++) {
+					if(ships.get(i).getOccupiedSquares().get(j).isHit()) {
+						ships.get(i).getOccupiedSquares().get(j).changeHit();
+					//	JOptionPane.showMessageDialog(null, "Status of new square " + ships.get(i).getOccupiedSquares().get(j) + " is now " + ships.get(i).getOccupiedSquares().get(j).getHit());
+						changeOpponentHit = true;
+						jList.add(j);
+					}
+				}
 				ships.get(i).move(moveDir);
+				if(changeOpponentHit) {
+					for(int j = 0; j < ships.get(i).getOccupiedSquares().size(); j++) {
+						if(jList.contains(j)) {
+							ships.get(i).getOccupiedSquares().get(j).hit();
+						//	JOptionPane.showMessageDialog(null, "New hit at square: " + ships.get(i).getOccupiedSquares().get(j));
+						}
+					}
+				}
 			}
 		}
 
 		Result result = new Result(new Square(0, 'Z'));
 		result.setResult(AtackStatus.FLEETMOVE);
+		moveYes = true;
 		return result;
 	}
 
