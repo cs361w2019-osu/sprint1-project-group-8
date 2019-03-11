@@ -148,10 +148,12 @@ public class BoardTest {
 
     @Test
     public void testAttackSameEmptySquareMultipleTimes() {
+        if(!moveYes) {
         Result initialResult = board.attack(1, 'A');
         assertEquals(AtackStatus.MISS, initialResult.getResult());
         Result result = board.attack(1, 'A');
         assertEquals(AtackStatus.INVALID, result.getResult());
+        }
     }
 
     @Test
