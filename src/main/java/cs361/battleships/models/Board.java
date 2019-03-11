@@ -2,6 +2,7 @@ package cs361.battleships.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.swing.*;
 import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -191,8 +192,26 @@ public class Board {
 		}
 
 		for (int i = 0; i < ships.size(); i++) {
+			List jList = new ArrayList();
 			if (i == 0 || !ships.get(i).checkMoveOverlap(ships.subList(0, i), moveDir)) {
+				var changeOpponentHit = false;
+				for(int j = 0; j < ships.get(i).getOccupiedSquares().size(); j++) {
+					if(ships.get(i).getOccupiedSquares().get(j).isHit()) {
+						ships.get(i).getOccupiedSquares().get(j).changeHit();
+					//	JOptionPane.showMessageDialog(null, "Status of new square " + ships.get(i).getOccupiedSquares().get(j) + " is now " + ships.get(i).getOccupiedSquares().get(j).getHit());
+						changeOpponentHit = true;
+						jList.add(j);
+					}
+				}
 				ships.get(i).move(moveDir);
+				if(changeOpponentHit) {
+					for(int j = 0; j < ships.get(i).getOccupiedSquares().size(); j++) {
+						if(jList.contains(j)) {
+							ships.get(i).getOccupiedSquares().get(j).hit();
+						//	JOptionPane.showMessageDialog(null, "New hit at square: " + ships.get(i).getOccupiedSquares().get(j));
+						}
+					}
+				}
 			}
 		}
 
