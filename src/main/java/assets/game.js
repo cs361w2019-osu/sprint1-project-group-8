@@ -7,6 +7,7 @@ var sonar = false;
 var firstShipSunk = false;
 var sonarCount = 0;
 var underWater = false;
+var fleetMoveCount = 0;
 
 function makeGrid(table, isPlayer) {
     for (i=0; i<10; i++) {
@@ -539,10 +540,25 @@ function setInput(button) {
 }
 
 function moveShips(moveDir) {
+    if(!firstShipSunk){
+        clearUserMessage();
+        document.getElementById("Log").style.display = "none";
+        document.getElementById("ErrorBox").style.display = "block";
+        document.getElementById("UserMessages").append("Sink one ship to access fleet movement.");
+    }
+    else if(fleetMoveCount == 2) {
+        clearUserMessage();
+        document.getElementById("Log").style.display = "none";
+        document.getElementById("ErrorBox").style.display = "block";
+        document.getElementById("UserMessages").append("Fleet movement can only be used twice per game.");
+    }
+    else {
     sendXhr("POST", "/attack", {game: game, moveShip: true, moveDir: moveDir}, function(data) {
-         game = data;
-         redrawGrid();
+        fleetMoveCount++;
+        game = data;
+        redrawGrid();
      })
+     }
 }
 
 function initGame() {
