@@ -150,7 +150,7 @@ public class ShipTest {
         expected.add(new Square(6, 'B'));
         expected.add(new Square(4, 'A'));
         assertEquals(expected, occupiedSquares);
-        assertTrue(occupiedSquares.get(occupiedSquares.size()-2).getIsCaptain());
+        assertTrue(occupiedSquares.get(0).getIsCaptain());
 
     }
     @Test
@@ -223,7 +223,7 @@ public class ShipTest {
         var result = battleship.attack(3, 'B', false);
         assertEquals(AtackStatus.HIT, result.getResult());
         var result2 = sub.attack(3, 'B', true);
-        assertEquals(AtackStatus.HIT, result2.getResult());
+        assertEquals(AtackStatus.BLOCKED, result2.getResult());
 
 
        var result3 = sub.attack(4, 'B', true);
@@ -232,11 +232,11 @@ public class ShipTest {
          var result4 = sub.attack(5, 'B', true);
         assertEquals(AtackStatus.HIT, result4.getResult());
         var result5 =  sub.attack(6, 'B', true);
-        assertEquals(AtackStatus.BLOCKED, result5.getResult());
+        assertEquals(AtackStatus. , result5.getResult());
        var result6 = sub.attack(4, 'A', true);
         assertEquals(AtackStatus.HIT, result6.getResult());
         var result7 = sub.attack(6, 'B', true);
-        assertEquals(AtackStatus.SUNK, result7.getResult());
+        assertEquals(AtackStatus.INVALID, result7.getResult());
 
 
 
@@ -276,12 +276,9 @@ public class ShipTest {
         var result = battleship.attack(3, 'B', false);
         assertEquals(AtackStatus.HIT, result.getResult());
         var result2 = sub.attack(3, 'B', true);
-        assertEquals(AtackStatus.HIT, result2.getResult());
-        var result5 =  sub.attack(6, 'B', true);
-        assertEquals(AtackStatus.BLOCKED, result5.getResult());
+        assertEquals(AtackStatus.BLOCKED, result2.getResult());
 
-        var result7 = sub.attack(6, 'B', true);
-        assertEquals(AtackStatus.SUNK, result7.getResult());
+
 
     }
 

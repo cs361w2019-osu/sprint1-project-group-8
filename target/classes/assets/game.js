@@ -47,11 +47,17 @@ function checkSunk(elementId, ship) {
 
             else if (i == ship.occupiedSquares.length - 1 && div != null) {
                 if (square.row != ship.occupiedSquares[i - 1].row) {
-                if(ship.occupiedSquares.length == 5 && (square.row-1 == ship.occupiedSquares[i - 1].row)){
-                 div.classList.add("left");
+                if(ship.occupiedSquares.length == 5){
+
+                if(square.row - ship.occupiedSquares[i].row == 0){
+
+ div.classList.add("up");
+                }else{
+                div.classList.add("left");
                 }
-                else{
-                 div.classList.add("down");
+
+                }else{
+                div.classList.add("down");
                 }
 
                 }
@@ -67,12 +73,24 @@ function checkSunk(elementId, ship) {
                 div.classList.add("hit");
 
                 if (square.row != ship.occupiedSquares[i - 1].row) {
-                    div.classList.add("down");
+                    if(ship.occupiedSquares.length == 5){
+
+                                    if(square.row - ship.occupiedSquares[i].row == 0){
+
+                     div.classList.add("up");
+                                    }else{
+                                    div.classList.add("left");
+                                    }
+
+                                    }else{
+                                    div.classList.add("down");
+                                    }
                 }
                 else {
                     div.classList.add("right");
                 }
             }
+
         }
     }
 }
@@ -226,12 +244,16 @@ var sub = ship.occupiedSquares.length;
            div.classList.add("occupied");
           }
 
-        if(i == ship.occupiedSquares.length - 2){
+        if(i == ship.occupiedSquares.length - 2 && ship.occupiedSquares.length != 5){
             div.classList.add("captain");
         }
+
         if (i == 0) {
+
             if (square.row != ship.occupiedSquares[i + 1].row) {
                 div.classList.add("up");
+                if(ship.occupiedSquares.length == 5)
+                  div.classList.add("captain");
             }
             else {
                 div.classList.add("left");
