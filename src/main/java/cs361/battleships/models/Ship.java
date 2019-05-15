@@ -89,7 +89,7 @@ public int getSize() { return size; }
 
 					occupiedSquares.get(i).setIsSubmerged();
 				}
-				if(i == size -2){
+				if(i == size -2 && size != 5){
 					occupiedSquares.get(i).setCaptain();
 
 				}
@@ -105,6 +105,10 @@ public int getSize() { return size; }
 
 				}
 			}
+
+		}
+		if(  size == 5 && isVertical){
+			occupiedSquares.get(0).setCaptain();
 
 		}
 		if (size == 5 && isVertical) {

@@ -109,7 +109,7 @@ public class BoardTest {
         board.changeLaserForTest(true);
         Result result = board.attack(3, 'B');
 
-        assertEquals(AtackStatus.HIT, result.getResult());
+        assertEquals(AtackStatus.BLOCKED, result.getResult());
         assertEquals(sub, result.getShip());
     }
     @Test

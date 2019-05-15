@@ -90,6 +90,7 @@ function checkSunk(elementId, ship) {
                     div.classList.add("right");
                 }
             }
+
         }
     }
 }
@@ -246,12 +247,16 @@ var sub = ship.occupiedSquares.length;
            div.classList.add("occupied");
           }
 
-        if(i == ship.occupiedSquares.length - 2){
+        if(i == ship.occupiedSquares.length - 2 && ship.occupiedSquares.length != 5){
             div.classList.add("captain");
         }
+
         if (i == 0) {
+
             if (square.row != ship.occupiedSquares[i + 1].row) {
                 div.classList.add("up");
+                if(ship.occupiedSquares.length == 5)
+                  div.classList.add("captain");
             }
             else {
                 div.classList.add("left");

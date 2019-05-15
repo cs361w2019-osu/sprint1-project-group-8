@@ -52,6 +52,7 @@ function checkSunk(elementId, ship) {
                 if(ship.occupiedSquares.length == 5){
 
                 if(square.row - ship.occupiedSquares[i].row == 0){
+
  div.classList.add("up");
                 }else{
                 div.classList.add("left");
@@ -77,6 +78,7 @@ function checkSunk(elementId, ship) {
                     if(ship.occupiedSquares.length == 5){
 
                                     if(square.row - ship.occupiedSquares[i].row == 0){
+
                      div.classList.add("up");
                                     }else{
                                     div.classList.add("left");
@@ -90,6 +92,7 @@ function checkSunk(elementId, ship) {
                     div.classList.add("right");
                 }
             }
+
         }
     }
 }
@@ -247,10 +250,18 @@ var sub = ship.occupiedSquares.length;
           }
 
         if(i == ship.occupiedSquares.length - 2){
-            div.classList.add("captain");
+        if(ship.occupiedSquares.length == 5 && square.row == ship.occupiedSquares[i - 1].row)
+         div.classList.add("captain");
+        else if (!isSub){
+        div.classList.add("captain");
+        }
+
         }
         if (i == 0) {
             if (square.row != ship.occupiedSquares[i + 1].row) {
+            if(ship.occupiedSquares.length == 5 ){
+            div.classList.add("captain");
+            }
                 div.classList.add("up");
             }
             else {
